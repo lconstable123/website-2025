@@ -24,7 +24,7 @@ export default function Project({
       ref={ref}
       style={{
         scale: scale,
-        opacity: scale,
+        opacity: scrollYProgress,
       }}
     >
       <section className=" bg-gray-100 max-w-[42rem] border border-black/5 rounded-lg overflow-hidden sm:pr-8 relative sm:h-[20rem] hover:bg-gray-200 transition sm:group-even:pl-8 dark:text-white dark:bg-white/10 dark:hover:bg-white/20">

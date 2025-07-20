@@ -1,14 +1,38 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { BsArrowRight, BsLinkedin } from "react-icons/bs";
 import { HiDownload } from "react-icons/hi";
 import { FaInstagram, FaLinkedin } from "react-icons/fa";
+import { useInView } from "react-intersection-observer";
+import { useActiveSection } from "../context/active-section-context";
+import { useSectionInView } from "../lib/hooks";
 export default function Intro() {
+  // const { ref, inView } = useInView({ threshold: 0.1 });
+  // const { setActiveSection, timeOfLastClick } = useActiveSection();
+
+  // useEffect(() => {
+  //   if (inView && Date.now() - timeOfLastClick > 1000) {
+  //     setActiveSection("Home");
+  //   } else if (!inView) {
+  //     setActiveSection((prev) => {
+  //       if (prev === "Home") {
+  //         return "About";
+  //       }
+  //       return prev;
+  //     });
+  //   }
+  // }, [inView, setActiveSection, timeOfLastClick]);
+  const { ref } = useSectionInView("Home");
+
   return (
-    <section className="mb-28 max-w-[50rem] sm:mb-0 scroll-mt-28" id="home">
+    <section
+      className="mb-28 max-w-[50rem] sm:mb-0 scroll-mt-28"
+      id="home"
+      ref={ref}
+    >
       <div className="flex items-center justify-center">
         <div className="relative">
           <motion.div
