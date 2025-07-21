@@ -10,23 +10,9 @@ import { useInView } from "react-intersection-observer";
 import { useActiveSection } from "../context/active-section-context";
 import { useSectionInView } from "../lib/hooks";
 export default function Intro() {
-  // const { ref, inView } = useInView({ threshold: 0.1 });
-  // const { setActiveSection, timeOfLastClick } = useActiveSection();
-
-  // useEffect(() => {
-  //   if (inView && Date.now() - timeOfLastClick > 1000) {
-  //     setActiveSection("Home");
-  //   } else if (!inView) {
-  //     setActiveSection((prev) => {
-  //       if (prev === "Home") {
-  //         return "About";
-  //       }
-  //       return prev;
-  //     });
-  //   }
-  // }, [inView, setActiveSection, timeOfLastClick]);
   const { ref } = useSectionInView("Home");
-
+  const { activeSection, setActiveSection, setTimeOfLastClick } =
+    useActiveSection();
   return (
     <section
       className="mb-28 max-w-[50rem] sm:mb-0 scroll-mt-28"
@@ -81,14 +67,18 @@ export default function Intro() {
         transition={{ delay: 0.1 }}
       >
         <Link
-          href="contact"
+          href="#contact"
           className="group transition bg-gray-900 text-white px-7 py-3 rounded-full flex justify-center items-center gap-2 outline-none focus:scale-110 hover:scale-110 hover:bg-gray-950 active:scale-105"
+          onClick={() => {
+            setActiveSection("Contact");
+            setTimeOfLastClick!(Date.now());
+          }}
         >
           Contact me here{" "}
           <BsArrowRight className="opacity-70 group-hover:translate-x-1 transition" />
         </Link>
         <a
-          className=" border border-black/10 cursor:pointer transition group flex items-center justify-center gap-2 bg-white rounded-full py-3 px-7 outline-none focus:scale-110 hover:scale-110 active:scale-105"
+          className=" borderBlack cursor:pointer transition group flex items-center justify-center gap-2 bg-white rounded-full py-3 px-7 outline-none focus:scale-110 hover:scale-110 active:scale-105"
           href="/CV.pdf"
           download
         >
