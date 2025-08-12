@@ -1,9 +1,15 @@
 "use client";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import toast from "react-hot-toast";
-import { SectionNameType } from "../lib/types";
-
+import { SectionNameType } from "../lib/utils/types";
+import { useSearchParams } from "next/navigation";
 type ActiveContextProviderProps = {
   children: React.ReactNode;
 };
@@ -13,6 +19,10 @@ type ActiveSectionContextType = {
   setActiveSection: React.Dispatch<React.SetStateAction<SectionNameType>>;
   timeOfLastClick: number;
   setTimeOfLastClick?: React.Dispatch<React.SetStateAction<number>>;
+  profileClicked: number;
+  setProfileClicked: React.Dispatch<React.SetStateAction<number>>;
+  scrollRef: React.RefObject<HTMLDivElement | null>;
+  scrollToElement: () => void;
 };
 
 export const ActiveSectionContext =
@@ -23,9 +33,28 @@ export default function ActiveSectionContextProvider({
 }: ActiveContextProviderProps) {
   const [activeSection, setActiveSection] = useState<SectionNameType>("Home");
   const [timeOfLastClick, setTimeOfLastClick] = useState(0);
-  //   useEffect(() => {
-  //     toast.success(activeSection);
-  //   }, [activeSection]);
+  const [profileClicked, setProfileClicked] = useState(0);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollToElement = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    } else {
+      // toast.error("Scroll reference is not set.");
+    }
+  };
+
+  useEffect(() => {
+    // toast.success(activeSection);
+  }, [activeSection]);
+
+  useEffect(() => {
+    if (profileClicked > 1) {
+      // toast.success("scrolling to element");
+      scrollToElement();
+    }
+  }, [profileClicked]);
+
   return (
     <ActiveSectionContext.Provider
       value={{
@@ -33,6 +62,10 @@ export default function ActiveSectionContextProvider({
         setActiveSection,
         timeOfLastClick,
         setTimeOfLastClick,
+        profileClicked,
+        setProfileClicked,
+        scrollRef,
+        scrollToElement,
       }}
     >
       {children}

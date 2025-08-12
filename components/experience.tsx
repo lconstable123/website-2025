@@ -1,21 +1,29 @@
 "use client";
 
 import React from "react";
-import SectionHeading from "./section-heading";
+import SectionHeading from "./atomic/section-heading";
 import {
   VerticalTimeline,
   VerticalTimelineElement,
 } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
-import { experiencesData } from "../lib/data";
-import { useSectionInView } from "../lib/hooks";
-import { it } from "node:test";
-// import { useTheme } from "@/context/theme-context";
+import { experiencesData } from "../lib/data/data";
+import { useSectionInView } from "../lib/hooks/hooks";
+import { motion } from "framer-motion";
 
 export default function Experience() {
   const { ref } = useSectionInView("Experience");
   return (
-    <section id="experience" ref={ref} className="scroll-mt-28 mb-28 sm:mb-40">
+    <motion.section
+      id="experience"
+      ref={ref}
+      className="scroll-mt-28 mb-28 sm:mb-40"
+      initial={{ opacity: 0, y: 100 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1 }}
+      viewport={{ once: false }}
+    >
       <SectionHeading>My Experience</SectionHeading>
       <VerticalTimeline lineColor="">
         {experiencesData.map((item, index) => (
@@ -45,6 +53,6 @@ export default function Experience() {
           </React.Fragment>
         ))}
       </VerticalTimeline>
-    </section>
+    </motion.section>
   );
 }

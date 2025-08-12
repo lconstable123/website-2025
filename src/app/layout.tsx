@@ -1,11 +1,34 @@
 import { Toaster } from "react-hot-toast";
-import Header from "../../components/header";
+
 import ActiveSectionContextProvider from "../../context/active-section-context";
 import "./globals.css";
-import { Inter } from "next/font/google";
-import Footer from "../../components/footer";
 
-const inter = Inter({ subsets: ["latin"] });
+import { Montserrat, Outfit, Roboto } from "next/font/google";
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-montserrat",
+  display: "swap",
+});
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
+  display: "swap",
+});
+
+const roboto = Roboto({
+  subsets: ["latin"],
+  variable: "--font-roboto",
+  display: "swap",
+});
+<link rel="preload" href="/new-images/bg/BG15.jpg" as="image" />;
+import AudioContextProvider from "../../context/screen-context";
+
+import SkillsetContextProvider from "../../context/skillset-context";
+import ScreenContextProvider from "../../context/screen-context";
+
+// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Lukes Folio",
@@ -20,17 +43,24 @@ export default function RootLayout({
   return (
     <html lang="en" className="!scroll-smooth">
       <body
-        className={`${inter.className} bg-gray-50 text-gray-950 relative  pt-28 sm:pt-36`}
+        className={`bg-black overflow-x-hidden  ${montserrat.variable} ${outfit.variable} ${roboto.variable} relative`}
       >
-        <Toaster position="top-right" />
-        <div className="bg-[#fbe2e3] absolute top-[-6rem] -z-10 right-[11rem] h-[31.25rem] w-[31.25rem] rounded-full blur-[10rem] sm:w-[68.75rem] dark:bg-[#946263]"></div>
-        <div className="bg-[#dbd7fb] absolute top-[-1rem] -z-10 left-[-35rem] h-[31.25rem] w-[50rem] rounded-full blur-[10rem] sm:w-[68.75rem] md:left-[-33rem] lg:left-[-28rem] xl:left-[-15rem] 2xl:left-[-5rem] dark:bg-[#676394]"></div>
+        <div className=" text-gray-950   ">
+          <Toaster position="top-right" />
 
-        <ActiveSectionContextProvider>
-          <Header />
-          {children}
-          <Footer />
-        </ActiveSectionContextProvider>
+          <div className="">
+            <ScreenContextProvider>
+              <ActiveSectionContextProvider>
+                <SkillsetContextProvider>
+                  {/* <Header /> */}
+                  <div id="lightbox"></div>
+                  {children}
+                  {/* <Footer /> */}
+                </SkillsetContextProvider>
+              </ActiveSectionContextProvider>
+            </ScreenContextProvider>
+          </div>
+        </div>
       </body>
     </html>
   );
