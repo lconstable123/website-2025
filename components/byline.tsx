@@ -6,6 +6,7 @@ import IntroCardTemplate from "./sub-components/intro-card-template";
 
 import { useInitialAnimation } from "../lib/hooks/animation-hooks";
 import { useActiveSection } from "../lib/context-providers/active-section-context";
+import ClickPrompt2 from "./atomic/click-prompt";
 export default function Byline({ mt = "25" }: { mt?: string }) {
   const { profileClicked } = useActiveSection();
   const { controls } = useInitialAnimation(0.2, 1, profileClicked > 0);
@@ -29,6 +30,16 @@ export default function Byline({ mt = "25" }: { mt?: string }) {
           </div>
         </IntroCardTemplate>
       </motion.div>
+      <div className="z-1000 text-white  fixed bottom-0  left-1/2 -translate-x-1/2">
+        <ClickPrompt2
+          onClick={false}
+          Trigger={profileClicked > 0}
+          direction="down"
+          onScroll={true}
+        >
+          Scroll Down for more
+        </ClickPrompt2>
+      </div>
     </div>
   );
 }

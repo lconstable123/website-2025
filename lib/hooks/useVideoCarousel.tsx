@@ -56,6 +56,7 @@ export const useVideoCarousel = (searchParams: ReadonlyURLSearchParams) => {
     params.set("category", category);
     const newUrl = `${window.location.pathname}?${params.toString()}`;
     router.replace(newUrl, { scroll: false });
+    // window.history.replaceState({}, "", newUrl);
 
     timerRef.current = setTimeout(() => {
       setIsCategoryChanging(false);

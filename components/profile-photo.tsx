@@ -15,21 +15,16 @@ import ScrollListener from "./atomic/scroll-listener";
 import toast from "react-hot-toast";
 import { useScreenContext } from "../lib/context-providers/screen-context";
 import { useActiveSection } from "../lib/context-providers/active-section-context";
+import ClickPrompt2 from "./atomic/click-prompt";
 
 export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
   const controls = useAnimation(); // 👈 useAnimation hook
-  const { isMobile } = useScreenContext();
-  const { scrollRef, scrollToElement } = useActiveSection();
-  // const { buttonRef, pageClicked } = useContentClicked({
-  //   ignoreSelf: false,
-  //   debug: true,
-  // });
+
   const { setProfileClicked, profileClicked } = useActiveSection();
   const handlePress = (e?: any) => {
     e?.preventDefault();
     e?.stopPropagation();
     if (isPressed) {
-      // toast.success("Already clicked!");
       return;
     }
 
