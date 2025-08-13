@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 import { IoGameController } from "react-icons/io5";
 import { PiFrameCornersLight } from "react-icons/pi";
-import { openNewWindow } from "@/lib/utils";
+import { openNewWindow } from "../../../lib/utils/utils";
 export default function EnlargeButton({
   isPlayable = false,
   handlePopover,

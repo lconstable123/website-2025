@@ -20,8 +20,8 @@ export default function AffiliatesScroller({
   pagination = false,
   pages = 1,
   page = 1,
-  affiliateWidth = 30,
-  affiliateHeight = 10,
+  affiliateWidth = 10,
+  affiliateHeight = 4,
 }: ScrollerProps & { direction?: "left" | "right" }) {
   const [affiliates, setAffiliates] = useState<string[]>([]);
   const affiliatesCountPerPage = pagination
@@ -54,9 +54,9 @@ export default function AffiliatesScroller({
   const endX = direction === "right" ? 0 : -totalScrollWidth;
 
   return (
-    <div className="flex relative h-[50px]">
+    <div className="flex relative h-[47px]">
       <motion.div
-        className="flex gap-1 absolute"
+        className="flex gap-[10px] absolute"
         initial={{ x: startX }}
         animate={{ x: endX }}
         transition={{
@@ -69,7 +69,7 @@ export default function AffiliatesScroller({
         {affiliates.map((affiliate, index) => (
           <div
             key={index}
-            className="flex items-center  justify-center rounded-md overflow-hidden bg-gray-600 border-2 border-gray-600"
+            className="transition-all hover:border-yellow-300 flex items-center  justify-center rounded-xl overflow-hidden bg-gray-600 border-2 border-gray-600"
           >
             <Image
               src={affiliate}

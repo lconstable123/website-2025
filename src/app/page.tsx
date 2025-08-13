@@ -50,7 +50,9 @@ export default function Home() {
           <ProfilePhoto mt="mt-12" />
           <Byline mt="mt-12" />
         </div>
+
         <Projects mt="mt-5 sm:mt-20" />
+
         <Clients mt="mt-30 sm:mt-45" />
         <ContactLinks mt="mt-30" />
         <Bg />

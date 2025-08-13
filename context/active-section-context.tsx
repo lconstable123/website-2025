@@ -9,7 +9,7 @@ import React, {
 
 import toast from "react-hot-toast";
 import { SectionNameType } from "../lib/utils/types";
-import { useSearchParams } from "next/navigation";
+
 type ActiveContextProviderProps = {
   children: React.ReactNode;
 };

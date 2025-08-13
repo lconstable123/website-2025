@@ -98,6 +98,7 @@ export default function VideoProject({
           title={title}
           byline={byline}
           blurb={""}
+          square={square}
         >
           <div className=" relative flex flex-col justify-center items-center">
             <div ref={modalTargetRef} id="portalVid"></div>

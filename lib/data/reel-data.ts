@@ -40,6 +40,37 @@ export type projectCard = projectType & {
 
 export const gameData: projectType[] = [
   {
+    title: "lukeconstable.com",
+    client:
+      "I developed a self hosted media streaming player and interface in react.",
+    description:
+      "An app that allows users to search, save, and apply for jobs.",
+    tags: [
+      "React",
+      "Web Design",
+      "Tailwind",
+
+      "Tailwind",
+      "TypeScript",
+      "JavaScript",
+      "Shadcn",
+      "RadixUI",
+      "UI/UX",
+      "Figma",
+      "Next.JS",
+      "Embla-carousel",
+      "Framer.motion",
+    ],
+    imageUrl: "/new-images/thumbs/website_thumb.jpg",
+    link: "https://lukeconstable.com/vids/react-mid.mp4",
+    low: "https://lukeconstable.com/vids/react-low.mp4",
+    byline: "React App",
+    playable: true,
+    playableLink: "https://lukeconstable.com",
+    IsCodeDemo: true,
+    git: "https://github.com/lconstable123/website-2025",
+  },
+  {
     title: "Job Search App",
     client:
       "An app that allows users to search for jobs using a contemporary React-TanStack framework",
@@ -72,36 +103,7 @@ export const gameData: projectType[] = [
     IsCodeDemo: true,
     git: "https://github.com/lconstable123/jobsite2",
   },
-  {
-    title: "lukeconstable.com",
-    client:
-      "I was sick of paying for vimeo so I developed a media streaming player and interface.",
-    description:
-      "An app that allows users to search, save, and apply for jobs.",
-    tags: [
-      "React",
-      "Web Design",
-      "Tailwind",
 
-      "Tailwind",
-      "TypeScript",
-      "JavaScript",
-      "Shadcn",
-      "RadixUI",
-      "UI/UX",
-      "Figma",
-      "Next.JS",
-      "Embla-carousel",
-      "Framer.motion",
-    ],
-    imageUrl: "/new-images/thumbs/website_thumb.jpg",
-    link: "https://lukeconstable.com/vids/react-mid.mp4",
-    low: "https://lukeconstable.com/vids/react-low.mp4",
-    byline: "React App",
-    playable: true,
-    playableLink: "https://lukeconstable.com/vids/react.mp4",
-    IsCodeDemo: true,
-  },
   {
     title: "The Way You Talk",
     client: "Darling James",

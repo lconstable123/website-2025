@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 import { projectCard } from "../../lib/data/reel-data";
 import Image from "next/image";
 import LinkButton from "../atomic/video/github-button";
-import { openNewWindow } from "@/lib/utils";
+import { openNewWindow } from "../../lib/utils/utils";
 
 export default function CodeProject({
   title,
@@ -74,9 +74,9 @@ export default function CodeProject({
         >
           <div className=" relative overflow-hidden h-50 sm:h-63 md:h-85 lg:h-85 rounded-t-lg mb-1 ">
             <LinkButton link={git || ""} />
-            {/* <div className="transition-all opacity-50 duration-800 video-shadow shadow-black/20 absolute z-11 pointer-events-none left-1/2 -translate-x-1/2 -translate-y-1/2 top-2/4 ">
-              <FaRegArrowAltCircleUp className="text-[70pt]" />
-            </div> */}
+            <div className="delay-50 transition-all group-hover:opacity-20 opacity-0 duration-800 video-shadow shadow-black/20 absolute z-11 pointer-events-none left-5 bottom-5 ">
+              <FaRegArrowAltCircleUp className="text-[40pt]" />
+            </div>
             <div className=" absolute z-10 pointer-events-none inset-0 bg-radial from-black/0 to-black/70 via-black/20"></div>
             <div
               onClick={(e) => openNewWindow(playableLink, e)}

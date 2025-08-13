@@ -8,6 +8,7 @@ import { GoXCircleFill } from "react-icons/go";
 import { useAnimationTrigger } from "../../../lib/hooks/animation-hooks";
 import Skills2 from "../../skills";
 import { useScreenContext } from "../../../context/screen-context";
+import { blurb } from "../../../lib/data/data-blurb";
 type LightboxProps = {
   handleClose: () => void;
   skills?: string[];
@@ -16,6 +17,7 @@ type LightboxProps = {
   title?: string;
   byline?: string;
   blurb?: string;
+  square?: boolean;
 };
 export default function ProjectLightbox({
   children,
@@ -24,6 +26,7 @@ export default function ProjectLightbox({
   title = "Project Title",
   // byline = "Project Byline",
   // blurb = "Project Blurb",
+  square = false,
 }: LightboxProps) {
   const [bgControls, handleAnimateClose] = useAnimationTrigger({
     handleClose,
@@ -60,8 +63,14 @@ export default function ProjectLightbox({
             onClick={handleAnimateClose}
           />
         </div>
-        <div className={`scale-150 z-770`}>
-          {children}
+        <div
+          className={` flex flex-col justify-center items-center scale-150 z-770`}
+        >
+          <div
+            className={`border-1 border-gray-700 rounded-xl overflow-hidden ${square ? "w-80 h-87" : "w-auto"}`}
+          >
+            {children}
+          </div>
 
           <div
             className={`flex h-30 items-center justify-center flex-col mt-0 px-1 ${isMobileLandscape ? "sm:px-3" : "sm:px-40"} landscale:px-3   `}
@@ -69,6 +78,7 @@ export default function ProjectLightbox({
             <h2 className="landscape:py-1 pt-10 tracking-wider Text-secondary font-semibold text-lg">
               {title}
             </h2>
+            {/* <p>{blurb}</p> */}
 
             <div className="scale-70">
               <Skills2 format="list" selectedSkills={selectedSkills} />
