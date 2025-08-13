@@ -1,9 +1,11 @@
 import { Toaster } from "react-hot-toast";
 
-import ActiveSectionContextProvider from "../../context/active-section-context";
 import "./globals.css";
 
 import { Montserrat, Outfit, Roboto } from "next/font/google";
+import ScreenContextProvider from "../../lib/context-providers/screen-context";
+import ActiveSectionContextProvider from "../../lib/context-providers/active-section-context";
+import SkillsetContextProvider from "../../lib/context-providers/skillset-context";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -23,10 +25,6 @@ const roboto = Roboto({
   display: "swap",
 });
 <link rel="preload" href="/new-images/bg/BG15.jpg" as="image" />;
-import AudioContextProvider from "../../context/screen-context";
-
-import SkillsetContextProvider from "../../context/skillset-context";
-import ScreenContextProvider from "../../context/screen-context";
 
 // const inter = Inter({ subsets: ["latin"] });
 

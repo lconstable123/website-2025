@@ -6,7 +6,6 @@ import IntroCardTemplate from "./sub-components/intro-card-template";
 
 import Rings from "./atomic/profile/rings";
 
-import { useActiveSection } from "../context/active-section-context";
 import ClickPrompt from "./sub-components/click-prompt";
 import PhotoGradient from "./atomic/profile/photo-gradient";
 import BgSpotlight from "./atomic/profile/bg-spotlight";
@@ -14,7 +13,8 @@ import BgSpotlight from "./atomic/profile/bg-spotlight";
 import ClickListener from "./atomic/click-listener";
 import ScrollListener from "./atomic/scroll-listener";
 import toast from "react-hot-toast";
-import { useScreenContext } from "../context/screen-context";
+import { useScreenContext } from "../lib/context-providers/screen-context";
+import { useActiveSection } from "../lib/context-providers/active-section-context";
 
 export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
   const controls = useAnimation(); // 👈 useAnimation hook
@@ -90,28 +90,28 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
         onMouseDown={(e) => handlePress(e)}
         className={`ease-in-out -z-4`}
       >
-        <Suspense fallback={<div>Loading...</div>}>
-          <IntroCardTemplate
-            rounded="rounded-full"
-            secondaryRounded="rounded-full
+        {/* <Suspense fallback={<div>Loading...</div>}> */}
+        <IntroCardTemplate
+          rounded="rounded-full"
+          secondaryRounded="rounded-full
           "
-            outline={true}
-          >
-            <div className="cursor-pointer  bg-amber-200">
-              <Image
-                src="/new-images/profile2.jpg"
-                alt="profile pic"
-                width={400}
-                height={400}
-                quality={95}
-                priority={true}
-                className="h-50 w-50 sm:h-80 sm:w-80 z-30 object-cover shadow-xl pointer-events-none"
-              />
-            </div>
+          outline={true}
+        >
+          <div className="cursor-pointer  bg-amber-200">
+            <Image
+              src="/new-images/profile2.jpg"
+              alt="profile pic"
+              width={400}
+              height={400}
+              quality={95}
+              priority={true}
+              className="h-50 w-50 sm:h-80 sm:w-80 z-30 object-cover shadow-xl pointer-events-none"
+            />
+          </div>
 
-            <PhotoGradient />
-          </IntroCardTemplate>
-        </Suspense>
+          <PhotoGradient />
+        </IntroCardTemplate>
+        {/* </Suspense> */}
       </motion.div>
       <BgSpotlight />
 

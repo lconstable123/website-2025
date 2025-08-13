@@ -1,10 +1,12 @@
 import { RefObject, useEffect, useState } from "react";
 
 import toast from "react-hot-toast";
-import { useScreenContext } from "../../context/screen-context";
+
 import { useOptimizedVideoSource } from "./browser-hooks";
-import { useSkillSetContext } from "../../context/skillset-context";
+
 import { inView } from "framer-motion";
+import { useSkillSetContext } from "../context-providers/skillset-context";
+import { useScreenContext } from "../context-providers/screen-context";
 
 export const useNativeVideoPlayer = (
   //-------------------------------------------------------------external states

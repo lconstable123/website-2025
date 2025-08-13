@@ -12,7 +12,9 @@ import Loader from "../../components/sub-components/loader";
 import Byline from "../../components/byline";
 import Clients from "../../components/clients";
 import Bg from "../../components/sub-components/bg";
-import { useSkillSetContext } from "../../context/skillset-context";
+
+import Experience from "../../components/experience";
+import { useSkillSetContext } from "../../lib/context-providers/skillset-context";
 
 export default function Home() {
   const { Videodata, selectedVideoData, selectedSkillSet, isCategoryChanging } =
@@ -34,7 +36,7 @@ export default function Home() {
     <main className="  flex flex-col items-center   ">
       <Suspense
         fallback={
-          <div className="fixed top-50 left-1/2">
+          <div className="fixed top-1/2 sm:top-100 left-1/2 scale-120">
             <Loader isLoading={true} isMobile={false} />
           </div>
         }
@@ -54,6 +56,7 @@ export default function Home() {
         <Projects mt="mt-5 sm:mt-20" />
 
         <Clients mt="mt-30 sm:mt-45" />
+
         <ContactLinks mt="mt-30" />
         <Bg />
       </Suspense>

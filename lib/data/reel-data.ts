@@ -8,8 +8,8 @@ import { TbDeviceGamepad } from "react-icons/tb";
 
 export const categories = [
   // { title: "Reel", icon: React.createElement(FaCode) },
-  { title: "Interactivity", icon: React.createElement(FaCode) },
-  // { title: "Games", icon: React.createElement(TbDeviceGamepad) },
+  { title: "Web", icon: React.createElement(FaCode) },
+  { title: "Interactivity", icon: React.createElement(TbDeviceGamepad) },
   // { title: "Motion", icon: React.createElement(TbKeyframes) },
   { title: "Direction", icon: React.createElement(BiMovie) },
   { title: "Experiments", icon: React.createElement(AiTwotoneExperiment) },
@@ -29,6 +29,7 @@ type projectType = {
   square?: boolean;
   IsCodeDemo?: boolean;
   git?: string;
+  clickthough?: boolean;
 };
 
 export type projectCard = projectType & {
@@ -40,71 +41,6 @@ export type projectCard = projectType & {
 
 export const gameData: projectType[] = [
   {
-    title: "lukeconstable.com",
-    client:
-      "I developed a self hosted media streaming player and interface in react.",
-    description:
-      "An app that allows users to search, save, and apply for jobs.",
-    tags: [
-      "React",
-      "Web Design",
-      "Tailwind",
-
-      "Tailwind",
-      "TypeScript",
-      "JavaScript",
-      "Shadcn",
-      "RadixUI",
-      "UI/UX",
-      "Figma",
-      "Next.JS",
-      "Embla-carousel",
-      "Framer.motion",
-    ],
-    imageUrl: "/new-images/thumbs/website_thumb.jpg",
-    link: "https://lukeconstable.com/vids/react-mid.mp4",
-    low: "https://lukeconstable.com/vids/react-low.mp4",
-    byline: "React App",
-    playable: true,
-    playableLink: "https://lukeconstable.com",
-    IsCodeDemo: true,
-    git: "https://github.com/lconstable123/website-2025",
-  },
-  {
-    title: "Job Search App",
-    client:
-      "An app that allows users to search for jobs using a contemporary React-TanStack framework",
-    description:
-      "An app that allows users to search, save, and apply for jobs.",
-    tags: [
-      "React",
-
-      "Tailwind",
-      "Vite",
-      "TanStack",
-      "Tailwind",
-      "TypeScript",
-      "JavaScript",
-      "Shadcn",
-      "RadixUI",
-      "UI/UX",
-      "Embla-carousel",
-      "Framer.motion",
-      "Vercel",
-      "Web Design",
-    ],
-    imageUrl: "/new-images/thumbs/react_thumb.jpg",
-    link: "https://lukeconstable.com/vids/Jobsite-mid.mp4",
-    // low: "https://lukeconstable.com/vids/Jobsite-mid.mp4",
-    byline: "React App",
-    playable: true,
-
-    playableLink: "https://jobsite2.vercel.app/",
-    IsCodeDemo: true,
-    git: "https://github.com/lconstable123/jobsite2",
-  },
-
-  {
     title: "The Way You Talk",
     client: "Darling James",
     description:
@@ -112,14 +48,15 @@ export const gameData: projectType[] = [
     tags: [
       "Unreal Engine",
       "Houdini",
-      "Unreal C++",
-      "Unreal Blueprints",
+      "C++",
+
       "Art Direction",
+
       "Blender",
-      "VR",
+
       "Cinematography",
       "VEX",
-      "Motion Capture",
+
       "Project Management",
       "3d Assets",
     ],
@@ -142,6 +79,7 @@ export const gameData: projectType[] = [
       "Art Direction",
       "3d Assets",
       "UI/UX",
+      "Project Management",
     ],
     imageUrl: "/new-images/thumbs/tb_thumb.jpg",
     link: "https://lukeconstable.com/vids/Tb-low.mp4",
@@ -151,19 +89,7 @@ export const gameData: projectType[] = [
     playableLink:
       "https://play.unity.com/en/games/53ff6141-9b43-42f6-b07c-daba626c4c4a/the-time-bandit-beta-v12",
   },
-  {
-    title: "Plans for the Planet",
-    client: "Olaf Breuning | National Gallery of Victoria",
-    description:
-      "I worked on the design, animation and UI for this permanent exhibition at NGV kids.",
-    tags: ["UI/UX", "2d Motion Design", "Immersive Design", "Learning Design"],
-    imageUrl: "/new-images/thumbs/plans_thumb.png",
-    link: "https://lukeconstable.com/vids/Plans-low.mp4",
-    low: "https://lukeconstable.com/vids/Plans-mobile.mp4",
 
-    byline: "Interactive Installation (2025)",
-    playable: false,
-  },
   {
     title: "Studio",
     client: "Fikaris | Melbourne International Games Week",
@@ -172,8 +98,7 @@ export const gameData: projectType[] = [
     tags: [
       "Unreal Engine",
       "C++",
-      "Unreal Blueprints",
-      "Unreal C++",
+
       "Project Management",
       "Game Design",
       "3d Assets",
@@ -194,7 +119,7 @@ export const gameData: projectType[] = [
       "Unreal Engine",
       "Game Design",
       "3d Assets",
-      "VR",
+
       "Blender",
       "Art Direction",
       "Substance",
@@ -217,12 +142,59 @@ export const gameData: projectType[] = [
       "Blender",
       "Art Direction",
       "Substance",
-      "Motion Capture",
     ],
     imageUrl: "/new-images/thumbs/pillars_thumb.jpg",
     link: "https://lukeconstable.com/vids/Pillars-low.mp4",
     low: "https://lukeconstable.com/vids/Pillars-mobile.mp4",
     byline: "Virtual Production (2023)",
+    playable: false,
+  },
+];
+
+/////////////////////////////////// Web Data
+
+export const WebData: projectType[] = [
+  {
+    title: "lukeconstable.com",
+    client:
+      "I developed a self hosted media streaming player and interface in react to show off my work, my web experience, and to stop paying for vimeo",
+    description:
+      "An app that allows users to search, save, and apply for jobs.",
+    tags: [
+      "React",
+      "Web Design",
+      "Tailwind",
+
+      "Tailwind",
+      "TypeScript",
+
+      "UI/UX",
+      "Figma",
+      "Next.JS",
+
+      "Framer.motion",
+    ],
+    imageUrl: "/new-images/thumbs/website_thumb.jpg",
+    link: "https://lukeconstable.com/vids/react-mid.mp4",
+    low: "https://lukeconstable.com/vids/react-low.mp4",
+    byline: "React App",
+    playable: true,
+    playableLink: "https://lukeconstable.com",
+    IsCodeDemo: true,
+    git: "https://github.com/lconstable123/website-2025",
+    clickthough: false,
+  },
+  {
+    title: "Plans for the Planet",
+    client: "Olaf Breuning | National Gallery of Victoria",
+    description:
+      "I worked on the design, animation and UI for this permanent exhibition at NGV kids.",
+    tags: ["UI/UX", "2d Motion Design", "Immersive Design", "Learning Design"],
+    imageUrl: "/new-images/thumbs/plans_thumb.png",
+    link: "https://lukeconstable.com/vids/Plans-low.mp4",
+    low: "https://lukeconstable.com/vids/Plans-mobile.mp4",
+
+    byline: "Interactive Installation (2025)",
     playable: false,
   },
   {
@@ -237,15 +209,10 @@ export const gameData: projectType[] = [
     byline: "Interactive Installation (2023)",
     playable: false,
   },
-];
-
-/////////////////////////////////// Web Data
-
-export const WebData: projectType[] = [
   {
     title: "Job Search App",
     client:
-      "An app that allows users to search, save, and apply for jobs, using a contemporary React-TanStack framework",
+      "An app that allows users to search for jobs using a contemporary React-TanStack framework",
     description:
       "An app that allows users to search, save, and apply for jobs.",
     tags: [
@@ -253,16 +220,14 @@ export const WebData: projectType[] = [
 
       "Tailwind",
       "Vite",
-      "TanStack",
+
       "Tailwind",
       "TypeScript",
-      "JavaScript",
-      "Shadcn",
-      "RadixUI",
+
       "UI/UX",
-      "Embla-carousel",
+
       "Framer.motion",
-      "Vercel",
+
       "Web Design",
     ],
     imageUrl: "/new-images/thumbs/react_thumb.jpg",
@@ -270,35 +235,10 @@ export const WebData: projectType[] = [
     // low: "https://lukeconstable.com/vids/Jobsite-mid.mp4",
     byline: "React App",
     playable: true,
-    playableLink: "https://lukeconstable.com/vids/react.mp4",
+
+    playableLink: "https://jobsite2.vercel.app/",
     IsCodeDemo: true,
-  },
-  {
-    title: "lukeconstable.com",
-    client:
-      "Made using next.js, developed a bespoke media streaming player from the ground up",
-    description:
-      "An app that allows users to search, save, and apply for jobs.",
-    tags: [
-      "React",
-      "Web Design",
-      "Tailwind",
-      "Next.JS",
-      "Tailwind",
-      "TypeScript",
-      "JavaScript",
-      "Shadcn",
-      "RadixUI",
-      "Embla-carousel",
-      "Framer.motion",
-    ],
-    imageUrl: "/new-images/thumbs/react_thumb.jpg",
-    link: "https://lukeconstable.com/vids/react-mid.mp4",
-    low: "https://lukeconstable.com/vids/react-low.mp4",
-    byline: "React App",
-    playable: true,
-    playableLink: "https://lukeconstable.com/vids/react.mp4",
-    IsCodeDemo: true,
+    git: "https://github.com/lconstable123/jobsite2",
   },
 ];
 
@@ -314,7 +254,6 @@ export const LoFiData: projectType[] = [
       "3d Motion Design",
       "Immersive Design",
       "Learning Design",
-      "Full Stack Development",
 
       "2d Motion Design",
       "Web Design",
@@ -361,7 +300,7 @@ export const LoFiData: projectType[] = [
       "2d Motion Design",
       "Cinematography",
       "Post-Production",
-      "Lighting",
+
       "3d Motion Design",
       "Art Direction",
     ],
@@ -393,6 +332,83 @@ export const LoFiData: projectType[] = [
     playable: false,
   },
   {
+    title: "Kaws: Companionship",
+    client: "National Gallery of Victoria | Kaws",
+    description:
+      "An app that allows users to search, save, and apply for jobs.",
+    tags: [
+      "Cinematography",
+      "Post-Production",
+      "Editing",
+      "Art Direction",
+      "Lighting",
+    ],
+    imageUrl: "/new-images/thumbs/companionship_thumb.jpg",
+    link: "https://lukeconstable.com/vids/Kaws-social-low.mp4",
+    low: "https://lukeconstable.com/vids/Kaws-social-mobile.mp4",
+    byline: "Marketing content",
+    playable: false,
+    square: true,
+  },
+  {
+    title: "God's Graffiti",
+    client: "Darling James",
+    description:
+      "An app that allows users to search, save, and apply for jobs.",
+    tags: [
+      "Cinematography",
+      "Post-Production",
+      "Editing",
+      "Art Direction",
+      "Lighting",
+      "Project Management",
+    ],
+    imageUrl: "/new-images/thumbs/god_thumb.jpg",
+    link: "https://lukeconstable.com/vids/Gg-low.mp4",
+    low: "https://lukeconstable.com/vids/Gg-mobile.mp4",
+    byline: "Music Video (2017)",
+    playable: false,
+  },
+  {
+    title: "Dali Alive!",
+    client: "The LUME | Grande Experiences",
+    description:
+      "I adapted visual artist Matt Blue's graphic novel into 3d adventure game, as part of an exhibition residency at Backwoods Gallery, Fitzroy.",
+    tags: [
+      "Immersive Design",
+      "2d Motion Design",
+      "3d Motion Design",
+      "Editing",
+      "Post-Production",
+      "After Effects",
+    ],
+    imageUrl: "/new-images/thumbs/dali_thumb2.jpg",
+    link: "https://lukeconstable.com/vids/Dali-low.mp4",
+    low: "https://lukeconstable.com/vids/Dali-mobile.mp4",
+    byline: "Immersive Experience (2025)",
+    playable: false,
+  },
+  {
+    title: "Letting You In",
+    client: "Mid Ayr",
+    description:
+      "I developed bespoke shaders and a custom wireless controller to augment street artist Fikaris's decisive visual style into an interactive experience. It had a residency at Melbourne city library during Melbourne International Games week.",
+    tags: [
+      "Cinematography",
+      "Art Direction",
+      "Editing",
+      "Project Management",
+      "Post-Production",
+      "Fabrication",
+      "Lighting",
+    ],
+    imageUrl: "/new-images/thumbs/lyi_thumb.jpg",
+    link: "https://lukeconstable.com/vids/Lyi-low.mp4",
+    low: "https://lukeconstable.com/vids/Lyi-mobile.mp4",
+    byline: "Music Video (2019)",
+    playable: false,
+  },
+  {
     title: "Burger Urge Campaigns",
     client: "Burger Urge",
     description:
@@ -418,6 +434,32 @@ export const LoFiData: projectType[] = [
     byline: "Motion Design",
     playable: false,
     square: true,
+  },
+  {
+    title: "Why Don't We Do Something",
+    client: "Hey Geronimo",
+    description:
+      "I developed bespoke shaders and a custom wireless controller to augment street artist Fikaris's decisive visual style into an interactive experience. It had a residency at Melbourne city library during Melbourne International Games week.",
+    tags: [
+      "Editing",
+
+      "2d Motion Design",
+      "Cinematography",
+      "Post-Production",
+      "Lighting",
+      "3d Motion Design",
+      "Art Direction",
+      "Fabrication",
+      "After Effects",
+      "Project Management",
+      "Post-Production",
+      "Web Design",
+    ],
+    imageUrl: "/new-images/thumbs/pxels2_thumbs.jpg",
+    link: "https://lukeconstable.com/vids/Wdwds-low.mp4",
+    low: "https://lukeconstable.com/vids/Wdwds-mobile.mp4",
+    byline: "Viral Video",
+    playable: false,
   },
   {
     title: "Event Screens",
@@ -476,25 +518,7 @@ export const LoFiData: projectType[] = [
     byline: "Immersive Experience (2025)",
     playable: false,
   },
-  {
-    title: "Dali Alive!",
-    client: "The LUME | Grande Experiences",
-    description:
-      "I adapted visual artist Matt Blue's graphic novel into 3d adventure game, as part of an exhibition residency at Backwoods Gallery, Fitzroy.",
-    tags: [
-      "Immersive Design",
-      "2d Motion Design",
-      "3d Motion Design",
-      "Editing",
-      "Post-Production",
-      "After Effects",
-    ],
-    imageUrl: "/new-images/thumbs/dali_thumb2.jpg",
-    link: "https://lukeconstable.com/vids/Dali-low.mp4",
-    low: "https://lukeconstable.com/vids/Dali-mobile.mp4",
-    byline: "Immersive Experience (2025)",
-    playable: false,
-  },
+
   {
     title: "Let's Build: The Internet",
     client: "ClickView",
@@ -521,65 +545,6 @@ export const LoFiData: projectType[] = [
 /////////////////////////////////// Animation Data
 
 export const DirectorData: projectType[] = [
-  {
-    title: "Kaws: Companionship",
-    client: "National Gallery of Victoria | Kaws",
-    description:
-      "An app that allows users to search, save, and apply for jobs.",
-    tags: [
-      "Cinematography",
-      "Post-Production",
-      "Editing",
-      "Art Direction",
-      "Lighting",
-    ],
-    imageUrl: "/new-images/thumbs/companionship_thumb.jpg",
-    link: "https://lukeconstable.com/vids/Kaws-social-low.mp4",
-    low: "https://lukeconstable.com/vids/Kaws-social-mobile.mp4",
-    byline: "Marketing content",
-    playable: false,
-    square: true,
-  },
-  {
-    title: "God's Graffiti",
-    client: "Darling James",
-    description:
-      "An app that allows users to search, save, and apply for jobs.",
-    tags: [
-      "Cinematography",
-      "Post-Production",
-      "Editing",
-      "Art Direction",
-      "Lighting",
-      "Project Management",
-    ],
-    imageUrl: "/new-images/thumbs/god_thumb.jpg",
-    link: "https://lukeconstable.com/vids/Gg-low.mp4",
-    low: "https://lukeconstable.com/vids/Gg-mobile.mp4",
-    byline: "Music Video (2017)",
-    playable: false,
-  },
-  {
-    title: "Letting You In",
-    client: "Mid Ayr",
-    description:
-      "I developed bespoke shaders and a custom wireless controller to augment street artist Fikaris's decisive visual style into an interactive experience. It had a residency at Melbourne city library during Melbourne International Games week.",
-    tags: [
-      "Cinematography",
-      "Art Direction",
-      "Editing",
-      "Project Management",
-      "Post-Production",
-      "Fabrication",
-      "Lighting",
-      "Puppetry",
-    ],
-    imageUrl: "/new-images/thumbs/lyi_thumb.jpg",
-    link: "https://lukeconstable.com/vids/Lyi-low.mp4",
-    low: "https://lukeconstable.com/vids/Lyi-mobile.mp4",
-    byline: "Music Video (2019)",
-    playable: false,
-  },
   {
     title: "Beautiful and Bittersweet",
     client: "Mia Rodriguez",
@@ -664,7 +629,7 @@ export const ExperimentData: projectType[] = [
     title: "Cell Diffusion",
     client: "created a cell diffusion solver",
     description: "",
-    tags: ["Houdini", "3D Motion Design", "VEX", "Simulations"],
+    tags: ["Houdini", "3d Motion Design", "VEX", "Simulations"],
     imageUrl: "/new-images/thumbs/29-4-diffusion[square]_thumb.jpg",
     link: "https://lukeconstable.com/vids/VA/29-4-diffusion[square].mp4",
     low: "https://lukeconstable.com/vids/VA/mobile/29-4-diffusion[square].mp4",
@@ -676,7 +641,7 @@ export const ExperimentData: projectType[] = [
     title: "Study in spiral",
     client: "created a procedural tool that creates a cute ball animation",
     description: "",
-    tags: ["Houdini", "3D Motion Design", "VEX", "Simulations"],
+    tags: ["Houdini", "3d Motion Design", "VEX", "Simulations"],
     imageUrl: "/new-images/thumbs/2_thumb.jpg",
     link: "https://lukeconstable.com/vids/VA/2.mp4",
     low: "https://lukeconstable.com/vids/VA/mobile/2.mp4",
@@ -689,7 +654,7 @@ export const ExperimentData: projectType[] = [
     client: "Procedual animation from spine tool built in VEX",
     description:
       "An app that allows users to search, save, and apply for jobs.",
-    tags: ["Houdini", "VEX"],
+    tags: ["Houdini", "VEX", "3d Motion Design"],
     imageUrl: "/new-images/thumbs/flippies_thumb.jpg",
     link: "https://lukeconstable.com/vids/VA/flippies_bts[square].mp4",
     low: "https://lukeconstable.com/vids/VA/mobile/flippies_bts[square].mp4",
@@ -718,7 +683,7 @@ export const ExperimentData: projectType[] = [
     client: "Just a bit of fun with vellum simulation",
     description:
       "An app that allows users to search, save, and apply for jobs.",
-    tags: ["Houdini", "VEX", "Blender", "3D Motion Design"],
+    tags: ["Houdini", "VEX", "Blender", "3d Motion Design"],
     imageUrl: "/new-images/thumbs/floppy_thumb.jpg",
     link: "https://lukeconstable.com/vids/VA/30-4-4.mp4",
     low: "https://lukeconstable.com/vids/VA/mobile/30-4-4.mp4",
@@ -731,7 +696,7 @@ export const ExperimentData: projectType[] = [
     client: "Procedural Geometry and a bespoke particle solver",
     description:
       "An app that allows users to search, save, and apply for jobs.",
-    tags: ["Houdini", "VEX", "Blender", "Simulations", "3D Motion Design"],
+    tags: ["Houdini", "VEX", "Blender", "Simulations", "3d Motion Design"],
     imageUrl: "/new-images/thumbs/30-2-24_thumb.jpg",
     link: "https://lukeconstable.com/vids/VA/12_2_24_glass_square.mp4",
     low: "https://lukeconstable.com/vids/VA/mobile/12_2_24_glass_square.mp4",
@@ -744,7 +709,7 @@ export const ExperimentData: projectType[] = [
     title: "Gross",
     client: "Procedural Shaders, simulated.  A study in gross.",
     description: "",
-    tags: ["Blender", "3D Motion Design", "Simulations"],
+    tags: ["Blender", "3d Motion Design", "Simulations"],
     imageUrl: "/new-images/thumbs/24-2-24_thumb.jpg",
     link: "https://lukeconstable.com/vids/VA/24-2-24.mp4",
     low: "https://lukeconstable.com/vids/VA/mobile/24-2-24.mp4",
@@ -756,7 +721,7 @@ export const ExperimentData: projectType[] = [
     title: "Advection",
     client: "Pushing particles around with a gas field.",
     description: "",
-    tags: ["Blender", "3D Motion Design", "Simulations"],
+    tags: ["Blender", "3d Motion Design", "Simulations"],
     imageUrl: "/new-images/thumbs/20-2_thumb.jpg",
     link: "https://lukeconstable.com/vids/VA/20-2.mp4",
     low: "https://lukeconstable.com/vids/VA/mobile/20-2.mp4",
@@ -768,7 +733,7 @@ export const ExperimentData: projectType[] = [
     title: "Performance",
     client: "Mocap and particles",
     description: "",
-    tags: ["Houdini", "3D Motion Design", "Simulations"],
+    tags: ["Houdini", "3d Motion Design", "Simulations"],
     imageUrl: "/new-images/thumbs/24-3_thumb.jpg",
     link: "https://lukeconstable.com/vids/VA/24_3.mp4",
     low: "https://lukeconstable.com/vids/mobile/VA/24_3.mp4",
@@ -780,7 +745,7 @@ export const ExperimentData: projectType[] = [
     title: "Pyro",
     client: "Animation and Pyro",
     description: "",
-    tags: ["Blender", "3D Motion Design", "Simulations"],
+    tags: ["Blender", "3d Motion Design", "Simulations"],
     imageUrl: "/new-images/thumbs/29-4-2_thumb.jpg",
     link: "https://lukeconstable.com/vids/VA/29-4-2.mp4",
     low: "https://lukeconstable.com/vids/VA/mobile/29-4-2.mp4",
@@ -792,7 +757,7 @@ export const ExperimentData: projectType[] = [
     title: "Cloth growth",
     client: "Cloth Study",
     description: "",
-    tags: ["Houdini", "3D Motion Design", "Simulations"],
+    tags: ["Houdini", "3d Motion Design", "Simulations"],
     imageUrl: "/new-images/thumbs/12-10_2_1_thumb.jpg",
     link: "https://lukeconstable.com/vids/VA/12-10_2_1.mp4",
     low: "https://lukeconstable.com/vids/VA/mobile/12-10_2_1.mp4",
@@ -804,7 +769,7 @@ export const ExperimentData: projectType[] = [
     title: "AI",
     client: "Feeding Stable diffusion into Blender, and playing with particles",
     description: "",
-    tags: ["Blender", "Python", "3D Motion Design", "Simulations"],
+    tags: ["Blender", "Python", "3d Motion Design", "Simulations"],
     imageUrl: "/new-images/thumbs/4-12_thumb.jpg",
     link: "https://lukeconstable.com/vids/VA/4-12.mp4",
     low: "https://lukeconstable.com/vids/VA/mobile/4-12.mp4",
@@ -816,7 +781,7 @@ export const ExperimentData: projectType[] = [
     title: "Flap",
     client: "More fooling around with animation and vellum",
     description: "",
-    tags: ["Blender", "Python", "3D Motion Design", "Simulations"],
+    tags: ["Blender", "Python", "3d Motion Design", "Simulations"],
     imageUrl: "/new-images/thumbs/4-5_thumb.jpg",
     link: "https://lukeconstable.com/vids/VA/4-5.mp4",
     low: "https://lukeconstable.com/vids/VA/mobile/4-5.mp4",

@@ -1,5 +1,5 @@
 import React from "react";
-import { useScreenContext } from "../../context/screen-context";
+import { useScreenContext } from "../../lib/context-providers/screen-context";
 
 type cardDetailsProps = {
   title: string;

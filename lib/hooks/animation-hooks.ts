@@ -1,8 +1,9 @@
 import { useAnimation } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { useActiveSection } from "../../context/active-section-context";
+
 import toast from "react-hot-toast";
-import { useSkillSetContext } from "../../context/skillset-context";
+import { useSkillSetContext } from "../context-providers/skillset-context";
+import { useActiveSection } from "../context-providers/active-section-context";
 
 export const useCarouseAnimation = () => {
   const { isCategoryChanging } = useSkillSetContext();

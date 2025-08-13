@@ -1,14 +1,16 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { useSkillSetContext } from "../../context/skillset-context";
+
 import { useDoubleIntersectionObserver } from "./double-intersection-observer";
 import { useCarousel } from "./hooks";
 import { Category } from "../utils/types";
-import { useScreenContext } from "../../context/screen-context";
-import toast from "react-hot-toast";
-import { useRouter, useSearchParams } from "next/navigation";
 
-export const useVideoCarousel = () => {
+import toast from "react-hot-toast";
+import { ReadonlyURLSearchParams, useRouter } from "next/navigation";
+import { useScreenContext } from "../context-providers/screen-context";
+import { useSkillSetContext } from "../context-providers/skillset-context";
+
+export const useVideoCarousel = (searchParams: ReadonlyURLSearchParams) => {
   //------------------------------------------ derived states
 
   const { isMobileLandscape } = useScreenContext();
@@ -23,7 +25,10 @@ export const useVideoCarousel = () => {
     isInEyeline,
     setIsInEyeline,
     Videodata,
+
     setSelectedSkillSet,
+    setSelectedUICategory,
+    selectedUICategory,
     selectedVideoData,
     selectedSkillSet,
     isCategoryChanging,
@@ -33,12 +38,10 @@ export const useVideoCarousel = () => {
   //-------------------------------------------internal states
   const router = useRouter();
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const [selectedUICategory, setSelectedUICategory] =
-    useState<Category>(selectedSkillSet);
+
   const [navOffsetTop, setNavOffsetTop] = useState(0);
   const carouselSectionRef = useRef<HTMLDivElement>(null);
 
-  const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams.toString());
   //-------------------------------------------Change category, first animation, then data
 
@@ -75,6 +78,10 @@ export const useVideoCarousel = () => {
       setNavOffsetTop(offset);
     }
   }, [isInViewShort]);
+
+  // useEffect(() => {
+  //   setSelectedUICategory(selectedSkillSet);
+  // }, []);
 
   return {
     ref,

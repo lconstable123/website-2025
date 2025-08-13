@@ -9,7 +9,7 @@ import PauseButton from "../atomic/video/pause-button";
 import { useEffect, useState } from "react";
 import { useAnimationTrigger } from "../../lib/hooks/animation-hooks";
 import Loader from "./loader";
-import { useSkillSetContext } from "../../context/skillset-context";
+import { useSkillSetContext } from "../../lib/context-providers/skillset-context";
 
 export default function NativeVideoPlayer({
   isInView = true,
@@ -174,7 +174,7 @@ export default function NativeVideoPlayer({
         controls={false}
         // playsInline={isMobile}
         muted={isLocallyMuted || isMobile}
-        autoPlay={isMobile}
+        autoPlay={false}
         onClick={handleClick}
         disablePictureInPicture
         onLoadedData={() => setVideoIsLoading(false)}

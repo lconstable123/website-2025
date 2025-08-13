@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useActiveSection } from "../../context/active-section-context";
+
 import { SectionNameType } from "../utils/types";
 import toast, { Toast } from "react-hot-toast";
+import { useActiveSection } from "../context-providers/active-section-context";
 
 export const useDoubleIntersectionObserver = (
   threshold1: number,

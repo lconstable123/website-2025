@@ -77,7 +77,7 @@ export default function Navigator({
           </div>
         </div>
       </nav>
-      <ClickPrompt2 Trigger={inView} ref={navRef}>
+      <ClickPrompt2 Trigger={inView} ref={navRef} direction="up">
         explore categories
       </ClickPrompt2>
     </div>

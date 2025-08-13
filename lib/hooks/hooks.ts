@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useActiveSection } from "../../context/active-section-context";
+
 import { useInView } from "react-intersection-observer";
 import { SectionNameType } from "../utils/types";
 import toast from "react-hot-toast";
 import { CarouselApi } from "@/components/ui/carousel";
-import { useSkillSetContext } from "../../context/skillset-context";
+import { useActiveSection } from "../context-providers/active-section-context";
+import { useSkillSetContext } from "../context-providers/skillset-context";
 
 export function useSectionInView(
   SectionName: SectionNameType,

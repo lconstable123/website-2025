@@ -3,8 +3,9 @@
 import React from "react";
 import { motion } from "framer-motion";
 import IntroCardTemplate from "./sub-components/intro-card-template";
-import { useActiveSection } from "../context/active-section-context";
+
 import { useInitialAnimation } from "../lib/hooks/animation-hooks";
+import { useActiveSection } from "../lib/context-providers/active-section-context";
 export default function Byline({ mt = "25" }: { mt?: string }) {
   const { profileClicked } = useActiveSection();
   const { controls } = useInitialAnimation(0.2, 1, profileClicked > 0);

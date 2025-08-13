@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, { Suspense } from "react";
 
 import { RefinedallSkills } from "../lib/data/skills-data";
 
@@ -21,10 +21,10 @@ import { useVideoCarousel } from "../lib/hooks/useVideoCarousel";
 import Navigator from "./atomic/navigator";
 import Skills2 from "./skills";
 import ClickPrompt2 from "./atomic/click-prompt";
-import { useSkillSetContext } from "../context/skillset-context";
-import { useScreenContext } from "../context/screen-context";
-import { useActiveSection } from "../context/active-section-context";
-import Loader from "./sub-components/loader";
+
+import { useSearchParams } from "next/navigation";
+import { useSkillSetContext } from "../lib/context-providers/skillset-context";
+import { useActiveSection } from "../lib/context-providers/active-section-context";
 
 export default function Projects({
   title,
@@ -33,6 +33,10 @@ export default function Projects({
   title?: string;
   mt?: string;
 }) {
+  const searchParams = useSearchParams();
+  // const searchParams = new URL(window.location.search);
+
+  // const id = searchParams.get("id");
   const {
     ref,
     isInViewDeep,
@@ -45,12 +49,12 @@ export default function Projects({
     carouselSectionRef,
     navOffsetTop,
     selectedUICategory,
-  } = useVideoCarousel();
+  } = useVideoCarousel(searchParams);
 
-  const { Videodata, selectedVideoData, selectedSkillSet, isCategoryChanging } =
-    useSkillSetContext();
+  const { Videodata, selectedVideoData } = useSkillSetContext();
 
   const { scrollRef } = useActiveSection();
+  const isLongEnough = Videodata?.length || 0 > 3;
   return (
     <div>
       <motion.section
@@ -63,71 +67,71 @@ export default function Projects({
         className="  mt-40 sm:mt-52 large-width-2 relative flex flex-col scroll-mt-28  border-white/20"
         ref={ref}
       >
-        {/* <CarouselNav
-          yOffset={navOffsetTop}
-          scrollNext={scrollNext}
-          scrollPrev={scrollPrev}
-          isInEyeline={isInViewDeep}
-        /> */}
+        {!isLongEnough && (
+          <CarouselNav
+            yOffset={navOffsetTop}
+            scrollNext={scrollNext}
+            scrollPrev={scrollPrev}
+            isInEyeline={isInViewDeep}
+          />
+        )}
 
         <IntroCardTemplate>
-          <Suspense fallback={<Loader isLoading={true} isMobile={false} />}>
-            <Navigator
-              selectedCategory={selectedUICategory}
-              handleSelectCategory={handleSelectCategory}
-              inView={isInViewShort}
-            />
-            <Carousel
-              className={`pb-0 mb-0 h-75 sm:h-[370px] border-0 md:h-[453px] z-50 overflow-hidden`}
-              setApi={setApi}
-              opts={{ align: "center", loop: true }}
-              ref={carouselSectionRef}
-            >
-              <div ref={scrollRef}>
-                <CarouselContent>
-                  {Videodata?.map((project, index) => (
-                    <React.Fragment key={project.title}>
-                      <CarouselItem
-                        className={clsx(
-                          "  flex justify-center h-full transition-[flex] duration-100 ease-in-out",
-                          Videodata.length > 3
-                            ? "flex-[0_0_90%]  md:flex-[0_0_86%] lg:flex-[0_0_76%] 2xl:flex-[0_0_56%]"
-                            : "flex-[0_0_90%] sm:flex-[0_0_70%] md:flex-[0_0_50%] lg:flex-[0_0_56%]"
-                        )}
-                      >
-                        {project.IsCodeDemo ? (
-                          <CodeProject
-                            {...project}
-                            isInView={page === index}
+          <Navigator
+            selectedCategory={selectedUICategory}
+            handleSelectCategory={handleSelectCategory}
+            inView={isInViewShort}
+          />
+          <Carousel
+            className={`pb-0 mb-0 h-75 sm:h-[370px] border-0 md:h-[453px] z-50 overflow-hidden`}
+            setApi={setApi}
+            opts={{ align: "center", loop: true }}
+            ref={carouselSectionRef}
+          >
+            <div ref={scrollRef}>
+              <CarouselContent>
+                {Videodata?.map((project, index) => (
+                  <React.Fragment key={project.title}>
+                    <CarouselItem
+                      className={clsx(
+                        "  flex justify-center h-full transition-[flex] duration-100 ease-in-out",
+                        isLongEnough
+                          ? "flex-[0_0_90%]  md:flex-[0_0_86%] lg:flex-[0_0_76%] 2xl:flex-[0_0_56%]"
+                          : "flex-[0_0_100%]"
+                      )}
+                    >
+                      {project.IsCodeDemo ? (
+                        <CodeProject
+                          {...project}
+                          isInView={page === index}
 
-                            // isCategoryChanging={isCategoryChanging}
-                          />
-                        ) : (
-                          <VideoProject
-                            {...project}
-                            isInView={page === index}
-                            // isCategoryChanging={isCategoryChanging}
-                          />
-                        )}
-                      </CarouselItem>
-                    </React.Fragment>
-                  ))}
-                </CarouselContent>
-              </div>
-            </Carousel>
+                          // isCategoryChanging={isCategoryChanging}
+                        />
+                      ) : (
+                        <VideoProject
+                          {...project}
+                          isInView={page === index}
+                          // isCategoryChanging={isCategoryChanging}
+                        />
+                      )}
+                    </CarouselItem>
+                  </React.Fragment>
+                ))}
+              </CarouselContent>
+            </div>
+          </Carousel>
 
-            <ClickPrompt2
-              Trigger={isInViewDeep}
-              ref={carouselSectionRef}
-              direction="across"
-            >
-              swipe for more
-            </ClickPrompt2>
-            <Skills2
-              skills={RefinedallSkills}
-              selectedSkills={selectedVideoData?.tags}
-            />
-          </Suspense>
+          <ClickPrompt2
+            Trigger={isInViewDeep}
+            ref={carouselSectionRef}
+            direction="across"
+          >
+            swipe for more
+          </ClickPrompt2>
+          <Skills2
+            skills={[...RefinedallSkills]}
+            selectedSkills={selectedVideoData?.tags}
+          />
         </IntroCardTemplate>
       </motion.section>
     </div>

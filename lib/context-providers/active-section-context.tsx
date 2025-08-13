@@ -8,7 +8,7 @@ import React, {
 } from "react";
 
 import toast from "react-hot-toast";
-import { SectionNameType } from "../lib/utils/types";
+import { SectionNameType } from "../utils/types";
 
 type ActiveContextProviderProps = {
   children: React.ReactNode;

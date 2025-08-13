@@ -7,13 +7,12 @@ import { BsLinkedin } from "react-icons/bs";
 
 import { IoIosMail } from "react-icons/io";
 import { PiReadCvLogoFill } from "react-icons/pi";
-import { useActiveSection } from "../../context/active-section-context";
+
 import IntroCardTemplate from "./intro-card-template";
 import { useInitialAnimation } from "../../lib/hooks/animation-hooks";
+import { useActiveSection } from "../../lib/context-providers/active-section-context";
 
 export default function ContactLinks({ mt = "mt-25" }: { mt?: string }) {
-  const { profileClicked } = useActiveSection();
-  // const { controls } = useInitialAnimation(0.3, 1, profileClicked);
   const { setActiveSection, setTimeOfLastClick } = useActiveSection();
   const SmalliconSize = "7";
   const iconSize = "8";

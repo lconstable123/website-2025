@@ -7,11 +7,12 @@ import {
   gameData,
   LoFiData,
   WebData,
-} from "../lib/data/reel-data";
-import { allSkills } from "../lib/data/data";
+} from "../data/reel-data";
+import { allSkills } from "../data/data";
 import toast from "react-hot-toast";
 import { useSearchParams } from "next/navigation";
-import { Category } from "../lib/utils/types";
+import { Category } from "../utils/types";
+import { Timer } from "lucide-react";
 
 //////////////////// types
 
@@ -31,6 +32,8 @@ type SkillsetContextType = {
   setSelectedVideoIndex: React.Dispatch<React.SetStateAction<number>>;
   isInEyeline: boolean;
   setIsInEyeline: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedUICategory: Category;
+  setSelectedUICategory: React.Dispatch<React.SetStateAction<Category>>;
   // isGlobalModalOpen: boolean;
   // setIsGlobalModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -47,8 +50,11 @@ export default function SkillsetContextProvider({
   children: React.ReactNode;
 }) {
   ///////////////////// states
-  const searchParams = useSearchParams();
-  const paramfromURL = searchParams.get("category");
+  // const searchParams = useSearchParams();
+  // const paramfromURL = searchParams.get("category");
+  let paramfromURL = "";
+
+  // const paramfromURL = "";
   const [selectedSkillSet, setSelectedSkillSet] = useState<Skillsets>(
     (paramfromURL as Skillsets) || "Direction"
   );
@@ -59,6 +65,8 @@ export default function SkillsetContextProvider({
   const [selectedVideoData, setSelectedVideoData] = useState<VideoData | null>(
     Videodata?.[selectedVideoIndex] || null
   );
+  const [selectedUICategory, setSelectedUICategory] =
+    useState<Category>(selectedSkillSet);
   // const selectedVideoData = Videodata?.[selectedVideoIndex] || null;
   const [isInEyeline, setIsInEyeline] = useState(false);
   // const [isGlobalModalOpen, setIsGlobalModalOpen] = useState(false);
@@ -77,9 +85,9 @@ export default function SkillsetContextProvider({
       case "Interactivity":
         setVideoData(gameData);
         break;
-      // case "Web":
-      //   setVideoData(WebData);
-      //   break;
+      case "Web":
+        setVideoData(WebData);
+        break;
       // case "Motion":
       //   setVideoData([...LoFiData, ...DirectorData]);
       //   break;
@@ -103,9 +111,25 @@ export default function SkillsetContextProvider({
   // toast.success(`Video changed to ${selectedSkillSet}`);
   // }, [Videodata]);
 
-  // useEffect(() => {
-  //   setSelectedSkillSet((paramfromURL as Category) || "Direction");
-  // }, []);
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+    if (
+      typeof window !== "undefined" &&
+      !window.location.pathname.startsWith("/not-found")
+    ) {
+      paramfromURL =
+        new URL(window.location.href).searchParams.get("category") ||
+        "Direction";
+      timer = setTimeout(() => {
+        // toast.success("chunaging form url");
+        setSelectedSkillSet(paramfromURL as Skillsets);
+        setSelectedUICategory(paramfromURL as Skillsets);
+      }, 10);
+    }
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, []);
 
   return (
     <SkillsetContext.Provider
@@ -121,6 +145,8 @@ export default function SkillsetContextProvider({
         setSelectedVideoIndex,
         isInEyeline,
         setIsInEyeline,
+        selectedUICategory,
+        setSelectedUICategory,
         // isGlobalModalOpen,
         // setIsGlobalModalOpen,
         //////

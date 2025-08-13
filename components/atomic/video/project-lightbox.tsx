@@ -7,13 +7,15 @@ import { GoXCircleFill } from "react-icons/go";
 
 import { useAnimationTrigger } from "../../../lib/hooks/animation-hooks";
 import Skills2 from "../../skills";
-import { useScreenContext } from "../../../context/screen-context";
+import { useScreenContext } from "../../../lib/context-providers/screen-context";
+
 import { blurb } from "../../../lib/data/data-blurb";
+import { RefinedSkillSelection } from "../../../lib/data/skills-data";
 type LightboxProps = {
   handleClose: () => void;
   skills?: string[];
   children: React.ReactNode;
-  selectedSkills?: string[];
+  selectedSkills?: RefinedSkillSelection[];
   title?: string;
   byline?: string;
   blurb?: string;

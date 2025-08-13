@@ -8,7 +8,7 @@ import { useCarouseAnimation } from "../../lib/hooks/animation-hooks";
 
 import ProjectLightbox from "../atomic/video/project-lightbox";
 import PortalPorter from "../../lib/hooks/portal-porter";
-import { useSkillSetContext } from "../../context/skillset-context";
+import { useSkillSetContext } from "../../context-providers/skillset-context";
 import toast from "react-hot-toast";
 
 import { projectCard } from "../../lib/data/reel-data";

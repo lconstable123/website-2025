@@ -8,7 +8,7 @@ import { useCarouseAnimation } from "../../lib/hooks/animation-hooks";
 import { FaRegArrowAltCircleUp } from "react-icons/fa";
 import ProjectLightbox from "../atomic/video/project-lightbox";
 import PortalPorter from "../../lib/hooks/portal-porter";
-import { useSkillSetContext } from "../../context/skillset-context";
+import { useSkillSetContext } from "../../lib/context-providers/skillset-context";
 import toast from "react-hot-toast";
 
 import { projectCard } from "../../lib/data/reel-data";
@@ -29,6 +29,7 @@ export default function CodeProject({
   square,
   isInView,
   git,
+  clickthough = true,
   IsCodeDemo = false,
 }: projectCard) {
   // --------------------------------------------------------------- states
@@ -74,12 +75,14 @@ export default function CodeProject({
         >
           <div className=" relative overflow-hidden h-50 sm:h-63 md:h-85 lg:h-85 rounded-t-lg mb-1 ">
             <LinkButton link={git || ""} />
-            <div className="delay-50 transition-all group-hover:opacity-20 opacity-0 duration-800 video-shadow shadow-black/20 absolute z-11 pointer-events-none left-5 bottom-5 ">
-              <FaRegArrowAltCircleUp className="text-[40pt]" />
-            </div>
+            {clickthough && (
+              <div className="delay-50 transition-all group-hover:opacity-20 opacity-0 duration-800 video-shadow shadow-black/20 absolute z-11 pointer-events-none left-5 bottom-5 ">
+                <FaRegArrowAltCircleUp className="text-[40pt]" />
+              </div>
+            )}
             <div className=" absolute z-10 pointer-events-none inset-0 bg-radial from-black/0 to-black/70 via-black/20"></div>
             <div
-              onClick={(e) => openNewWindow(playableLink, e)}
+              onClick={(e) => clickthough && openNewWindow(playableLink, e)}
               className="translate-y-3 flex items-center justify-center cursor-pointer group-hover:scale-125 group-hover:rotate-3  scale-120 transition-all duration-500"
             >
               <Image

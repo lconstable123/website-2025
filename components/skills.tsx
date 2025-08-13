@@ -3,18 +3,20 @@ import React from "react";
 
 import { motion } from "framer-motion";
 import clsx from "clsx";
-import { useSkillSetContext } from "../context/skillset-context";
+
 import { shuffleArray } from "../lib/utils/utils";
+import { RefinedSkillSelection } from "../lib/data/skills-data";
+import { useSkillSetContext } from "../lib/context-providers/skillset-context";
 
 type skillsType = {
-  skills?: string[];
-  selectedSkills?: string[];
+  skills?: RefinedSkillSelection[];
+  selectedSkills?: RefinedSkillSelection[];
   format?: "list" | "grid";
 };
 
 type skillsGridType = {
-  skills?: string[];
-  selectedSkills?: string[];
+  skills?: RefinedSkillSelection[];
+  selectedSkills?: RefinedSkillSelection[];
   isInEyeline?: boolean;
 };
 
