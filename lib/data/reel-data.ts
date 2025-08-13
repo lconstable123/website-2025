@@ -157,7 +157,7 @@ export const WebData: projectType[] = [
   {
     title: "lukeconstable.com",
     client:
-      "I developed a self hosted media streaming player and interface in react to show off my work, my web experience, and to stop paying for vimeo",
+      "I developed this self hosted media streaming player and interface.  Readme on GIT.",
     description:
       "An app that allows users to search, save, and apply for jobs.",
     tags: [
