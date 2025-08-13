@@ -8,12 +8,13 @@ import { useCarouseAnimation } from "../../lib/hooks/animation-hooks";
 
 import ProjectLightbox from "../atomic/video/project-lightbox";
 import PortalPorter from "../../lib/hooks/portal-porter";
-import { useSkillSetContext } from "../../context-providers/skillset-context";
+
 import toast from "react-hot-toast";
 
 import { projectCard } from "../../lib/data/reel-data";
 import Image from "next/image";
 import LinkButton from "../atomic/video/github-button";
+import { useSkillSetContext } from "../../lib/context-providers/skillset-context";
 
 export default function CodeProject({
   title,
