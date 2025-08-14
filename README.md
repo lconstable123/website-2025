@@ -1,6 +1,6 @@
 # Luke Constable's Portfolio Site
 
-Here's portfolio powered by **Next.js**, showcasing custom components, animation, and performant media handling. I spend so much time learning and making that i rarely put time into self promotion. I permitted myself this luxury and hopefully it will be great demonstation as to why I would make a great
+Here's portfolio. I spend so much time learning and making that i rarely put time into self promotion. I permitted myself this luxury and hopefully it will be great demonstation as to why I would make a great
 contribution to a dev team.
 
 ## 🔧 Tech Stack
