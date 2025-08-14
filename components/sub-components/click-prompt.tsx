@@ -20,7 +20,7 @@ export default function ClickPrompt({
       opacity: 1,
       scale: 1,
       y: 0,
-      transition: { type: "tween", duration: 0.5, delay: 0.5 },
+      transition: { type: "tween", duration: 0.7, delay: 1.6 },
     });
   }, []);
   return (

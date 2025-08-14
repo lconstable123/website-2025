@@ -25,7 +25,6 @@ export const useVideoCarousel = (searchParams: ReadonlyURLSearchParams) => {
     isInEyeline,
     setIsInEyeline,
     Videodata,
-
     setSelectedSkillSet,
     setSelectedUICategory,
     selectedUICategory,
@@ -38,7 +37,7 @@ export const useVideoCarousel = (searchParams: ReadonlyURLSearchParams) => {
   //-------------------------------------------internal states
   const router = useRouter();
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-
+  const [carouselInitial, setCarouselInitial] = useState(true);
   const [navOffsetTop, setNavOffsetTop] = useState(0);
   const carouselSectionRef = useRef<HTMLDivElement>(null);
 
@@ -48,6 +47,7 @@ export const useVideoCarousel = (searchParams: ReadonlyURLSearchParams) => {
   const handleSelectCategory = (category: Category) => {
     if (category === selectedSkillSet) return;
     setSelectedUICategory(category);
+    setCarouselInitial(false);
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }
@@ -105,5 +105,6 @@ export const useVideoCarousel = (searchParams: ReadonlyURLSearchParams) => {
     handleSelectCategory,
     navOffsetTop,
     selectedUICategory,
+    carouselInitial,
   };
 };

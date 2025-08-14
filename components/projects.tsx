@@ -25,6 +25,8 @@ import ClickPrompt2 from "./atomic/click-prompt";
 import { useSearchParams } from "next/navigation";
 import { useSkillSetContext } from "../lib/context-providers/skillset-context";
 import { useActiveSection } from "../lib/context-providers/active-section-context";
+import ImageLoader from "../lib/hooks/ImageLoader.tsx";
+import { useScreenContext } from "../lib/context-providers/screen-context";
 
 export default function Projects({
   title,
@@ -49,14 +51,16 @@ export default function Projects({
     carouselSectionRef,
     navOffsetTop,
     selectedUICategory,
+    carouselInitial,
   } = useVideoCarousel(searchParams);
 
   const { Videodata, selectedVideoData } = useSkillSetContext();
-
+  const { imagesLoaded } = useSkillSetContext();
   const { scrollRef } = useActiveSection();
   const isLongEnough = Videodata?.length || 0 > 3;
   return (
     <div>
+      {!imagesLoaded && <ImageLoader currentCategory={selectedUICategory} />}
       <motion.section
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -104,6 +108,7 @@ export default function Projects({
                         <CodeProject
                           {...project}
                           isInView={page === index}
+                          isImagesLoaded={true}
 
                           // isCategoryChanging={isCategoryChanging}
                         />
@@ -111,6 +116,7 @@ export default function Projects({
                         <VideoProject
                           {...project}
                           isInView={page === index}
+                          isImagesLoaded={carouselInitial || imagesLoaded}
                           // isCategoryChanging={isCategoryChanging}
                         />
                       )}

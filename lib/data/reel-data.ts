@@ -34,38 +34,64 @@ type projectType = {
 
 export type projectCard = projectType & {
   isInView: boolean;
+  isImagesLoaded: boolean;
   // isCategoryChanging: boolean;
 };
+
+//////////////////////////////// Image Data
+
+export const webThumbs = [
+  "/new-images/thumbs/tb_thumb.jpg",
+  "/new-images/thumbs/fikaris_thumb.jpg",
+  "/new-images/thumbs/mars_thumb.jpg",
+  "/new-images/thumbs/talk2_thumb.jpg",
+  "/new-images/thumbs/pillars_thumb.jpg",
+];
+
+export const InterThumbs = [
+  "/new-images/thumbs/website_thumb.jpg",
+  "/new-images/thumbs/plans_thumb.png",
+  "/new-images/thumbs/kawsplaytime_thumb.jpg",
+  "/new-images/thumbs/react_thumb.jpg",
+];
+
+export const LoFiThumbs = [
+  "/new-images/thumbs/reel25_thumb.jpg",
+  "/new-images/thumbs/sa2_thumb.jpg",
+  "/new-images/thumbs/terracotta_thumb.jpg",
+  "/new-images/thumbs/haring_thumb.jpg",
+  "/new-images/thumbs/companionship_thumb.jpg",
+  "/new-images/thumbs/social_thumb.jpg",
+  "/new-images/thumbs/dali_thumb2.jpg",
+  "/new-images/thumbs/lyi_thumb.jpg",
+  "/new-images/thumbs/god_thumb.jpg",
+  "/new-images/thumbs/pxels2_thumbs.jpg",
+  "/new-images/thumbs/bg_thumb.jpg",
+  "/new-images/thumbs/event_thumb.jpg",
+  "/new-images/thumbs/heroes_thumb.jpg",
+  "/new-images/thumbs/Ict_thumb.jpg",
+  "/new-images/thumbs/mia_thumb.jpg",
+  "/new-images/thumbs/rennie_thumb.png",
+  "/new-images/thumbs/one_thumb.jpg",
+  "/new-images/thumbs/missme_thumb.jpg",
+];
+
+export const ExperiThumbs = [
+  "/new-images/thumbs/29-4-diffusion[square]_thumb.jpg",
+  "/new-images/thumbs/flippies_thumb.jpg",
+  "/new-images/thumbs/Ringo_thumb.jpg",
+  "/new-images/thumbs/floppy_thumb.jpg",
+  "/new-images/thumbs/30-2-24_thumb.jpg",
+  "/new-images/thumbs/20-2_thumb.jpg",
+  "/new-images/thumbs/24-3_thumb.jpg",
+  "/new-images/thumbs/12-10_2_1_thumb.jpg",
+  "/new-images/thumbs/4-12_thumb.jpg",
+  "/new-images/thumbs/4-5_thumb.jpg",
+];
 
 /////////////////////////////////// Game Data
 
 export const gameData: projectType[] = [
-  {
-    title: "The Way You Talk",
-    client: "Darling James",
-    description:
-      "I captured Darling James with a Rokoko smartuit, I augmented the data with some tools I developed in houdini, and then sent it for realtime render in Unreal.",
-    tags: [
-      "Unreal Engine",
-      "Houdini",
-      "C++",
-
-      "Art Direction",
-
-      "Blender",
-
-      "Cinematography",
-      "VEX",
-
-      "Project Management",
-      "3d Assets",
-    ],
-    imageUrl: "/new-images/thumbs/talk2_thumb.jpg",
-    link: "https://lukeconstable.com/vids/Way-low.mp4",
-    low: "https://lukeconstable.com/vids/Way-mobile.mp4",
-    byline: "VR music video (2024)",
-    playable: false,
-  },
   {
     title: "Return of the Time Bandit",
     client: "Matt Blue | Backwoods Gallery",
@@ -128,6 +154,32 @@ export const gameData: projectType[] = [
     link: "https://lukeconstable.com/vids/Deadspace-low.mp4",
     low: "https://lukeconstable.com/vids/Deadspace-mobile.mp4",
     byline: "Virtual Production (2023)",
+    playable: false,
+  },
+  {
+    title: "The Way You Talk",
+    client: "Darling James",
+    description:
+      "I captured Darling James with a Rokoko smartuit, I augmented the data with some tools I developed in houdini, and then sent it for realtime render in Unreal.",
+    tags: [
+      "Unreal Engine",
+      "Houdini",
+      "C++",
+
+      "Art Direction",
+
+      "Blender",
+
+      "Cinematography",
+      "VEX",
+
+      "Project Management",
+      "3d Assets",
+    ],
+    imageUrl: "/new-images/thumbs/talk2_thumb.jpg",
+    link: "https://lukeconstable.com/vids/Way-low.mp4",
+    low: "https://lukeconstable.com/vids/Way-mobile.mp4",
+    byline: "VR music video (2024)",
     playable: false,
   },
   {
@@ -290,6 +342,7 @@ export const LoFiData: projectType[] = [
     byline: "Interactive Installation (2023)",
     playable: false,
   },
+
   {
     title: "Terracotta Warriors & Cai Guo-Qiang",
     client: "NGV | Cai Guo-Qiang",
@@ -311,6 +364,7 @@ export const LoFiData: projectType[] = [
     playable: false,
     square: true,
   },
+
   {
     title: "Crossing Lines",
     client: "NGV | Haring x Basquiat",
@@ -351,24 +405,25 @@ export const LoFiData: projectType[] = [
     square: true,
   },
   {
-    title: "God's Graffiti",
-    client: "Darling James",
+    title: "Social Media Screens",
+    client: "Mushroom Group | Frontier Touring",
     description:
-      "An app that allows users to search, save, and apply for jobs.",
+      "I developed bespoke shaders and a custom wireless controller to augment street artist Fikaris's decisive visual style into an interactive experience. It had a residency at Melbourne city library during Melbourne International Games week.",
     tags: [
-      "Cinematography",
-      "Post-Production",
-      "Editing",
-      "Art Direction",
-      "Lighting",
-      "Project Management",
+      "3d Motion Design",
+      "2d Motion Design",
+      "After Effects",
+      "C4D",
+      "Simulations",
     ],
-    imageUrl: "/new-images/thumbs/god_thumb.jpg",
-    link: "https://lukeconstable.com/vids/Gg-low.mp4",
-    low: "https://lukeconstable.com/vids/Gg-mobile.mp4",
-    byline: "Music Video (2017)",
+    imageUrl: "/new-images/thumbs/social_thumb.jpg",
+    link: "https://lukeconstable.com/vids/Social-low.mp4",
+    low: "https://lukeconstable.com/vids/Social-mobile.mp4",
+    byline: "Social Media (2017-2022)",
     playable: false,
+    square: true,
   },
+
   {
     title: "Dali Alive!",
     client: "The LUME | Grande Experiences",
@@ -388,6 +443,7 @@ export const LoFiData: projectType[] = [
     byline: "Immersive Experience (2025)",
     playable: false,
   },
+
   {
     title: "Letting You In",
     client: "Mid Ayr",
@@ -409,31 +465,23 @@ export const LoFiData: projectType[] = [
     playable: false,
   },
   {
-    title: "Burger Urge Campaigns",
-    client: "Burger Urge",
+    title: "God's Graffiti",
+    client: "Darling James",
     description:
-      "I developed bespoke shaders and a custom wireless controller to augment street artist Fikaris's decisive visual style into an interactive experience. It had a residency at Melbourne city library during Melbourne International Games week.",
+      "An app that allows users to search, save, and apply for jobs.",
     tags: [
-      "Editing",
-
-      "2d Motion Design",
       "Cinematography",
       "Post-Production",
-      "Lighting",
-      "3d Motion Design",
+      "Editing",
       "Art Direction",
-      "Simulations",
-      "After Effects",
+      "Lighting",
       "Project Management",
-      "Post-Production",
-      "Web Design",
     ],
-    imageUrl: "/new-images/thumbs/bg_thumb.jpg",
-    link: "https://lukeconstable.com/vids/Bu2-low.mp4",
-    low: "https://lukeconstable.com/vids/Bu2-mobile.mp4",
-    byline: "Motion Design",
+    imageUrl: "/new-images/thumbs/god_thumb.jpg",
+    link: "https://lukeconstable.com/vids/Gg-low.mp4",
+    low: "https://lukeconstable.com/vids/Gg-mobile.mp4",
+    byline: "Music Video (2017)",
     playable: false,
-    square: true,
   },
   {
     title: "Why Don't We Do Something",
@@ -461,6 +509,35 @@ export const LoFiData: projectType[] = [
     byline: "Viral Video",
     playable: false,
   },
+
+  {
+    title: "Burger Urge Campaigns",
+    client: "Burger Urge",
+    description:
+      "I developed bespoke shaders and a custom wireless controller to augment street artist Fikaris's decisive visual style into an interactive experience. It had a residency at Melbourne city library during Melbourne International Games week.",
+    tags: [
+      "Editing",
+
+      "2d Motion Design",
+      "Cinematography",
+      "Post-Production",
+      "Lighting",
+      "3d Motion Design",
+      "Art Direction",
+      "Simulations",
+      "After Effects",
+      "Project Management",
+      "Post-Production",
+      "Web Design",
+    ],
+    imageUrl: "/new-images/thumbs/bg_thumb.jpg",
+    link: "https://lukeconstable.com/vids/Bu2-low.mp4",
+    low: "https://lukeconstable.com/vids/Bu2-mobile.mp4",
+    byline: "Motion Design",
+    playable: false,
+    square: true,
+  },
+
   {
     title: "Event Screens",
     client: "Mushroom Group | Chugg Entertainment | Frontier Touring",
@@ -481,25 +558,7 @@ export const LoFiData: projectType[] = [
     byline: "Live Event Visuals (2019-2022)",
     playable: false,
   },
-  {
-    title: "Social Media Screens",
-    client: "Mushroom Group | Frontier Touring",
-    description:
-      "I developed bespoke shaders and a custom wireless controller to augment street artist Fikaris's decisive visual style into an interactive experience. It had a residency at Melbourne city library during Melbourne International Games week.",
-    tags: [
-      "3d Motion Design",
-      "2d Motion Design",
-      "After Effects",
-      "C4D",
-      "Simulations",
-    ],
-    imageUrl: "/new-images/thumbs/social_thumb.jpg",
-    link: "https://lukeconstable.com/vids/Social-low.mp4",
-    low: "https://lukeconstable.com/vids/Social-mobile.mp4",
-    byline: "Social Media (2017-2022)",
-    playable: false,
-    square: true,
-  },
+
   {
     title: "Heroes in Half Shell: TMNT 20 Year Anniversary",
     client: "Paramount | TNMT",
@@ -537,7 +596,7 @@ export const LoFiData: projectType[] = [
     ],
     imageUrl: "/new-images/thumbs/Ict_thumb.jpg",
     link: "https://lukeconstable.com/vids/Ict-low.mp4",
-    low: "https://lukeconstable.com/vids/Ict-mobile.mp4",
+    low: "https://lukeconstable.com/vids/Ict-Mobile.mp4",
     byline: "Eductational Programme (2017)",
     playable: false,
   },
@@ -565,6 +624,7 @@ export const DirectorData: projectType[] = [
     byline: "Music Video (2020)",
     playable: false,
   },
+
   {
     title: "21",
     client: "Josh Rennie Hynes",

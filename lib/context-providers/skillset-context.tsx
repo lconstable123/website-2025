@@ -34,8 +34,8 @@ type SkillsetContextType = {
   setIsInEyeline: React.Dispatch<React.SetStateAction<boolean>>;
   selectedUICategory: Category;
   setSelectedUICategory: React.Dispatch<React.SetStateAction<Category>>;
-  // isGlobalModalOpen: boolean;
-  // setIsGlobalModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  imagesLoaded: boolean;
+  setImagesLoaded: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 /////////////////// context
@@ -67,9 +67,9 @@ export default function SkillsetContextProvider({
   );
   const [selectedUICategory, setSelectedUICategory] =
     useState<Category>(selectedSkillSet);
-  // const selectedVideoData = Videodata?.[selectedVideoIndex] || null;
+  const [imagesLoaded, setImagesLoaded] = useState(false);
   const [isInEyeline, setIsInEyeline] = useState(false);
-  // const [isGlobalModalOpen, setIsGlobalModalOpen] = useState(false);
+
   const allData = [
     ...gameData,
     ...LoFiData,
@@ -105,11 +105,6 @@ export default function SkillsetContextProvider({
   useEffect(() => {
     setSelectedVideoData(Videodata?.[selectedVideoIndex] || null);
   }, [Videodata, selectedVideoIndex]);
-
-  // useEffect(() => {
-  // setSelectedVideoData(Videodata?.[selectedVideoIndex] || null);
-  // toast.success(`Video changed to ${selectedSkillSet}`);
-  // }, [Videodata]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
@@ -147,9 +142,8 @@ export default function SkillsetContextProvider({
         setIsInEyeline,
         selectedUICategory,
         setSelectedUICategory,
-        // isGlobalModalOpen,
-        // setIsGlobalModalOpen,
-        //////
+        imagesLoaded,
+        setImagesLoaded,
       }}
     >
       {children}

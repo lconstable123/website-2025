@@ -90,6 +90,7 @@ export default function CodeProject({
             tags={tags}
             client={client}
             isSquare={square}
+            isImagesLoaded={true}
           />
         </section>
       </section>

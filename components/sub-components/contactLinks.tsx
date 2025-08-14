@@ -4,12 +4,10 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { FaInstagram } from "react-icons/fa";
 import { BsLinkedin } from "react-icons/bs";
-
+import { FaGithub } from "react-icons/fa";
 import { IoIosMail } from "react-icons/io";
-import { PiReadCvLogoFill } from "react-icons/pi";
-
 import IntroCardTemplate from "./intro-card-template";
-import { useInitialAnimation } from "../../lib/hooks/animation-hooks";
+
 import { useActiveSection } from "../../lib/context-providers/active-section-context";
 
 export default function ContactLinks({ mt = "mt-25" }: { mt?: string }) {
@@ -28,32 +26,26 @@ export default function ContactLinks({ mt = "mt-25" }: { mt?: string }) {
           <Link
             href="https://www.instagram.com/virtuallyanything.xyz/"
             className=" group transition  flex justify-center items-center gap-2 outline-none focus:scale-110 hover:scale-110  active:scale-105"
-            onClick={() => {
-              setActiveSection("Contact");
-              setTimeOfLastClick!(Date.now());
-            }}
           >
             <FaInstagram className="w-6 h-auto sm:w-7" />
           </Link>
           <Link
             href="https://www.linkedin.com/in/lukeconstable/"
             className=" group transition  flex justify-center items-center gap-2 outline-none focus:scale-110 hover:scale-120 active:scale-105"
-            onClick={() => {
-              setActiveSection("Contact");
-              setTimeOfLastClick!(Date.now());
-            }}
           >
             <BsLinkedin className="w-5 h-auto sm:w-6" />
           </Link>
           <Link
             href="mailto:luke@lukeconstable.com"
             className=" group transition   flex justify-center items-center gap-2 outline-none focus:scale-110 hover:scale-110 active:scale-105"
-            onClick={() => {
-              setActiveSection("Contact");
-              setTimeOfLastClick!(Date.now());
-            }}
           >
             <IoIosMail className="w-6 h-auto sm:w-10 text-2xl opacity-100 transition" />
+          </Link>
+          <Link
+            href="https://github.com/lconstable123/website-2025"
+            className=" group transition  flex justify-center items-center gap-2 outline-none focus:scale-110 hover:scale-120 active:scale-105"
+          >
+            <FaGithub className="w-5 h-auto sm:w-7" />
           </Link>
           {/* <a
             className="  borderBlack cursor:pointer transition group flex items-center justify-center gap-2    outline-none focus:scale-110 hover:scale-110 active:scale-105"

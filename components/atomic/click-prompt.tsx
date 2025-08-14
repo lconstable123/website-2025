@@ -70,7 +70,7 @@ export default function ClickPrompt2({
 
   return (
     <div
-      className={`${prompting ? "opacity-100" : "opacity-0"}  flex  justify-center  items-center pointer-events-none text-center text-[10pt]  transition-all duration-900 delay-100 ${interacted ? "py-0" : "py-2"}  text-[7pt] sm:text-[10pt] text-gray-300`}
+      className={`${prompting ? "opacity-100" : "opacity-0"} flex  justify-center  items-center pointer-events-none text-center text-[10pt]  transition-all duration-900 delay-100 ${interacted ? "py-0" : "py-2"}  text-[7pt] sm:text-[10pt] text-gray-300`}
     >
       {direction === "up" && (
         <MdSubdirectoryArrowLeft className="inline-block mr-1 rotate-90" />

@@ -1,48 +1,78 @@
-This is Luke Constable's portfolio site
-/////////////////////////////////////////////////////////////////////////////////
+# 🎨 Luke Constable's Portfolio Site
 
--Next.js
--Framer.motion
--React-icons
--Embla
--TS
--ShadCN
+A self-built portfolio powered by **Next.js**, showcasing custom components, animation, and performant media handling.
 
-////////////////////////////////////////////////////////////////////////////////
+## 🔧 Tech Stack
 
-[COMPONENT SHOWCASE]
+- **Next.js**
+- **TypeScript**
+- **Framer Motion**
+- **React Icons**
+- **Embla Carousel**
+- **shadcn/ui**
 
---------Native VideoPlayer------
-I was sick of paying for vimeo, so I built and designed a self hosted streaming video player and interface.
+---
 
-Swaps video depending on device and bandwidth. Operates with h264 videos hosted anywhere.
+## Featured Components
 
-Optional Lightbox, github clickthough, game clickthough
+### Native Video Player
 
-Main functionality in UseNativeVideoPlayer, video-player-hooks.ts.
+> I was sick of paying for Vimeo, so I built a self-hosted streaming video player from scratch.
 
-Video is instanciated and referenced outside of the component and passed in as reference param
-so it can be passed around the dom- for example to the lightbox.
+- Adapts video source by device and bandwidth (H.264).
+- Optional Lightbox modal with GitHub or game clickthrough.
+- Main logic in `useNativeVideoPlayer` and `video-player-hooks.ts`.
+- Video is instantiated outside the component and passed in by reference — allowing it to be reused across the DOM (e.g. in a lightbox).
 
--------double-intersection-observer------
-Observes the occurance of a referenced dom element in the vertical height of the viewport, by two thresholds, wide and narrow.
+---
 
--------Portal Porter---------------------
-It's a small function but it allows a video reference, or any other reference to be passed around the dom, by implementing a portal.
-I was proud of this one.
+### Double Intersection Observer
 
--------Navigator-------------------------
-Changes categories- but most effectively, prompts animations and offsets the changing to allow for out animation transition.
+Tracks a DOM element’s position in the vertical viewport using **two thresholds** (wide and narrow).  
+Useful for differentiating full visibility vs. eyeline detection.
 
-------Context Providers------------------
-useActiveSection is a store of where we are in the site. I was gong to impliment this furter with my doubleintersection observer, but it was overkill.
-I don't have the heart to remove it.
+---
 
-useScreenContext is a store of the device and bandwidth to swap layout, features and video source.
+### Portal Porter
 
-useSkillSetContex monitores the category, and the projects.
+A small utility I’m proud of.
 
-I would note I could have used this more to prevent prop drilling but I wanted to keep my project components dumb,
-it was more peformant as they were relying on being mapped into the carousel and let the data trickle down..
+Allows a React ref (like a video) to be passed around the DOM using a portal. Enables a single instance to exist in multiple places without reload or duplication.
 
-/////anyway, enjoy!
+---
+
+### Navigator
+
+Handles category switching and animations:
+
+- Delays content change until out-animation completes.
+- Improves perceived smoothness when navigating between sections.
+
+---
+
+### Image Loader
+
+Preloads critical thumbnail images before they're displayed:
+
+- Prevents "90s-style" image shudder.
+- Shows key visuals early, with a radiating circle animation to allow for load time.
+- Avoids FOUM (Flash of Unstyled Media) by delaying text and fading in background only after load is complete.
+
+---
+
+## Context Providers
+
+Custom React contexts power global state:
+
+- **`useActiveSection`** – Tracks the current scroll section. Initially meant to integrate more deeply with the double intersection observer, but was scaled back for simplicity.
+- **`useScreenContext`** – Detects device type and bandwidth to dynamically adjust layout and video source.
+- **`useSkillSetContext`** – Manages categories and selected projects.
+
+> I could have used context more heavily to avoid prop drilling, but chose to keep project components "dumb" and performant — relying on carousel mapping and downward data flow.
+
+---
+
+## Final Note
+
+This portfolio blends design, development, and a bit of obsessive micro-optimization.  
+Hope you enjoy exploring it — the source code is open if you're curious.

@@ -39,6 +39,7 @@ export type VideoPlayerProps = {
   isModalOpen?: boolean;
   widthStyling?: string;
   playableLink?: string;
+  isImagesLoaded?: boolean;
 };
 export type Category = (typeof categories)[number]["title"];
 

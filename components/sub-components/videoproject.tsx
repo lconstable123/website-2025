@@ -12,6 +12,8 @@ import { useSkillSetContext } from "../../lib/context-providers/skillset-context
 import toast from "react-hot-toast";
 
 import { projectCard } from "../../lib/data/reel-data";
+import Loader from "./loader";
+import { Loader2 } from "lucide-react";
 
 export default function VideoProject({
   title,
@@ -26,6 +28,7 @@ export default function VideoProject({
   square,
   isInView,
   IsCodeDemo = false,
+  isImagesLoaded = true,
 }: projectCard) {
   // --------------------------------------------------------------- states
 
@@ -72,6 +75,7 @@ export default function VideoProject({
         trigger={isModalOpen}
       >
         {/* Portable Video definition */}
+
         <NativeVideoPlayer
           poster={imageUrl}
           srcHigh={link || ""}
@@ -89,6 +93,7 @@ export default function VideoProject({
           monitorCurrentTime={monitorCurrentTime}
           setMonitorCurrentTime={setMonitorCurrentTime}
           isModalOpen={isModalOpen}
+          isImagesLoaded={isImagesLoaded}
         />
       </PortalPorter>
       {isModalOpen && (
@@ -126,6 +131,7 @@ export default function VideoProject({
             tags={tags}
             client={client}
             isSquare={square}
+            isImagesLoaded={isImagesLoaded}
           />
         </section>
       </section>

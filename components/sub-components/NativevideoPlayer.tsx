@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { useAnimationTrigger } from "../../lib/hooks/animation-hooks";
 import Loader from "./loader";
 import { useSkillSetContext } from "../../lib/context-providers/skillset-context";
+import VideoImageSkeleton from "../atomic/video/videoImage-skeleton";
 
 export default function NativeVideoPlayer({
   isInView = true,
@@ -27,8 +28,8 @@ export default function NativeVideoPlayer({
   monitorCurrentTime,
   setMonitorCurrentTime,
   isModalOpen = false,
-
-  widthStyling = `    w-full h-[200px] sm:h-[250px] md:h-[337px]  md:w-[600px] `,
+  isImagesLoaded = true,
+  widthStyling = `w-full h-[200px] sm:h-[250px] md:h-[337px] md:w-[600px] `,
 
   //params
 }: VideoPlayerProps) {
@@ -131,74 +132,82 @@ export default function NativeVideoPlayer({
       onMouseLeave={handleMouseOut}
       className=" relative group"
     >
-      <MuteButton
-        isFocussed={isFocussed}
-        toggleMute={toggleMute}
-        isLocallyMuted={isLocallyMuted}
-      />
-      {!isMobile && !isModalOpen && (
-        <EnlargeButton
-          isPlayable={isPlayable}
-          playableLink={playableLink}
-          handlePopover={() => {
-            handlePopover?.("in");
-          }}
-        />
-      )}
-      {!videoIsLoading && (
-        <PauseButton
-          isPaused={IsPaused}
-          controls={Animcontrols}
-          isEngaged={isEngaged}
-          isMobile={isMobile}
-        />
-      )}
-      <motion.div
-        animate={vidControls}
-        className="absolute bg-black  top-0 left-0  z-[9999]"
-      />
-
-      <Loader
-        isLoading={videoIsLoading && interactedEnough}
-        isMobile={isMobile}
-      />
-      {/* {res && <div className="absolute inset-0 ">{selectedSrc}</div>} */}
-      <video
-        ref={videoRef}
-        id="youtube_video"
-        className={` ${widthStyling} ${!isSquare ? "object-cover" : ""} video-js vjs-default-skin`}
-        // src={selectedSrc}
-        src={selectedSrc}
-        preload="metadata"
-        poster={poster}
-        controls={false}
-        // playsInline={isMobile}
-        muted={isLocallyMuted || isMobile}
-        autoPlay={false}
-        onClick={handleClick}
-        disablePictureInPicture
-        onLoadedData={() => setVideoIsLoading(false)}
-      />
-      <div
-        className={`relative z-20' ${isFocussed ? "opacity-100" : "opacity-0"} transition-opacity duration-800`}
-      >
-        {!isMobile && (
-          <Slider
-            buffered={buffered}
-            max={duration}
-            value={[currentTime]}
-            step={0.1}
-            onValueChange={(val) => {
-              setCurrentTime(val[0]);
-              if (videoRef?.current && !seeking) {
-                videoRef.current.currentTime = val[0];
-              }
-            }}
-            onPointerDown={handleSeekMouseDown}
-            onPointerUp={handleSeekMouseUp}
+      {isImagesLoaded ? (
+        <>
+          <MuteButton
+            isFocussed={isFocussed}
+            toggleMute={toggleMute}
+            isLocallyMuted={isLocallyMuted}
           />
-        )}
-      </div>
+          {!isMobile && !isModalOpen && (
+            <EnlargeButton
+              isPlayable={isPlayable}
+              playableLink={playableLink}
+              handlePopover={() => {
+                handlePopover?.("in");
+              }}
+            />
+          )}
+          {!videoIsLoading && (
+            <PauseButton
+              isPaused={IsPaused}
+              controls={Animcontrols}
+              isEngaged={isEngaged}
+              isMobile={isMobile}
+            />
+          )}
+          <motion.div
+            animate={vidControls}
+            className="absolute bg-black  top-0 left-0  z-[9999]"
+          />
+
+          <Loader
+            isLoading={videoIsLoading && interactedEnough}
+            isMobile={isMobile}
+          />
+          {/* {res && <div className="absolute inset-0 ">{selectedSrc}</div>} */}
+          <video
+            ref={videoRef}
+            id="youtube_video"
+            className={` videoBox ${!isSquare ? "object-cover" : ""} video-js vjs-default-skin`}
+            // src={selectedSrc}
+            src={selectedSrc}
+            preload="metadata"
+            poster={poster}
+            controls={false}
+            // playsInline={isMobile}
+            muted={isLocallyMuted || isMobile}
+            autoPlay={false}
+            onClick={handleClick}
+            disablePictureInPicture
+            onLoadedData={() => setVideoIsLoading(false)}
+          />
+
+          <div
+            className={`relative z-20' ${isFocussed ? "opacity-100" : "opacity-0"} transition-opacity duration-800`}
+          >
+            {!isMobile && (
+              <Slider
+                buffered={buffered}
+                max={duration}
+                value={[currentTime]}
+                step={0.1}
+                onValueChange={(val) => {
+                  setCurrentTime(val[0]);
+                  if (videoRef?.current && !seeking) {
+                    videoRef.current.currentTime = val[0];
+                  }
+                }}
+                onPointerDown={handleSeekMouseDown}
+                onPointerUp={handleSeekMouseUp}
+              />
+            )}
+          </div>
+        </>
+      ) : (
+        //
+        <VideoImageSkeleton isMobile={false} />
+      )}
     </div>
   );
 }

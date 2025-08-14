@@ -24,7 +24,7 @@ const roboto = Roboto({
   variable: "--font-roboto",
   display: "swap",
 });
-<link rel="preload" href="/new-images/bg/BG15.jpg" as="image" />;
+<link rel="preload" href="/new-images/bg/BG16.jpg" as="image" />;
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -39,7 +39,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="!scroll-smooth">
+    <html lang="en" className="!scroll-smooth bg-black">
       <body
         className={`bg-black overflow-x-hidden  ${montserrat.variable} ${outfit.variable} ${roboto.variable} relative`}
       >
@@ -53,7 +53,6 @@ export default function RootLayout({
                   {/* <Header /> */}
                   <div id="lightbox"></div>
                   {children}
-                  {/* <Footer /> */}
                 </SkillsetContextProvider>
               </ActiveSectionContextProvider>
             </ScreenContextProvider>
