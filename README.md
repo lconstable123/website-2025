@@ -1,6 +1,7 @@
-# 🎨 Luke Constable's Portfolio Site
+# Luke Constable's Portfolio Site
 
-A self-built portfolio powered by **Next.js**, showcasing custom components, animation, and performant media handling.
+Here's portfolio powered by **Next.js**, showcasing custom components, animation, and performant media handling. I spend so much time learning and making that i rarely put time into self promotion. I permitted myself this luxury and hopefully it will be great demonstation as to why I would make a great
+contribution to a dev team.
 
 ## 🔧 Tech Stack
 
@@ -54,9 +55,9 @@ Handles category switching and animations:
 
 Preloads critical thumbnail images before they're displayed:
 
-- Prevents "90s-style" image shudder.
+- Prevents 90s-style image shudder.
 - Shows key visuals early, with a radiating circle animation to allow for load time.
-- Avoids FOUM (Flash of Unstyled Media) by delaying text and fading in background only after load is complete.
+- Avoids FOUM and background flash by delaying text and fading in background only after load is complete.
 
 ---
 
@@ -68,11 +69,6 @@ Custom React contexts power global state:
 - **`useScreenContext`** – Detects device type and bandwidth to dynamically adjust layout and video source.
 - **`useSkillSetContext`** – Manages categories and selected projects.
 
-> I could have used context more heavily to avoid prop drilling, but chose to keep project components "dumb" and performant — relying on carousel mapping and downward data flow.
+> I could have used context more heavily to avoid prop drilling, but chose to keep project components dumb and performant — relying on carousel mapping and downward data flow.
 
 ---
-
-## Final Note
-
-This portfolio blends design, development, and a bit of obsessive micro-optimization.  
-Hope you enjoy exploring it — the source code is open if you're curious.
