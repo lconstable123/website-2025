@@ -65,9 +65,10 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
   }, [controls]);
 
   return (
-    <div className={` relative  ${mt} `}>
+    <div className={`w-80 sm:w-100 h-80 sm:h-100 relative  ${mt} `}>
       {!profileClicked && <ClickListener handle={handlePress} />}
       {!profileClicked && <ScrollListener handle={handlePress} />}
+
       <motion.div
         initial={{ opacity: 0, scale: 0.7 }}
         animate={controls}
@@ -83,7 +84,7 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
         }}
         // onMouseDown={() => setIsPressed(true)}
         onMouseDown={(e) => handlePress(e)}
-        className={`ease-in-out -z-4`}
+        className={`origin-center ease-in-out -z-4`}
       >
         {/* <Suspense fallback={<div>Loading...</div>}> */}
         <IntroCardTemplate
@@ -100,7 +101,7 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
               height={400}
               quality={95}
               priority={true}
-              className="h-50 w-50 sm:h-80 sm:w-80 z-30 object-cover shadow-xl pointer-events-none"
+              className=" z-30 object-cover shadow-xl pointer-events-none"
             />
           </div>
 

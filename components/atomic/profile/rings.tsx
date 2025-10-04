@@ -22,7 +22,7 @@ export default function Rings({
 
   return (
     <div className="   w-screen h-400 absolute-center overflow-hidden -z-2 pointer-events-none">
-      <div className={`ease-out  flex items-center justify-center opacity-60`}>
+      <div className={`ease-out  flex items-center justify-center opacity-30`}>
         {rings.map((i) => {
           const sizeX = baseSizeX + i * increment;
           const sizeY = baseSizeY + i * increment;

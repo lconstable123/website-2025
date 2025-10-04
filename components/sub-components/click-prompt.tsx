@@ -25,7 +25,7 @@ export default function ClickPrompt({
   }, []);
   return (
     <motion.h1
-      className="cursor-pointer absolute -bottom-23 left-1/2 -translate-x-1/2 text-white/90 text-center text-[13pt] sm:text-[15pt] tracking-wider font-light"
+      className="cursor-pointer absolute -bottom-40 left-1/2 -translate-x-1/2 text-white/90 text-center text-[13pt] sm:text-[15pt] tracking-wider font-light"
       initial={{ opacity: 0, scale: 0.97 }}
       animate={controls}
     >

@@ -75,6 +75,9 @@ export const frameworks = {
     "Context API",
     "TanStack",
     "Zod",
+    "Full-Stack",
+    "Optimistic UI",
+    "Authentication",
   ],
 } as const;
 export const UI = {

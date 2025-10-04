@@ -50,6 +50,8 @@ export const webThumbs = [
 
 export const InterThumbs = [
   "/new-images/thumbs/website_thumb.jpg",
+  "/new-images/thumbs/hooks_thumb.jpg",
+  "/new-images/thumbs/poke_thumb.jpg",
   "/new-images/thumbs/plans_thumb.png",
   "/new-images/thumbs/kawsplaytime_thumb.jpg",
   "/new-images/thumbs/react_thumb.jpg",
@@ -237,6 +239,37 @@ export const WebData: projectType[] = [
     clickthough: false,
   },
   {
+    title: "PokeApp",
+    client:
+      "I created this app that fetches from an API and stores on Postgres db to demonstrate cutting edge full-stack, optimistic UI, and authentication.",
+    description:
+      "I developed bespoke shaders and a custom wireless controller to augment street artist Fikaris's decisive visual style into an interactive experience. It had a residency at Melbourne city library during Melbourne International Games week.",
+    tags: [
+      "React",
+      "TypeScript",
+      "Framer.motion",
+      "Authentication",
+      "Full-Stack",
+      "Web Design",
+      "Figma",
+      "Tailwind",
+      "Next.JS",
+      "UI/UX",
+      "Framer.motion",
+      "Back-End",
+      "Optimistic UI",
+    ],
+    imageUrl: "/new-images/thumbs/plans_thumb.png",
+    link: "https://lukeconstable.com/vids/react-mid.mp4",
+    low: "https://lukeconstable.com/vids/react-low.mp4",
+    byline: "React App",
+    playable: false,
+
+    IsCodeDemo: true,
+    git: "https://github.com/lconstable123/BespokeHooks",
+    clickthough: false,
+  },
+  {
     title: "Plans for the Planet",
     client: "Olaf Breuning | National Gallery of Victoria",
     description:
@@ -250,17 +283,20 @@ export const WebData: projectType[] = [
     playable: false,
   },
   {
-    title: "Kaws Playtime",
-    client: "Kaws | National Gallery of Victoria",
+    title: "React Hooks",
+    client: "A repo of useful hooks i've developed. Checkout the Readme",
+    link: "https://lukeconstable.com/vids/react-mid.mp4",
+    low: "https://lukeconstable.com/vids/react-low.mp4",
     description:
       "I developed bespoke shaders and a custom wireless controller to augment street artist Fikaris's decisive visual style into an interactive experience. It had a residency at Melbourne city library during Melbourne International Games week.",
-    tags: ["UI/UX", "2d Motion Design", "After Effects", "Learning Design"],
-    imageUrl: "/new-images/thumbs/kawsplaytime_thumb.jpg",
-    link: "https://lukeconstable.com/vids/Kawsplaytime-low.mp4",
-    low: "https://lukeconstable.com/vids/Kawsplaytime-mobile.mp4",
-    byline: "Interactive Installation (2023)",
+    tags: ["React", "TypeScript", "Framer.motion"],
+    imageUrl: "/new-images/thumbs/plans_thumb.png",
+    byline: "React Repo",
     playable: false,
+    IsCodeDemo: true,
+    git: "https://github.com/lconstable123/BespokeHooks",
   },
+
   {
     title: "Job Search App",
     client:
@@ -284,13 +320,25 @@ export const WebData: projectType[] = [
     ],
     imageUrl: "/new-images/thumbs/react_thumb.jpg",
     link: "https://lukeconstable.com/vids/Jobsite-mid.mp4",
-    // low: "https://lukeconstable.com/vids/Jobsite-mid.mp4",
+    low: "https://lukeconstable.com/vids/Jobsite-mid.mp4",
     byline: "React App",
     playable: true,
 
     playableLink: "https://jobsite2.vercel.app/",
     IsCodeDemo: true,
     git: "https://github.com/lconstable123/jobsite2",
+  },
+  {
+    title: "Kaws Playtime",
+    client: "Kaws | National Gallery of Victoria",
+    description:
+      "I developed bespoke shaders and a custom wireless controller to augment street artist Fikaris's decisive visual style into an interactive experience. It had a residency at Melbourne city library during Melbourne International Games week.",
+    tags: ["UI/UX", "2d Motion Design", "After Effects", "Learning Design"],
+    imageUrl: "/new-images/thumbs/kawsplaytime_thumb.jpg",
+    link: "https://lukeconstable.com/vids/Kawsplaytime-low.mp4",
+    low: "https://lukeconstable.com/vids/Kawsplaytime-mobile.mp4",
+    byline: "Interactive Installation (2023)",
+    playable: false,
   },
 ];
 

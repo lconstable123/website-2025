@@ -24,7 +24,7 @@ export default function Intro({ mt = "" }: { mt?: string }) {
   // const { controls } = useInitialAnimation(0.4);
   // Assuming you want to use the first project for the intro
   return (
-    <div className=" absolute px-3 sm:px-6  w-full sm:w-[550px] lg:w-[750px]  flex flex-col  items-center    z-9000">
+    <div className="   sm:px-6  w-full  flex flex-col  items-center    z-9000">
       <section className={`relative w-full  ${mt} `} id="home" ref={ref}>
         {/* <ProfilePhoto /> */}
         {fontsLoaded && (
