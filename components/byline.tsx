@@ -21,7 +21,7 @@ export default function Byline({ mt = "25" }: { mt?: string }) {
       >
         <IntroCardTemplate>
           <div className="bg-gray-950 rounded-2xl py-5 mx-1 my-1  text-center flex flex-col items-center justify-center  tracking-wider Text-secondary text-white   font-light text-[12pt] sm:text-[11pt] leading-tight  ">
-            <div className="flex flex-col  items-center justify-center gap-y-2 gap-x-5 px-5">
+            <div className="flex flex-col sm:flex-row  items-center justify-center gap-y-2 gap-x-10 px-5">
               <p className="capitalize  ">
                 accomplished developer.
                 {/* {headerData.blurb} */}

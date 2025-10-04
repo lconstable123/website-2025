@@ -241,7 +241,7 @@ export const WebData: projectType[] = [
   {
     title: "PokeApp",
     client:
-      "I created this app that fetches from an API and stores on Postgres db to demonstrate cutting edge full-stack, optimistic UI, and authentication.",
+      "I designed this app that fetches from an API and stores on Postgres to demonstrate cutting edge full-stack, optimistic UI, and authentication.",
     description:
       "I developed bespoke shaders and a custom wireless controller to augment street artist Fikaris's decisive visual style into an interactive experience. It had a residency at Melbourne city library during Melbourne International Games week.",
     tags: [
@@ -259,15 +259,32 @@ export const WebData: projectType[] = [
       "Back-End",
       "Optimistic UI",
     ],
-    imageUrl: "/new-images/thumbs/plans_thumb.png",
+    imageUrl: "/new-images/thumbs/poke_thumb.png",
     link: "https://lukeconstable.com/vids/react-mid.mp4",
     low: "https://lukeconstable.com/vids/react-low.mp4",
     byline: "React App",
-    playable: false,
 
+    playable: true,
+
+    playableLink: "https://pokemanager.vercel.app/",
+    IsCodeDemo: true,
+
+    git: "https://github.com/lconstable123/pokemanager",
+  },
+  {
+    title: "React Hooks",
+    client: "A repo of useful hooks i've developed. Checkout the Readme",
+    link: "https://lukeconstable.com/vids/react-mid.mp4",
+    low: "https://lukeconstable.com/vids/react-low.mp4",
+    description:
+      "I developed bespoke shaders and a custom wireless controller to augment street artist Fikaris's decisive visual style into an interactive experience. It had a residency at Melbourne city library during Melbourne International Games week.",
+    tags: ["React", "TypeScript", "Framer.motion"],
+    imageUrl: "/new-images/thumbs/hooks_thumb.png",
+    byline: "React Repo",
+    clickthough: false,
+    playable: false,
     IsCodeDemo: true,
     git: "https://github.com/lconstable123/BespokeHooks",
-    clickthough: false,
   },
   {
     title: "Plans for the Planet",
@@ -281,20 +298,6 @@ export const WebData: projectType[] = [
 
     byline: "Interactive Installation (2025)",
     playable: false,
-  },
-  {
-    title: "React Hooks",
-    client: "A repo of useful hooks i've developed. Checkout the Readme",
-    link: "https://lukeconstable.com/vids/react-mid.mp4",
-    low: "https://lukeconstable.com/vids/react-low.mp4",
-    description:
-      "I developed bespoke shaders and a custom wireless controller to augment street artist Fikaris's decisive visual style into an interactive experience. It had a residency at Melbourne city library during Melbourne International Games week.",
-    tags: ["React", "TypeScript", "Framer.motion"],
-    imageUrl: "/new-images/thumbs/plans_thumb.png",
-    byline: "React Repo",
-    playable: false,
-    IsCodeDemo: true,
-    git: "https://github.com/lconstable123/BespokeHooks",
   },
 
   {
