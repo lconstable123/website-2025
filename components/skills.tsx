@@ -41,7 +41,7 @@ export default function Skills2({
 
   return (
     <section className=" mb-4 px-3   text-center  font-light tracking-wider leading-tight  Text-secondary">
-      <ul className=" flex flex-wrap justify-center sm:gap-x-[6px] gap-x-[8px] gap-y-[6px] sm:gap-y-[7px] text-[5pt] sm:text-[9pt] ">
+      <ul className=" flex flex-wrap justify-center sm:gap-x-[6px] gap-x-[8px] gap-y-[6px] sm:gap-y-[7px] text-[9pt] sm:text-[9pt] ">
         {format === "grid" ? (
           <SkillsGrid
             isInEyeline={isInEyeline}

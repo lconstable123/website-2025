@@ -20,13 +20,10 @@ export default function Byline({ mt = "25" }: { mt?: string }) {
         // onClick={(e) => fadeIn(e)}
       >
         <IntroCardTemplate>
-          <div className=" text-center  tracking-wider Text-secondary text-white my-2 sm:my-4 mx-4   font-light text-[9pt] sm:text-[11pt] leading-tight  ">
-            <p className="px-7 py-1 rounded-2xl">
-              Technical artist, accomplished interactive developer,
-              award-winning director.
-              {/* {headerData.blurb} */}
-            </p>
-            {/* <p className="text-tertiary font-medium  tracking-wider">Clients</p> */}
+          <div className="select-none capitalize flex gap-x-6 items-center justify-center text-center  tracking-wider Text-secondary text-white my-2 sm:my-4 mx-4   font-light text-[10pt] sm:text-[11pt] leading-tight  ">
+            <p className="rounded-2xl">Technical artist.</p>
+            <p className="rounded-2xl">accomplished developer.</p>
+            <p className="rounded-2xl">award-winning director.</p>
           </div>
         </IntroCardTemplate>
       </motion.div>

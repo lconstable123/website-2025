@@ -22,11 +22,11 @@ export default function CardDetails({
     <section className=" flex flex-col h-22 sm:h-26 left-5 pb-3 relative text-white transition-h duration-400 z-70 overflow-hidden ">
       {isImagesLoaded && (
         <>
-          <p className="  text-[10pt] sm:text-[12pt]  pt-1 Text-tertiary font-semibold  tracking-wider ">
+          <p className="  text-[11pt] sm:text-[12pt]  pt-1 Text-tertiary font-semibold  tracking-wider ">
             {title}
           </p>
           <p
-            className={`${!isSquare ? "w-[240px] sm:w-[500px]" : "w-[160px] "}   text-[6pt] sm:text-[8pt] text-white/90   pb-2 pt-1 tracking-wide`}
+            className={`${!isSquare ? "w-[300px] sm:w-[500px]" : "w-[160px] "}   text-[7pt] sm:text-[8pt] text-white/90   pb-2 pt-1 tracking-wide`}
           >
             {client}
           </p>
