@@ -43,8 +43,8 @@ export default function Home() {
   const { profileClicked } = useActiveSection();
   const { controls } = useInitialAnimation(0.2, 1, profileClicked > 0);
   return (
-    <main className="relative flex flex-col items-center   ">
-      <div className="pointer-events-none fixed h-full w-full border-7   border-yellow-900 z-1000" />
+    <main className="relative flex flex-col items-center    ">
+      <div className="pointer-events-none fixed h-full w-full border-8   border-yellow-900 z-4000" />
       <div className="absolute pointer-events-none bg-gradient-to-r from-black/30 to-black/0 left-0 w-90 z-1 h-full" />
       <div className="absolute pointer-events-none bg-gradient-to-l from-black/30 to-black/0 right-0 w-90 z-100 h-full" />
       <Suspense
@@ -57,9 +57,9 @@ export default function Home() {
           </>
         }
       >
-        <Intro mt=" w-[90%] sm:w-[650px] lg:w-[800px] px-5 sm:px-0  mt-10 lg:mt-25" />
-        <div className="pt-5 sm:pt-15  w-[90%] sm:w-[650px] lg:w-[800px]  flex flex-col  items-center    z-900">
-          <ProfilePhoto mt="mt-2 sm:mt-0" />
+        <Intro mt=" w-[90%] sm:w-[650px] lg:w-[800px] px-5 sm:px-0  mt-25 lg:mt-25" />
+        <div className="pt-10 sm:pt-10  w-[90%] sm:w-[650px] lg:w-[800px]  flex flex-col  items-center    z-900">
+          <ProfilePhoto mt="mt-0 sm:mt-0" />
           <Byline mt="mt-15" />
           {/* <Blurb mt="mt-5 sm:mt-10" /> */}
         </div>

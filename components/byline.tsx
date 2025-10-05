@@ -34,7 +34,7 @@ export default function Byline({ mt = "25" }: { mt?: string }) {
                   <motion.p
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5, delay: index * 0.5 + 0.4 }}
+                    transition={{ duration: 0.5, delay: index * 0.7 + 0.4 }}
                     key={b}
                     className="rounded-2xl"
                   >
