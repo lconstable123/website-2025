@@ -45,8 +45,8 @@ export default function Home() {
   return (
     <main className="relative flex flex-col items-center   ">
       <div className="pointer-events-none fixed h-full w-full border-7   border-yellow-900 z-1000" />
-      <div className="absolute bg-gradient-to-r from-black/10 to-black/0 left-0 w-70 -z-1 h-full" />
-      <div className="absolute bg-gradient-to-l from-black/10 to-black/0 right-0 w-70 -z-1 h-full" />
+      <div className="absolute pointer-events-none bg-gradient-to-r from-black/30 to-black/0 left-0 w-90 z-1 h-full" />
+      <div className="absolute pointer-events-none bg-gradient-to-l from-black/30 to-black/0 right-0 w-90 z-100 h-full" />
       <Suspense
         fallback={
           <>
@@ -57,34 +57,15 @@ export default function Home() {
           </>
         }
       >
-        <div className="pt-5 sm:pt-5  w-[90%] sm:w-[650px] lg:w-[800px]  flex flex-col  items-center    z-900">
-          <Intro mt="mt-10 lg:mt-15" />
-          <ProfilePhoto mt="mt-10 sm:mt-10" />
-          <Byline mt="mt-10" />
+        <Intro mt=" w-[90%] sm:w-[650px] lg:w-[800px] px-5 sm:px-0  mt-10 lg:mt-25" />
+        <div className="pt-5 sm:pt-15  w-[90%] sm:w-[650px] lg:w-[800px]  flex flex-col  items-center    z-900">
+          <ProfilePhoto mt="mt-2 sm:mt-0" />
+          <Byline mt="mt-15" />
           {/* <Blurb mt="mt-5 sm:mt-10" /> */}
         </div>
-        {/* <motion.hr
-          initial={{ opacity: 0 }}
-          // animate={{ opacity: 1 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1 }}
-          viewport={{ once: true }}
-          // transition={{ duration: 1, delay: 0.5 }}
-          // onViewportEnter={{ opacity: 1 }}
-          className="border-gray-800 border-2 ring-3 w-full my-30 text-center"
-        /> */}
 
         <Projects mt=" " />
-        {/* <motion.hr
-          initial={{ opacity: 0 }}
-          // animate={{ opacity: 1 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0 }}
-          viewport={{ once: true }}
-          // transition={{ duration: 1, delay: 0.5 }}
-          // onViewportEnter={{ opacity: 1 }}
-          className="border-gray-800 border-2 ring-3 w-full my-30 text-center"
-        /> */}
+
         {imagesLoaded && <Clients mt="mt-30" />}
         <PageFooter />
         <ContactLinks mt="mt-1" />

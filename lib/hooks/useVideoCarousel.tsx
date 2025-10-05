@@ -55,8 +55,9 @@ export const useVideoCarousel = (searchParams: ReadonlyURLSearchParams) => {
 
     params.set("category", category);
     const newUrl = `${window.location.pathname}?${params.toString()}`;
-    router.replace(newUrl, { scroll: false });
+    // router.replace(newUrl, { scroll: false });
     // window.history.replaceState({}, "", newUrl);
+    window.history.replaceState(null, "", newUrl);
 
     timerRef.current = setTimeout(() => {
       setIsCategoryChanging(false);
@@ -68,7 +69,6 @@ export const useVideoCarousel = (searchParams: ReadonlyURLSearchParams) => {
   //-------------------------------------------set Eyeline (y)
   useEffect(() => {
     setIsInEyeline(isInViewDeep);
-    // toast.success(`In eyeline: ${isInViewDeep}`);
   }, [isInViewDeep]);
 
   ////////----------------------------------- carousel nav caclutate
@@ -79,10 +79,6 @@ export const useVideoCarousel = (searchParams: ReadonlyURLSearchParams) => {
       setNavOffsetTop(offset);
     }
   }, [isInViewShort]);
-
-  // useEffect(() => {
-  //   setSelectedUICategory(selectedSkillSet);
-  // }, []);
 
   return {
     ref,

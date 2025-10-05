@@ -209,36 +209,6 @@ export const gameData: projectType[] = [
 
 export const WebData: projectType[] = [
   {
-    title: "lukeconstable.com",
-    client:
-      "I developed this self hosted media streaming player and interface.  Readme on GIT.",
-    description:
-      "An app that allows users to search, save, and apply for jobs.",
-    tags: [
-      "React",
-      "Web Design",
-      "Tailwind",
-
-      "Tailwind",
-      "TypeScript",
-
-      "UI/UX",
-      "Figma",
-      "Next.JS",
-
-      "Framer.motion",
-    ],
-    imageUrl: "/new-images/thumbs/website_thumb.jpg",
-    link: "https://lukeconstable.com/vids/react-mid.mp4",
-    low: "https://lukeconstable.com/vids/react-low.mp4",
-    byline: "React App",
-    playable: true,
-    playableLink: "https://lukeconstable.com",
-    IsCodeDemo: true,
-    git: "https://github.com/lconstable123/website-2025",
-    clickthough: false,
-  },
-  {
     title: "PokeApp",
     client:
       "I designed this app that fetches from an API and stores on Postgres to demonstrate cutting edge full-stack, optimistic UI, and authentication.",
@@ -285,6 +255,36 @@ export const WebData: projectType[] = [
     playable: false,
     IsCodeDemo: true,
     git: "https://github.com/lconstable123/BespokeHooks",
+  },
+  {
+    title: "lukeconstable.com",
+    client:
+      "I developed this self hosted media streaming player and interface.  Readme on GIT.",
+    description:
+      "An app that allows users to search, save, and apply for jobs.",
+    tags: [
+      "React",
+      "Web Design",
+      "Tailwind",
+
+      "Tailwind",
+      "TypeScript",
+
+      "UI/UX",
+      "Figma",
+      "Next.JS",
+
+      "Framer.motion",
+    ],
+    imageUrl: "/new-images/thumbs/website_thumb.jpg",
+    link: "https://lukeconstable.com/vids/react-mid.mp4",
+    low: "https://lukeconstable.com/vids/react-low.mp4",
+    byline: "React App",
+    playable: true,
+    playableLink: "https://lukeconstable.com",
+    IsCodeDemo: true,
+    git: "https://github.com/lconstable123/website-2025",
+    clickthough: false,
   },
   {
     title: "Plans for the Planet",
