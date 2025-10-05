@@ -57,19 +57,13 @@ export default function Home() {
           </>
         }
       >
-        {/* <div className="fixed  text-sm flex gap-4  text-white top-2 left-2 z-[9999]">
-          <p>{selectedSkillSet}</p>
-          <p>category entry 1: {Videodata?.[3]?.title} |</p>
-          <p>titele: {selectedVideoData?.title} |</p>
-          <p>link: {selectedVideoData?.imageUrl} |</p>
-        </div> */}
-        <div className="pt-5 sm:pt-2  w-full sm:w-[650px] lg:w-[800px]  flex flex-col  items-center    z-900">
+        <div className="pt-5 sm:pt-5  w-[90%] sm:w-[650px] lg:w-[800px]  flex flex-col  items-center    z-900">
           <Intro mt="mt-10 lg:mt-15" />
           <ProfilePhoto mt="mt-10 sm:mt-10" />
           <Byline mt="mt-10" />
           {/* <Blurb mt="mt-5 sm:mt-10" /> */}
         </div>
-        <motion.hr
+        {/* <motion.hr
           initial={{ opacity: 0 }}
           // animate={{ opacity: 1 }}
           whileInView={{ opacity: 1 }}
@@ -78,10 +72,10 @@ export default function Home() {
           // transition={{ duration: 1, delay: 0.5 }}
           // onViewportEnter={{ opacity: 1 }}
           className="border-gray-800 border-2 ring-3 w-full my-30 text-center"
-        />
+        /> */}
 
         <Projects mt=" " />
-        <motion.hr
+        {/* <motion.hr
           initial={{ opacity: 0 }}
           // animate={{ opacity: 1 }}
           whileInView={{ opacity: 1 }}
@@ -90,8 +84,8 @@ export default function Home() {
           // transition={{ duration: 1, delay: 0.5 }}
           // onViewportEnter={{ opacity: 1 }}
           className="border-gray-800 border-2 ring-3 w-full my-30 text-center"
-        />
-        {imagesLoaded && <Clients mt="" />}
+        /> */}
+        {imagesLoaded && <Clients mt="mt-30" />}
         <PageFooter />
         <ContactLinks mt="mt-1" />
         <Bg />
