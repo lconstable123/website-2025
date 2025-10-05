@@ -68,7 +68,7 @@ export default function Projects({
         transition={{ type: "spring", duration: 1.3 }}
         id="projects"
         style={{ opacity: 0 }}
-        className="   large-width-2 relative flex flex-col scroll-mt-28  border-white/20"
+        className="mt-20 sm:mt-50   large-width-2 relative flex flex-col scroll-mt-28  border-white/20"
         ref={ref}
       >
         {!isLongEnough && (
@@ -93,11 +93,11 @@ export default function Projects({
             ref={carouselSectionRef}
           >
             <div
-              onClick={scrollNext}
+              onClick={scrollPrev}
               className="z-30 absolute left-0 w-15 h-full"
             />
             <div
-              onClick={scrollPrev}
+              onClick={scrollNext}
               className="z-30 absolute right-0 w-15 h-full"
             />
             <div ref={scrollRef}>

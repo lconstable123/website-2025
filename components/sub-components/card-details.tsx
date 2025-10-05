@@ -26,7 +26,7 @@ export default function CardDetails({
             {title}
           </p>
           <p
-            className={`${!isSquare ? "w-[380px] sm:w-[500px]" : "w-[160px] "}   text-[7pt] sm:text-[8pt] text-white/90   pb-2 pt-1 tracking-wide`}
+            className={`${!isSquare ? "w-[300px] sm:w-[500px]" : "w-[160px] "}   text-[7pt] sm:text-[8pt] text-white/90   pb-2 pt-1 tracking-wide`}
           >
             {client}
           </p>

@@ -20,36 +20,10 @@ export default function Byline({ mt = "25" }: { mt?: string }) {
         // onClick={(e) => fadeIn(e)}
       >
         <IntroCardTemplate>
-          <div className="bg-gray-950 rounded-2xl py-5 mx-1 my-1  text-center flex flex-col items-center justify-center  tracking-wider Text-secondary text-white   font-light text-[12pt] sm:text-[11pt] leading-tight  ">
-            <div className="flex flex-col sm:flex-row  items-center justify-center gap-y-2 gap-x-10 px-5">
-              <p className="capitalize  ">
-                accomplished developer.
-                {/* {headerData.blurb} */}
-              </p>
-              <p className="capitalize ">
-                Technical artist.
-                {/* {headerData.blurb} */}
-              </p>
-              <p className="capitalize  ">
-                award-winning director.
-                {/* {headerData.blurb} */}
-              </p>
-            </div>
-            {/* <hr className="border-gray-700 w-100 my-6 text-center" /> */}
-            <ul className="px-7 text-center     Text-secondary text-gray-300   font-light text-[12pt] sm:text-[11pt]  ">
-              {/* {blurb.map((line) => (
-                <li
-                  key={line}
-                  className=" leading-4 tracking-wider text-[10pt] pb-2 rounded-2xl"
-                >
-                  {line}
-                </li>
-              ))} */}
-            </ul>
-            {/* <p className="mt-3 text-gray-100">
-              {" "}
-              I invite you to explore my portfolio.
-            </p> */}
+          <div className="select-none capitalize flex gap-x-6 items-center justify-center text-center  tracking-wider Text-secondary text-white my-2 sm:my-4 mx-4   font-light text-[10pt] sm:text-[11pt] leading-tight  ">
+            <p className="rounded-2xl">Technical artist.</p>
+            <p className="rounded-2xl">accomplished developer.</p>
+            <p className="rounded-2xl">award-winning director.</p>
           </div>
         </IntroCardTemplate>
       </motion.div>
