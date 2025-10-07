@@ -94,15 +94,15 @@ export default function Projects({
           >
             <div
               onClick={scrollPrev}
-              className="z-30 flex items-center absolute left-0 w-15 sm:w-20 h-full"
+              className="z-900 flex items-center absolute left-0 w-15 sm:w-20 h-full"
             >
-              <FaChevronLeft className="ml-2" />
+              <FaChevronLeft className="z-900 ml-2 " />
             </div>
             <div
               onClick={scrollNext}
-              className="z-30 flex items-center absolute right-0 w-15 sm:w-20 h-full"
+              className=" z-900 flex items-center absolute right-0 w-15 sm:w-20 h-full"
             >
-              <FaChevronRight className="ml-auto mr-2" />
+              <FaChevronRight className="z-900 ml-auto mr-2" />
             </div>
             <div ref={scrollRef}>
               <CarouselContent>
