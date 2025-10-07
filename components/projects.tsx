@@ -1,6 +1,6 @@
 "use client";
 import React, { Suspense } from "react";
-
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { RefinedallSkills } from "../lib/data/skills-data";
 
 import { motion } from "framer-motion";
@@ -94,12 +94,16 @@ export default function Projects({
           >
             <div
               onClick={scrollPrev}
-              className="z-30 absolute left-0 w-15 h-full"
-            />
+              className="z-30 flex items-center absolute left-0 w-15 sm:w-20 h-full"
+            >
+              <FaChevronLeft className="ml-2" />
+            </div>
             <div
               onClick={scrollNext}
-              className="z-30 absolute right-0 w-15 h-full"
-            />
+              className="z-30 flex items-center absolute right-0 w-15 sm:w-20 h-full"
+            >
+              <FaChevronRight className="ml-auto mr-2" />
+            </div>
             <div ref={scrollRef}>
               <CarouselContent>
                 {Videodata?.map((project, index) => (
