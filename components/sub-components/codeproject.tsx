@@ -30,6 +30,7 @@ export default function CodeProject({
   square,
   isInView,
   git,
+  figma,
   clickthough = true,
   IsCodeDemo = false,
   isImagesLoaded = true,
@@ -78,7 +79,8 @@ export default function CodeProject({
           <div className=" relative overflow-hidden h-50 sm:h-63 md:h-85 lg:h-85 rounded-t-lg mb-1 ">
             {isImagesLoaded ? (
               <>
-                <LinkButton link={git || ""} />
+                <LinkButton git={git || ""} figma={figma || ""} />
+
                 {clickthough && (
                   <div className="delay-50 transition-all group-hover:opacity-20 opacity-0 duration-800 video-shadow shadow-black/20 absolute z-11 pointer-events-none left-5 bottom-5 ">
                     <FaRegArrowAltCircleUp className="text-[40pt]" />

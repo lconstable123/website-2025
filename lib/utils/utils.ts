@@ -41,7 +41,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function openNewWindow(url = "", e: React.MouseEvent<HTMLElement>) {
+export function openNewWindow(
+  url = "",
+  e: React.MouseEvent<HTMLElement | SVGElement, MouseEvent>
+) {
   e.stopPropagation();
   e.preventDefault();
   window.open(

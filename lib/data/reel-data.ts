@@ -29,6 +29,7 @@ type projectType = {
   square?: boolean;
   IsCodeDemo?: boolean;
   git?: string;
+  figma?: string;
   clickthough?: boolean;
 };
 
@@ -240,6 +241,8 @@ export const WebData: projectType[] = [
     IsCodeDemo: true,
 
     git: "https://github.com/lconstable123/pokemanager",
+    figma:
+      "https://www.figma.com/site/ZcR2vHTTx1aPtWgONZFTHe/Untitled?node-id=0-1&t=WxxQnBj1wSVkmk0L-1",
   },
   {
     title: "React Hooks",
