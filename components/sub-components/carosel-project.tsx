@@ -23,6 +23,8 @@ export default function CodeProject({
   imageUrl,
   link,
   low,
+  git,
+  figma,
   byline,
   playable,
   playableLink,
@@ -72,7 +74,7 @@ export default function CodeProject({
           )}
         >
           <div className="overflow-hidden h-50 md:h-85 lg:h-85 rounded-t-lg mb-1 ">
-            <LinkButton link={""} />
+            <LinkButton git={git} figma={figma} />
             <div className="group-hover:scale-110 group-hover:rotate-3  scale-100 transition-all duration-500">
               <Image
                 src={imageUrl}
