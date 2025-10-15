@@ -82,8 +82,11 @@ export default function CodeProject({
                 <LinkButton git={git || ""} figma={figma || ""} />
 
                 {clickthough && (
-                  <div className="delay-50 transition-all group-hover:opacity-20 opacity-0 duration-800 video-shadow shadow-black/20 absolute z-11 pointer-events-none left-5 bottom-5 ">
-                    <FaRegArrowAltCircleUp className="text-[40pt]" />
+                  <div className="delay-50 transition-all group-hover:opacity-100 opacity-0 duration-800 video-shadow shadow-black/20 absolute z-11 pointer-events-none left-5 bottom-5 ">
+                    <div className=" flex flex-col items-center">
+                      <FaRegArrowAltCircleUp className="text-[40pt]" />
+                      <p className="text-[11pt]">visit app</p>
+                    </div>
                   </div>
                 )}
                 <div className=" absolute z-10 pointer-events-none inset-0 bg-radial from-black/0 to-black/70 via-black/20"></div>

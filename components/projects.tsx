@@ -87,20 +87,20 @@ export default function Projects({
             inView={isInViewShort}
           />
           <Carousel
-            className={`pb-0 mb-0  h-75 sm:h-[370px] border-0 md:h-[453px] z-50 overflow-hidden`}
+            className={`pb-0 mb-0  h-75 sm:h-[370px] border-0 md:h-[453px] z-50 overflow-hidden `}
             setApi={setApi}
             opts={{ align: "center", loop: true }}
             ref={carouselSectionRef}
           >
             <div
               onClick={scrollPrev}
-              className="z-900 flex items-center absolute left-0 w-15 sm:w-20 h-full"
+              className="z-900 flex items-center absolute left-0 w-15 top-1/2 -translate-y-1/2 h-10 sm:w-20 sm:h-25  md:h-full"
             >
               <FaChevronLeft className="z-900 ml-2 " />
             </div>
             <div
               onClick={scrollNext}
-              className=" z-900 flex items-center absolute right-0 w-15 sm:w-20 h-full"
+              className="z-900 flex items-center absolute right-0 w-15 sm:w-20  top-1/2 -translate-y-1/2 h-10 sm:h-25 md:h-full"
             >
               <FaChevronRight className="z-900 ml-auto mr-2" />
             </div>

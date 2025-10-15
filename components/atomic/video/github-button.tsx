@@ -29,14 +29,14 @@ export default function LinkButton({
       {git && (
         <FaGithub
           onClick={(e) => openNewWindow(git, e)}
-          className="scale-100 hover:scale-110 transition-all  duration-200   w-12 h-12"
+          className="scale-100 hover:scale-110 transition-all  duration-200   w-10 h-10"
         />
       )}
 
       {figma && (
         <FaFigma
           onClick={(e) => openNewWindow(figma, e)}
-          className="scale-100 hover:scale-110 transition-all  duration-200   w-12 h-12"
+          className="scale-100 hover:scale-110 transition-all  duration-200   w-10 h-10"
         />
       )}
     </div>
