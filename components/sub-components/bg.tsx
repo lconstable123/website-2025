@@ -12,7 +12,11 @@ export default function Bg() {
       className="fixed overflow-hidden inset-0 z-[-10] bg-cover bg-center"
     >
       <div
-        className="absolute inset-0 z-[-1] bg-cover bg-center bg1 opacity-100
+        className="absolute inset-0  bg-cover bg-center  bg-black/30 z-0  opacity-100
+      "
+      />
+      <div
+        className="absolute inset-0 z-[-1] bg-cover bg-center  bg1  opacity-100
       "
       />
 
