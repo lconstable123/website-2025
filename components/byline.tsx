@@ -10,7 +10,7 @@ import ClickPrompt2 from "./atomic/click-prompt";
 import { cn } from "../lib/utils/utils";
 const brags = [
   "technical artist.",
-  "accomplished developer.",
+  "full-stack developer.",
   "award-winning director.",
 ];
 import { categories } from "../lib/data/reel-data";
@@ -89,10 +89,7 @@ const Welcome = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4, delay: !isMobile ? 1.9 : 0 }}
       >
-        <p>
-          I invite you to check out my work, which I've curated into my
-          different hats:
-        </p>
+        <p>I invite you to check out my work, sorted by my different hats:</p>
         <div className=" border-1  py-2 px-4  rounded-lg border-gray-700 mt-2 sm:mt-2 flex flex-wrap   gap-2 sm:gap-4 justify-center">
           {categories.map((feature, index) =>
             FeatureBubble({

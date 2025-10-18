@@ -67,11 +67,10 @@ export default function Home() {
         <div className="pt-10 sm:pt-10  w-[90%] sm:w-[650px] lg:w-[900px]  flex flex-col  items-center    z-900">
           <ProfilePhoto mt="mt-0 sm:mt-0" />
           <Byline mt="mt-11" />
+          {/* <Blurb mt="mt-5 sm:mt-10" /> */}
         </div>
         {/* <div className="absolute left-70 h-full w-[1px] bg-gray-800" /> */}
         <hr className="opacity-0 md:opacity-100 border-gray-900 sm:mb-18 sm:mt-20 w-screen border-1" />
-
-        <Blurb mt="mt-5 sm:mt-10" />
 
         <Projects mt="mt-0 " />
 

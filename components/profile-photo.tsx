@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { Suspense, use, useEffect, useState } from "react";
-import { motion, useAnimation } from "framer-motion";
+import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import IntroCardTemplate from "./sub-components/intro-card-template";
 
 import Rings from "./atomic/profile/rings";
@@ -16,6 +16,7 @@ import toast from "react-hot-toast";
 import { useScreenContext } from "../lib/context-providers/screen-context";
 import { useActiveSection } from "../lib/context-providers/active-section-context";
 import ClickPrompt2 from "./atomic/click-prompt";
+import { mainThumbs } from "../lib/data/reel-data";
 
 export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
   const controls = useAnimation(); // 👈 useAnimation hook
@@ -31,16 +32,16 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
 
     setProfileClicked((prev) => prev + 1);
 
-    if (e) {
-      controls.start({
-        scale: [1, 0.94, 1.03, 1],
+    // if (e) {
+    //   controls.start({
+    //     scale: [1, 0.94, 1.03, 1],
 
-        transition: {
-          duration: 0.65,
-          times: [0, 0.2, 0.4, 1],
-        },
-      });
-    }
+    //     transition: {
+    //       duration: 0.65,
+    //       times: [0, 0.2, 0.4, 1],
+    //     },
+    //   });
+    // }
 
     setIsPressed(true);
 
@@ -57,7 +58,8 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
       opacity: 1,
       scale: 1,
       transition: {
-        type: "spring",
+        type: "tween",
+        ease: "easeOut",
         stiffness: 250,
         damping: 20,
         duration: 0.4,
@@ -66,7 +68,7 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
   }, [controls]);
 
   return (
-    <div className={`w-80 sm:w-90 h-80 sm:h-90 relative  ${mt} `}>
+    <div className={`w-90 py-0 sm:py-5 h-full relative  `}>
       {!profileClicked && <ClickListener handle={handlePress} />}
       {!profileClicked && <ScrollListener handle={handlePress} />}
 
@@ -85,7 +87,7 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
         }}
         // onMouseDown={() => setIsPressed(true)}
         onMouseDown={(e) => handlePress(e)}
-        className={`origin-center ease-in-out -z-4`}
+        className={`origin-center  ease-in-out -z-4`}
       >
         {/* <Suspense fallback={<div>Loading...</div>}> */}
         <IntroCardTemplate
@@ -94,7 +96,7 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
           "
           outline={true}
         >
-          <div className="cursor-pointer   bg-amber-200">
+          <div className="cursor-pointer flex flex-row   bg-black">
             <Image
               src="/new-images/profile2.jpg"
               alt="profile pic"
@@ -104,17 +106,73 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
               priority={true}
               className="z-30 object-cover  pointer-events-none"
             />
+            {/* <AttractorGallery /> */}
           </div>
 
-          <PhotoGradient />
+          {/* <PhotoGradient /> */}
         </IntroCardTemplate>
         {/* </Suspense> */}
       </motion.div>
       <BgSpotlight />
 
-      {/* <Rings pressed={isPressed} /> */}
+      <Rings pressed={isPressed} />
       {/* <Rings pressed={isPressed} /> */}
       <ClickPrompt trigger={profileClicked > 0} />
     </div>
   );
 }
+
+// const FADE_DURATION = 200; // in ms
+// const DISPLAY_DURATION = 1000; // in ms
+// const AttractorGallery = () => {
+//   const [indexes, setIndexes] = useState([0, 1, 2]);
+//   const [currentIndex, setCurrentIndex] = useState(3);
+//   const [lastSlot, setLastSlot] = useState(-1);
+
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       // Pick random slot (not same as last time)
+//       let slot = Math.floor(Math.random() * 3);
+//       while (slot === lastSlot) {
+//         slot = Math.floor(Math.random() * 3);
+//       }
+
+//       // Calculate next image index
+//       const next = (currentIndex + 1) % mainThumbs.length;
+
+//       // Swap that slot with the new image
+//       setIndexes((prev) => {
+//         const newIndexes = [...prev];
+//         newIndexes[slot] = next;
+//         return newIndexes;
+//       });
+
+//       setCurrentIndex(next);
+//       setLastSlot(slot);
+//     }, FADE_DURATION + DISPLAY_DURATION);
+
+//     return () => clearInterval(interval);
+//   }, [currentIndex, lastSlot]);
+
+//   return (
+//     <div className="pointer-events-none opacity-90 bg-gray-800 flex flex-col h-full items-center justify-center">
+//       {indexes.map((thumbIndex, i) => (
+//         <div className="w-full h-1/3 overflow-hidden" key={i}>
+//           <FadeImage key={thumbIndex} src={mainThumbs[thumbIndex]} />
+//         </div>
+//       ))}
+//     </div>
+//   );
+// };
+
+// const FadeImage = ({ src }: { src: string }) => (
+//   <motion.img
+//     key={src}
+//     src={src}
+//     initial={{ opacity: 0 }}
+//     animate={{ opacity: 1 }}
+//     exit={{ opacity: 0 }}
+//     transition={{ duration: FADE_DURATION / 1000 }}
+//     className="h-[100px] w-[200px] object-cover fade-image"
+//   />
+// );

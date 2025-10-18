@@ -68,7 +68,7 @@ export default function Projects({
         transition={{ type: "spring", duration: 1.3, delay: 0.1 }}
         id="projects"
         style={{ opacity: 0 }}
-        className="mt-5 sm:mt-5   large-width-2 relative flex flex-col scroll-mt-28  border-white/20"
+        className="   large-width-2 relative flex flex-col scroll-mt-28  border-white/20"
         ref={ref}
       >
         {!isLongEnough && (

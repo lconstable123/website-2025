@@ -15,6 +15,25 @@ export const categories = [
   { title: "Experiments", icon: React.createElement(AiTwotoneExperiment) },
 ] as const;
 
+export const mainThumbs = [
+  "/new-images/thumbs/tb_thumb.jpg",
+  "/new-images/thumbs/poke_thumb.png",
+  "/new-images/thumbs/hooks_thumb.png",
+  "/new-images/thumbs/fikaris_thumb.jpg",
+  "/new-images/thumbs/mars_thumb.jpg",
+  "/new-images/thumbs/plans_thumb.png",
+  "/new-images/thumbs/kawsplaytime_thumb.jpg",
+  "/new-images/thumbs/sa2_thumb.jpg",
+  "/new-images/thumbs/terracotta_thumb.jpg",
+  "/new-images/thumbs/haring_thumb.jpg",
+  "/new-images/thumbs/dali_thumb2.jpg",
+  "/new-images/thumbs/lyi_thumb.jpg",
+  "/new-images/thumbs/god_thumb.jpg",
+  "/new-images/thumbs/29-4-diffusion[square]_thumb.jpg",
+  "/new-images/thumbs/flippies_thumb.jpg",
+  "/new-images/thumbs/social_thumb.jpg",
+];
+
 type projectType = {
   title: string;
   client: string;

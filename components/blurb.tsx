@@ -14,7 +14,7 @@ export default function Blurb({ mt = "25" }: { mt?: string }) {
   return (
     <div
       className="relative
-      large-width-2      "
+      large-width-2 mt-27    "
     >
       <motion.div
         className={``}
@@ -25,7 +25,7 @@ export default function Blurb({ mt = "25" }: { mt?: string }) {
         // onClick={(e) => fadeIn(e)}
       >
         <IntroCardTemplate>
-          <ul className="  md:px-0 lg:px-20  h-full flex md:flex-row flex-col text-center  tracking-wider Text-secondary text-white my-2 sm:my-2 mx-4   font-light text-[9pt] sm:text-[11pt] leading-tight  ">
+          <ul className=" md:px-0 lg:px-20  h-full flex md:flex-row flex-col text-center  tracking-wider Text-secondary text-white my-2 sm:my-2 mx-4   font-light text-[9pt] sm:text-[11pt] leading-tight  ">
             {/* <hr /> */}
             {blurb.map((line) => (
               <li
