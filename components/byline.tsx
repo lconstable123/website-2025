@@ -36,7 +36,7 @@ export default function Byline({ mt = "20" }: { mt?: string }) {
           <div className="items-center my-3 sm:my-4 select-none flex flex-col  ">
             {profileClicked > 0 && (
               <>
-                <motion.div className="mx-5 text-center flex flex-col sm:flex-row capitalize items-center justify-center mb-2 sm:mb-0 gap-y-2 gap-x-5 tracking-wider Text-secondary font-light  text-white text-[10pt]">
+                <motion.div className="mx-5 text-center flex sm:flex-row flex-wrap capitalize items-center justify-center mb-2 sm:mb-0 gap-y-2 gap-x-5 tracking-wider Text-secondary font-light  text-white text-[10pt]">
                   {brags.map((b, index) => (
                     <motion.p
                       initial={{ opacity: 0 }}
@@ -82,7 +82,7 @@ const Welcome = () => {
       initial={{ height: 0 }}
       animate={{ height: "auto" }}
       transition={{ duration: 0.3, delay: 1.7 }}
-      className=" mx-4 md:mx-8   text-center  leading-[14pt] Text-secondary font-light  text-white text-[10pt] tracking-wider"
+      className=" mx-4 md:mx-8   text-center  leading-[14pt] Text-secondary font-light  text-gray-300 text-[10pt] tracking-wider"
     >
       <motion.div
         initial={{ opacity: 0 }}
@@ -166,7 +166,7 @@ const FeatureBubble = ({
         handleSelectCategory(text);
       }}
       key={key}
-      className=" text-white flex items-center justify-center  outline-white/30 border-0 bg-gray-950 rounded-b-md  overflow-hidden transition-all  outline-1 rounded-t-xs duration-600 delay-50 py-[1px] px-3  hover:bg-gray-800"
+      className=" text-gray-200 flex items-center justify-center  outline-white/30 border-0 bg-gray-950 rounded-b-md  overflow-hidden transition-all  outline-1 rounded-t-xs duration-600 delay-50 py-[1px] px-3  hover:bg-gray-800"
     >
       <i className="w-5 ">{icon}</i>
       {text}
