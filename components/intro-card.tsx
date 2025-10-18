@@ -7,7 +7,7 @@ const brags = ["developer.", "technical artist.", , "director."];
 export default function IntroCard() {
   return (
     <IntroCardTemplate>
-      <div className=" flex flex-col gap-1 justify-center items-center py-2 px-2       ">
+      <div className=" h-20 flex flex-col gap-1 justify-center items-center py-2 px-2       ">
         <h1 className=" px-5 py-0   uppercase rounded-2xl   text-white text-center text-[25pt] sm:text-[27pt]  Text-secondary !leading-10 font-bold tracking-widest sm:tracking-[8px]">
           {headerData.name}
         </h1>

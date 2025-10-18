@@ -36,7 +36,7 @@ export default function ActiveSectionContextProvider({
   const [timeOfLastClick, setTimeOfLastClick] = useState(0);
   const [profileClicked, setProfileClicked] = useState(0);
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const isMobile = useScreenContext();
+  const { isMobile } = useScreenContext();
   const scrollToElement = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -51,8 +51,11 @@ export default function ActiveSectionContextProvider({
 
   useEffect(() => {
     if (profileClicked > 1) {
-      // toast.success("scrolling to element");
-      scrollToElement();
+      if (!isMobile) {
+        toast.success("scrolling to element");
+        scrollToElement();
+      }
+      toast.success("NOT scrolling to element");
     }
   }, [profileClicked]);
 

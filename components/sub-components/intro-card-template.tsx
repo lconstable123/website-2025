@@ -4,15 +4,15 @@ import { motion } from "framer-motion";
 import clsx from "clsx";
 export default function IntroCardTemplate({
   children,
-  rounded = "rounded-3xl",
-  secondaryRounded = "rounded-2xl",
+  rounded = false,
+  secondaryRounded = false,
   outline = false,
   shadow = "dark",
   canSelect = false,
 }: {
   children: React.ReactNode;
-  rounded?: string;
-  secondaryRounded?: string;
+  rounded?: boolean;
+  secondaryRounded?: boolean;
   outline?: boolean;
   shadow?: "light" | "dark";
   canSelect?: boolean;
@@ -30,11 +30,14 @@ export default function IntroCardTemplate({
             : canSelect
               ? "outline-yellow-900/70 border-3 outline-2 hover:outline-yellow-700 "
               : "outline-yellow-900/70 border-3 outline-2 ",
-          rounded
+          !rounded ? "rounded-none md:rounded-3xl" : "rounded-full"
         )}
       >
         <div
-          className={`m-[4px] ${secondaryRounded}   border-yellow-900/50 overflow-hidden  text-white styleDark  vLines sm:vLines flex-grow`}
+          className={clsx(
+            `m-[4px]    border-yellow-900/50 overflow-hidden  text-white styleDark  vLines sm:vLines flex-grow`,
+            !secondaryRounded ? "rounded-none md:rounded-2xl" : "rounded-full"
+          )}
         >
           {children}
         </div>

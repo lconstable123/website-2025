@@ -68,7 +68,7 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
   }, [controls]);
 
   return (
-    <div className={`w-80 sm:w-90 py-0 sm:py-5 h-full relative  `}>
+    <div className={`w-70 sm:w-90 pt-10 sm:pt-10 h-full relative  `}>
       {!profileClicked && <ClickListener handle={handlePress} />}
       {!profileClicked && <ScrollListener handle={handlePress} />}
 
@@ -91,9 +91,8 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
       >
         {/* <Suspense fallback={<div>Loading...</div>}> */}
         <IntroCardTemplate
-          rounded="rounded-full"
-          secondaryRounded="rounded-full
-          "
+          rounded={true}
+          secondaryRounded={true}
           outline={true}
         >
           <div className="cursor-pointer flex flex-row   bg-black">

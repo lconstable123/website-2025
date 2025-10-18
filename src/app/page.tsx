@@ -61,16 +61,16 @@ export default function Home() {
           </>
         }
       >
-        <Intro mt={` w-[80%]  sm:w-[500px] px-5 sm:px-0  mt-10 sm:mt-30`} />
-        <div className="pt-10 sm:pt-10  w-[90%] sm:w-[650px] lg:w-[900px]  flex flex-col  items-center    z-900">
+        <div className="pt-2 sm:pt-5  w-full md:w-[700px] lg:w-[950px]  flex flex-col  items-center    z-900">
+          <Intro mt={` w-full  md:w-[500px]  sm:px-0  mt-10 sm:mt-30`} />
           <ProfilePhoto mt="mt-0 sm:mt-0" />
           <Byline mt="mt-11" />
           {/* <Blurb mt="mt-5 sm:mt-10" /> */}
-        </div>
-        {/* <div className="absolute left-70 h-full w-[1px] bg-gray-800" /> */}
-        <hr className="opacity-0 md:opacity-100 border-gray-900 sm:mb-18 sm:mt-20 w-screen border-1" />
+          {/* <div className="absolute left-70 h-full w-[1px] bg-gray-800" /> */}
+          <hr className="opacity-0 md:opacity-100 border-gray-900 sm:mb-18 sm:mt-20 w-screen border-1" />
 
-        <Projects mt="mt-0 " />
+          <Projects mt="mt-0 " />
+        </div>
 
         {imagesLoaded && <Clients mt="mt-30" />}
         <PageFooter />

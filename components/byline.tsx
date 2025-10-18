@@ -24,7 +24,7 @@ export default function Byline({ mt = "20" }: { mt?: string }) {
   const { controls } = useInitialAnimation(0.2, 1, profileClicked > 0);
 
   return (
-    <div className="h-[330px] sm:h-[200px] relative w-full">
+    <div className=" h-[330px] sm:h-[200px] relative w-full">
       <motion.div
         className={`${mt}`}
         initial={{ opacity: 0, y: 50 }}

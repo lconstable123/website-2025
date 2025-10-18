@@ -23,6 +23,7 @@ export default function ScreenContextProvider({
   const isMobileLandscape = isMobile && isLandscape;
   const getScreensize = () => {
     const mobile = window.innerWidth < 768;
+    // toast.success(`Window width: ${mobile}`);
     const landscape = window.matchMedia("(orientation: landscape)").matches;
     setIsMobile(mobile);
     setIsLandscape(landscape);
