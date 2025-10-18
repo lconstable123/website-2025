@@ -46,7 +46,7 @@ export default function Home() {
   const { controls } = useInitialAnimation(0.2, 1, profileClicked > 0);
   return (
     <main className="relative flex flex-col items-center    ">
-      <div className="pointer-events-none fixed h-full w-full border-8   border-yellow-900 z-4000" />
+      <div className="pointer-events-none fixed h-full w-full border-none sm:border-8   border-yellow-900 z-4000" />
       {/* <div className="absolute pointer-events-none bg-gradient-to-r from-black/30 to-black/0 left-0 w-90 z-1 h-full" />
       <div className="absolute pointer-events-none bg-gradient-to-l from-black/30 to-black/0 right-0 w-90 z-100 h-full" /> */}
       {/* <div className="absolute left-50 h-full w-[1px] bg-gray-800" />

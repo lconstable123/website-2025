@@ -18,7 +18,7 @@ export default function SectionHeading({ children }: SectionType) {
       viewport={{ once: true, amount: 0.9 }}
     >
       <div className="w-screen h-2"></div>
-      <IntroCardTemplate rounded="rounded-3xl" secondaryRounded="rounded-xl">
+      <IntroCardTemplate>
         <div className=" text-center text-2xl  Text-secondary text-white my-4 mx-4 uppercase tracking-widest  font-medium leading-tight  ">
           {children}
         </div>

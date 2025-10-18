@@ -21,7 +21,7 @@ export default function ContactLinks({ mt = "mt-25" }: { mt?: string }) {
       // initial={{ opacity: 0, y: 50 }}
       // animate={controls}
     >
-      <IntroCardTemplate canSelect={true} rounded="none">
+      <IntroCardTemplate canSelect={true}>
         <div className=" text-white py-2 sm:py-2 flex flex-row sm:flex-row gap-10 sm:gap-14 text-sm font-medium  items-center justify-center">
           <Link
             href="https://www.instagram.com/virtuallyanything.xyz/"
