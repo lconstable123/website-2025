@@ -62,13 +62,13 @@ export default function Projects({
     <div>
       {!imagesLoaded && <ImageLoader currentCategory={selectedUICategory} />}
       <motion.section
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
-        transition={{ type: "spring", duration: 1.3, delay: 0.1 }}
+        transition={{ type: "spring", duration: 1.3 }}
         id="projects"
         style={{ opacity: 0 }}
-        className="   large-width-2 relative flex flex-col scroll-mt-28  border-white/20"
+        className="mt-20 sm:mt-0  large-width-2 relative flex flex-col scroll-mt-28  border-white/20"
         ref={ref}
       >
         {!isLongEnough && (
@@ -110,9 +110,9 @@ export default function Projects({
                   <React.Fragment key={project.title}>
                     <CarouselItem
                       className={clsx(
-                        "  flex justify-center h-full transition-[flex] duration-100 ease-in-out",
+                        " flex justify-center  transition-[flex] duration-100 ease-in-out",
                         isLongEnough
-                          ? "flex-[0_0_90%]  md:flex-[0_0_86%] lg:flex-[0_0_76%] 2xl:flex-[0_0_56%]"
+                          ? "flex-[0_0_90%]  sm:flex-[0_0_86%] lg:flex-[0_0_76%] 2xl:flex-[0_0_56%]"
                           : "flex-[0_0_100%]"
                       )}
                     >

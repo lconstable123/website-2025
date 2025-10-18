@@ -73,7 +73,7 @@ export default function CodeProject({
           className={clsx(
             " relative overflow-hidden  rounded-xl border-white/20 bg-black-200/90  group transition-opacity duration-500 text-left flex flex-col justify-center dark:text-white dark:hover:bg-white/20",
             !isInView || !isInEyeline ? "opacity-10" : "opacity-100",
-            square ? "w-full sm:w-[337px] " : "w-full sm:w-[537px]"
+            square ? "w-full sm:w-[337px] " : "w-full"
           )}
         >
           <div className=" relative overflow-hidden h-50 sm:h-63 md:h-85 lg:h-85 rounded-t-lg mb-1 ">

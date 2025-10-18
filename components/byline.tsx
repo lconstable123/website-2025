@@ -36,7 +36,7 @@ export default function Byline({ mt = "20" }: { mt?: string }) {
           <div className="items-center my-3 sm:my-4 select-none flex flex-col  ">
             {profileClicked > 0 && (
               <>
-                <motion.div className="mx-5 text-center flex sm:flex-row capitalize items-center justify-center gap-x-5 sm:text-[11pt] text-[10pt]">
+                <motion.div className="mx-5 text-center flex flex-col sm:flex-row capitalize items-center justify-center mb-2 sm:mb-0 gap-y-2 gap-x-5 tracking-wider Text-secondary font-light  text-white text-[10pt]">
                   {brags.map((b, index) => (
                     <motion.p
                       initial={{ opacity: 0 }}
@@ -81,16 +81,16 @@ const Welcome = () => {
     <motion.div
       initial={{ height: 0 }}
       animate={{ height: "auto" }}
-      transition={{ duration: 0.3, delay: !isMobile ? 1.7 : 0 }}
+      transition={{ duration: 0.3, delay: 1.7 }}
       className=" mx-16 md:mx-8   text-center  leading-[14pt] Text-secondary font-light  text-white text-[10pt] tracking-wider"
     >
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, delay: !isMobile ? 1.9 : 0 }}
+        transition={{ duration: 0.4, delay: 1.9 }}
       >
-        <p>I invite you to check out my work, sorted by my different hats:</p>
-        <div className=" border-1  py-2 px-4  rounded-lg border-gray-700 mt-2 sm:mt-2 flex flex-wrap   gap-2 sm:gap-4 justify-center">
+        <p>Check out my work, sorted by my different hats:</p>
+        <div className=" border-1  py-2 px-4  rounded-lg border-gray-700  mt-2 sm:mt-2  flex flex-row  flex-wrap  gap-2 sm:gap-4 justify-center">
           {categories.map((feature, index) =>
             FeatureBubble({
               text: feature.title,

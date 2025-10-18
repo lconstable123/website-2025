@@ -171,7 +171,7 @@ body {
 }
 
 .large-width-2 {
-  @apply px-3 sm:px-6 w-screen sm:w-[700px]  lg:w-[900px] 2xl:w-[1200px];
+  @apply sm:px-6 px-8 w-screen sm:w-[700px]  lg:w-[950px] 2xl:w-[1200px];
 }
 
 .medWidth {

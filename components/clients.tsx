@@ -23,10 +23,9 @@ export default function Clients({ mt = "25" }: { mt?: string }) {
         transition={{ type: "spring", duration: 1.3 }}
       >
         <IntroCardTemplate>
-          <div className="  text-center  tracking-wider Text-secondary text-white my-4 mx-4   font-light text-[9pt] sm:text-[11pt] leading-tight  ">
+          <div className="  text-center  tracking-wider Text-secondary font-light  text-white text-[10pt] my-4 mx-4   leading-tight  ">
             <p className="px-7 py-1 rounded-2xl">
-              Delivering{" "}
-              <span className="textAccent">tasteful, reliable, versatile</span>{" "}
+              Delivering <span className="textAccent">reliable, versatile</span>{" "}
               results.
               {/* {headerData.blurb} */}
             </p>

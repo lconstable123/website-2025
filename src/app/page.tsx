@@ -61,9 +61,7 @@ export default function Home() {
           </>
         }
       >
-        <Intro
-          mt={` w-[90%] sm:w-[650px] lg:w-[900px] px-5 sm:px-0  mt-10 sm:mt-30`}
-        />
+        <Intro mt={` w-[80%]  sm:w-[500px] px-5 sm:px-0  mt-10 sm:mt-30`} />
         <div className="pt-10 sm:pt-10  w-[90%] sm:w-[650px] lg:w-[900px]  flex flex-col  items-center    z-900">
           <ProfilePhoto mt="mt-0 sm:mt-0" />
           <Byline mt="mt-11" />
