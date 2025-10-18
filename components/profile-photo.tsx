@@ -21,6 +21,7 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
   const controls = useAnimation(); // 👈 useAnimation hook
 
   const { setProfileClicked, profileClicked } = useActiveSection();
+
   const handlePress = (e?: any) => {
     e?.preventDefault();
     e?.stopPropagation();
@@ -65,7 +66,7 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
   }, [controls]);
 
   return (
-    <div className={`w-80 sm:w-100 h-80 sm:h-100 relative  ${mt} `}>
+    <div className={`w-80 sm:w-90 h-80 sm:h-90 relative  ${mt} `}>
       {!profileClicked && <ClickListener handle={handlePress} />}
       {!profileClicked && <ScrollListener handle={handlePress} />}
 
@@ -93,7 +94,7 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
           "
           outline={true}
         >
-          <div className="cursor-pointer  bg-amber-200">
+          <div className="cursor-pointer   bg-amber-200">
             <Image
               src="/new-images/profile2.jpg"
               alt="profile pic"
@@ -101,7 +102,7 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
               height={400}
               quality={95}
               priority={true}
-              className=" z-30 object-cover shadow-xl pointer-events-none"
+              className="z-30 object-cover  pointer-events-none"
             />
           </div>
 
@@ -111,7 +112,7 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
       </motion.div>
       <BgSpotlight />
 
-      <Rings pressed={isPressed} />
+      {/* <Rings pressed={isPressed} /> */}
       {/* <Rings pressed={isPressed} /> */}
       <ClickPrompt trigger={profileClicked > 0} />
     </div>

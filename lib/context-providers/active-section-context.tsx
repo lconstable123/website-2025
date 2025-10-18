@@ -9,6 +9,7 @@ import React, {
 
 import toast from "react-hot-toast";
 import { SectionNameType } from "../utils/types";
+import { useScreenContext } from "./screen-context";
 
 type ActiveContextProviderProps = {
   children: React.ReactNode;
@@ -35,7 +36,7 @@ export default function ActiveSectionContextProvider({
   const [timeOfLastClick, setTimeOfLastClick] = useState(0);
   const [profileClicked, setProfileClicked] = useState(0);
   const scrollRef = useRef<HTMLDivElement | null>(null);
-
+  const isMobile = useScreenContext();
   const scrollToElement = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView({ behavior: "smooth", block: "center" });

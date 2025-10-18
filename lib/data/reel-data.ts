@@ -212,7 +212,7 @@ export const WebData: projectType[] = [
   {
     title: "PokeApp",
     client:
-      "I designed this app that fetches from an API and stores on Postgres to demonstrate cutting edge full-stack, optimistic UI, and authentication.",
+      "I designed this app that fetches from an API and stores on Postgres to with cutting edge full-stack, optimistic UI, and authentication.",
     description:
       "I developed bespoke shaders and a custom wireless controller to augment street artist Fikaris's decisive visual style into an interactive experience. It had a residency at Melbourne city library during Melbourne International Games week.",
     tags: [

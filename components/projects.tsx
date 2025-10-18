@@ -62,13 +62,13 @@ export default function Projects({
     <div>
       {!imagesLoaded && <ImageLoader currentCategory={selectedUICategory} />}
       <motion.section
-        initial={{ opacity: 0, y: 50 }}
+        initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
-        transition={{ type: "spring", duration: 1.3 }}
+        transition={{ type: "spring", duration: 1.3, delay: 0.1 }}
         id="projects"
         style={{ opacity: 0 }}
-        className="mt-20 sm:mt-50   large-width-2 relative flex flex-col scroll-mt-28  border-white/20"
+        className="mt-5 sm:mt-5   large-width-2 relative flex flex-col scroll-mt-28  border-white/20"
         ref={ref}
       >
         {!isLongEnough && (

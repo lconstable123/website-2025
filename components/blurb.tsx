@@ -12,20 +12,25 @@ export default function Blurb({ mt = "25" }: { mt?: string }) {
   const { controls } = useInitialAnimation(0.2, 1, profileClicked > 0);
 
   return (
-    <div className="relative w-full">
+    <div
+      className="relative
+      large-width-2      "
+    >
       <motion.div
-        className={`${mt}`}
-        initial={{ opacity: 0, y: 50 }}
-        animate={controls}
+        className={``}
+        initial={{ opacity: 0, y: 0 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 1, delay: 0.0 }}
         // onClick={(e) => fadeIn(e)}
       >
         <IntroCardTemplate>
-          <ul className=" text-center  tracking-wider Text-secondary text-white my-2 sm:my-4 mx-4   font-light text-[9pt] sm:text-[11pt] leading-tight  ">
-            <hr />
+          <ul className="  md:px-0 lg:px-20  h-full flex md:flex-row flex-col text-center  tracking-wider Text-secondary text-white my-2 sm:my-2 mx-4   font-light text-[9pt] sm:text-[11pt] leading-tight  ">
+            {/* <hr /> */}
             {blurb.map((line) => (
               <li
                 key={line}
-                className=" leading-4 text-[9pt] px-7 py-1 rounded-2xl"
+                className=" leading-4 text-[10pt] px-7 sm:py-1 py-3 rounded-2xl"
               >
                 {line}
               </li>
@@ -34,16 +39,6 @@ export default function Blurb({ mt = "25" }: { mt?: string }) {
           </ul>
         </IntroCardTemplate>
       </motion.div>
-      <div className="z-1000 text-white  fixed bottom-0  left-1/2 -translate-x-1/2">
-        <ClickPrompt2
-          onClick={false}
-          Trigger={profileClicked > 0}
-          direction="down"
-          onScroll={true}
-        >
-          Scroll Down for more
-        </ClickPrompt2>
-      </div>
     </div>
   );
 }

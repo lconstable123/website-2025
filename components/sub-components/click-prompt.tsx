@@ -20,12 +20,12 @@ export default function ClickPrompt({
       opacity: 1,
       scale: 1,
       y: 0,
-      transition: { type: "tween", duration: 0.7, delay: 1.6 },
+      transition: { type: "tween", duration: 0.7, delay: 1 },
     });
   }, []);
   return (
     <motion.h1
-      className="cursor-pointer absolute -bottom-40 left-1/2 -translate-x-1/2 text-white/90 text-center text-[13pt] sm:text-[15pt] tracking-wider font-light"
+      className="cursor-pointer absolute -bottom-30 left-1/2 -translate-x-1/2 text-white/90 text-center text-[13pt] sm:text-[15pt] tracking-wider font-light"
       initial={{ opacity: 0, scale: 0.97 }}
       animate={controls}
     >

@@ -1,9 +1,11 @@
 export const blurb = [
-  "I can move between the creative and technical sides of any project.",
+  "I'm an end-to-end creative delivering versatile, reliable experiences.",
+  "I offer full-stack web, UX, motion design, and 3D.",
+  "My tools include Typescript, React, Figma, Houdini, Unreal and Unity.",
+  // "I invite you to check out my portfolio!",
 
-  // "I pride myself on reliability and transparency—no surprises.",
-  "I know the entertainment industry, I don't just create a product, but a memorable experience.",
-  "I've worked for years with luxury clients — I understand the value of simplicity and attention to detail.",
+  // "I don't just create a product, but a memorable experience.",
+  // "I understand the value of simplicity and attention to detail.",
   // "In the era of AI, I make a point to understand every line of code I provide, ensuring it’s customizable to your needs.",
   // "My extensive time as an educator has taught me the value of an effective user journey.",
 ];
