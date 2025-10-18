@@ -82,7 +82,7 @@ const Welcome = () => {
       initial={{ height: 0 }}
       animate={{ height: "auto" }}
       transition={{ duration: 0.3, delay: 1.7 }}
-      className=" mx-16 md:mx-8   text-center  leading-[14pt] Text-secondary font-light  text-white text-[10pt] tracking-wider"
+      className=" mx-4 md:mx-8   text-center  leading-[14pt] Text-secondary font-light  text-white text-[10pt] tracking-wider"
     >
       <motion.div
         initial={{ opacity: 0 }}

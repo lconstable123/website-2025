@@ -112,7 +112,7 @@ export default function Projects({
                       className={clsx(
                         " flex justify-center  transition-[flex] duration-100 ease-in-out",
                         isLongEnough
-                          ? "flex-[0_0_90%]  sm:flex-[0_0_86%] lg:flex-[0_0_76%] 2xl:flex-[0_0_56%]"
+                          ? "flex-[0_0_95%]  sm:flex-[0_0_86%] lg:flex-[0_0_76%] 2xl:flex-[0_0_56%]"
                           : "flex-[0_0_100%]"
                       )}
                     >

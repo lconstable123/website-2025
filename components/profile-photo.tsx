@@ -68,7 +68,7 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
   }, [controls]);
 
   return (
-    <div className={`w-90 py-0 sm:py-5 h-full relative  `}>
+    <div className={`w-80 sm:w-90 py-0 sm:py-5 h-full relative  `}>
       {!profileClicked && <ClickListener handle={handlePress} />}
       {!profileClicked && <ScrollListener handle={handlePress} />}
 
