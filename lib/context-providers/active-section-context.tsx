@@ -52,10 +52,10 @@ export default function ActiveSectionContextProvider({
   useEffect(() => {
     if (profileClicked > 1) {
       if (!isMobile) {
-        toast.success("scrolling to element");
+        // toast.success("scrolling to element");
         scrollToElement();
       }
-      toast.success("NOT scrolling to element");
+      // toast.success("NOT scrolling to element");
     }
   }, [profileClicked]);
 

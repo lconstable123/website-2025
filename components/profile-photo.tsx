@@ -114,7 +114,7 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
       </motion.div>
       <BgSpotlight />
 
-      <Rings pressed={isPressed} />
+      {/* <Rings pressed={isPressed} /> */}
       {/* <Rings pressed={isPressed} /> */}
       <ClickPrompt trigger={profileClicked > 0} />
     </div>
