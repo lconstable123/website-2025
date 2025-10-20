@@ -3,7 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 export default function PageFooter() {
   return (
-    <footer className="italic text-center px-6 text-gray-400/60 text-[7pt] leading-tight sm:text-[8pt] flex mt-30 mb-2">
+    <footer className="select-none z-400 italic text-center px-6 text-gray-400/60 text-[7pt] leading-tight sm:text-[8pt] flex mt-30 mb-2">
       <motion.p
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 100 }}

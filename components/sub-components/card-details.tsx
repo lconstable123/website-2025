@@ -19,7 +19,7 @@ export default function CardDetails({
 }: cardDetailsProps) {
   const { isMobile } = useScreenContext();
   return (
-    <section className=" flex flex-col h-22 sm:h-26 left-5 pb-3 relative text-white transition-h duration-400 z-70 overflow-hidden ">
+    <section className="select-none flex flex-col h-22 sm:h-26 left-5 pb-3 relative text-white transition-h duration-400 z-70 overflow-hidden ">
       {isImagesLoaded && (
         <>
           <p className="  text-[11pt] sm:text-[12pt]  pt-1 Text-tertiary font-semibold  tracking-wider ">

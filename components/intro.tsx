@@ -24,8 +24,15 @@ export default function Intro({ mt = "" }: { mt?: string }) {
   // const { controls } = useInitialAnimation(0.4);
   // Assuming you want to use the first project for the intro
   return (
-    <div className=" min-h-33  sm:min-h-50   w-full  flex flex-col  items-center    z-2000">
-      <section className={`relative w-full  ${mt} `} id="home" ref={ref}>
+    <div
+      id="intro"
+      className="select-none min-h-33  sm:min-h-50   w-full  flex flex-col  items-center    z-2000"
+    >
+      <section
+        className={`min-h-[100px] relative w-full  ${mt} `}
+        id="home"
+        ref={ref}
+      >
         {/* <ProfilePhoto /> */}
         {fontsLoaded && (
           <motion.h1

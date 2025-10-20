@@ -21,7 +21,7 @@ export default function IntroCardTemplate({
     <>
       <div
         className={clsx(
-          "  transition-outline duration-600 flex items-center justify-center border-4  border-gray-900 bg-gray-950",
+          "pointer-events-auto!  transition-outline duration-600 flex items-center justify-center border-4  border-gray-900 bg-gray-950",
           shadow === "dark"
             ? " shadow-xl shadow-black/30"
             : " shadow-[0_0_30px_rgba(255,255,255,1)] shadow-white/10",

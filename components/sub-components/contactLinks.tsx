@@ -17,12 +17,12 @@ export default function ContactLinks({ mt = "mt-25" }: { mt?: string }) {
   const sizeStyling = `w-${SmalliconSize} h-${SmalliconSize} sm:w-${iconSize} sm:h-${iconSize}`;
   return (
     <motion.div
-      className={`relative w-full  ${mt}`}
+      className={`relative select-none w-full  ${mt}`}
       // initial={{ opacity: 0, y: 50 }}
       // animate={controls}
     >
       <IntroCardTemplate canSelect={true}>
-        <div className=" text-white py-2 sm:py-2 flex flex-row sm:flex-row gap-10 sm:gap-14 text-sm font-medium  items-center justify-center">
+        <div className=" text-white  py-2 sm:py-2 flex flex-row sm:flex-row gap-10 sm:gap-14 text-sm font-medium  items-center justify-center">
           <Link
             href="https://www.instagram.com/virtuallyanything.xyz/"
             className=" group transition  flex justify-center items-center gap-2 outline-none focus:scale-110 hover:scale-110  active:scale-105"
