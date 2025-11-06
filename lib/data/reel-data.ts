@@ -264,6 +264,39 @@ export const WebData: projectType[] = [
       "https://www.figma.com/site/ZcR2vHTTx1aPtWgONZFTHe/Untitled?node-id=0-1&t=WxxQnBj1wSVkmk0L-1",
   },
   {
+    title: "Melbourne Street Project",
+    client:
+      "A full stack app that geotags and maps street art in Melbourne and with GraphQL, AWS Lambda, S3 and DynamoDB.",
+    description:
+      "I developed bespoke shaders and a custom wireless controller to augment street artist Fikaris's decisive visual style into an interactive experience. It had a residency at Melbourne city library during Melbourne International Games week.",
+    tags: [
+      "React",
+      "TypeScript",
+      "Framer.motion",
+      "Full-Stack",
+      "Web Design",
+      "Figma",
+      "Tailwind",
+      "Next.JS",
+      "UI/UX",
+      "Back-End",
+      "AWS",
+      "DynamoDB",
+      "GraphQL",
+    ],
+    imageUrl: "/new-images/thumbs/melbstreet.jpg",
+    link: "https://lukeconstable.com/vids/react-mid.mp4",
+    low: "https://lukeconstable.com/vids/react-low.mp4",
+    byline: "Full Stack Community Project",
+
+    playable: true,
+
+    playableLink: "https://melbglyphs.vercel.app/",
+    IsCodeDemo: true,
+
+    git: "https://github.com/lconstable123/melbGlyphs",
+  },
+  {
     title: "React Hooks",
     client: "A repo of useful hooks i've developed. Checkout the Readme",
     link: "https://lukeconstable.com/vids/react-mid.mp4",

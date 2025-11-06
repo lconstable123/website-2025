@@ -56,6 +56,9 @@ export const RefinedallSkills = [
   // "C4D",
   "Substance",
   "3d Assets",
+  "AWS",
+  "DynamoDB",
+  "GraphQL",
 ] as const;
 
 export type RefinedSkillSelection = (typeof RefinedallSkills)[number];
