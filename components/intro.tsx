@@ -26,10 +26,10 @@ export default function Intro({ mt = "" }: { mt?: string }) {
   return (
     <div
       id="intro"
-      className="select-none min-h-33  sm:min-h-50   w-full  flex flex-col  items-center    z-2000"
+      className="select-none    w-full  flex flex-col  items-center    z-2000"
     >
       <section
-        className={`min-h-[100px] relative w-full  ${mt} `}
+        className={`min-h-[220px]  relative w-full  ${mt} `}
         id="home"
         ref={ref}
       >

@@ -21,6 +21,7 @@ import { useInitialAnimation } from "../../lib/hooks/animation-hooks";
 import { useActiveSection } from "../../lib/context-providers/active-section-context";
 import { motion } from "framer-motion";
 import { useScreenContext } from "../../lib/context-providers/screen-context";
+import ProfilePhoto2 from "../../components/profile-photo2";
 export default function Home() {
   const {
     Videodata,
@@ -61,17 +62,19 @@ export default function Home() {
         {/* <EffectBg /> */}
         <div
           id="headerDiv"
-          className=" pointer-events-none pt-2  sm:pt-5  w-full md:w-[700px] lg:w-[950px]  flex flex-col  items-center    z-900"
+          className=" relative pointer-events-none   mt-10 sm:mt-30  w-full md:w-[700px]   flex flex-col   items-center    z-900"
         >
-          <Intro mt={` w-full  md:w-[500px]  sm:px-0  mt-10 sm:mt-30`} />
-          <ProfilePhoto mt="mt-0 sm:mt-0" />
-          <Byline mt="mt-11" />
+          <div className="absolute -inset-3 rounded-4xl  border-amber-950 k"></div>
+          <Intro mt={` large-width-2    sm:px-0  `} />
+          {/* <ProfilePhoto mt="mt-0 sm:mt-0" /> */}
+          {/* <ProfilePhoto2 mt="mt-0 sm:mt-0" /> */}
+          {/* <Byline mt="" /> */}
           {/* <Blurb mt="mt-5 sm:mt-10" /> */}
           {/* <div className="absolute left-70 h-full w-[1px] bg-gray-800" /> */}
-          <hr className="opacity-0 md:opacity-100 border-gray-950 sm:mb-18 sm:mt-20 w-screen border-1" />
-
-          <Projects mt="mt-0 " />
         </div>
+        <hr className="opacity-0  sm:mb-18 sm:mt-10 w-screen " />
+
+        <Projects mt="mt-0 " />
 
         {imagesLoaded && <Clients mt="mt-30" />}
         <PageFooter />

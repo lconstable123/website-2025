@@ -18,7 +18,7 @@ import { useActiveSection } from "../lib/context-providers/active-section-contex
 import ClickPrompt2 from "./atomic/click-prompt";
 import { mainThumbs } from "../lib/data/reel-data";
 
-export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
+export default function ProfilePhoto2({ mt = "25" }: { mt?: string }) {
   const controls = useAnimation(); // 👈 useAnimation hook
 
   const { setProfileClicked, profileClicked } = useActiveSection();
@@ -75,7 +75,7 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
       {!profileClicked && <ClickListener handle={handlePress} />}
       {!profileClicked && <ScrollListener handle={handlePress} />}
 
-      <motion.div
+      {/* <motion.div
         initial={{ opacity: 0, scale: 0.7 }}
         animate={controls}
         // onTap={(e) => handlePress(e)}
@@ -88,11 +88,10 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
           duration: 2,
           delay: 0.5,
         }}
-        // onMouseDown={() => setIsPressed(true)}
         onMouseDown={(e) => handlePress(e)}
         className={`origin-center  ease-in-out h-60 w-60 -z-4`}
       >
-        {/* <Suspense fallback={<div>Loading...</div>}> */}
+  
         <IntroCardTemplate
           rounded={true}
           secondaryRounded={true}
@@ -108,17 +107,15 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
               priority={true}
               className="z-30 object-cover scale-150 translate-y-10  pointer-events-none"
             />
-            {/* <AttractorGallery /> */}
+        
           </div>
 
-          {/* <PhotoGradient /> */}
+   
         </IntroCardTemplate>
-        {/* </Suspense> */}
+     
       </motion.div>
-      <BgSpotlight />
+      <BgSpotlight /> */}
 
-      {/* <Rings pressed={isPressed} /> */}
-      {/* <Rings pressed={isPressed} /> */}
       <ClickPrompt trigger={profileClicked > 0} />
     </div>
   );

@@ -312,6 +312,36 @@ export const WebData: projectType[] = [
     git: "https://github.com/lconstable123/BespokeHooks",
   },
   {
+    title: "Shoe-Site",
+    client:
+      "I designed and developed this online commerce store with atomic components and a Figma design system.",
+    description:
+      "I designed and developed this online commerce store with atomic components and a Figma design system.",
+    tags: [
+      "React",
+      "TypeScript",
+      "Full-Stack",
+      "Web Design",
+      "Figma",
+      "Tailwind",
+      "Next.JS",
+      "UI/UX",
+    ],
+    imageUrl: "/new-images/thumbs/shoe_high.jpg",
+    link: "https://lukeconstable.com/vids/react-mid.mp4",
+    low: "https://lukeconstable.com/vids/react-low.mp4",
+    byline: "React App",
+
+    playable: false,
+
+    playableLink: "",
+    IsCodeDemo: true,
+
+    // git: "",
+    figma:
+      "https://www.figma.com/design/GPhhJDOqG3orqjtD3CGDkr/Shoesite?t=L8ffhdv0HnExpe2W-1",
+  },
+  {
     title: "lukeconstable.com",
     client:
       "I developed this self hosted media streaming player and interface.  Readme on GIT.",

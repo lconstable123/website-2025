@@ -19,7 +19,7 @@ export default function Bg() {
       "
       />
       <div
-        className="pointer-events-none absolute inset-0 z-[-1] bg-cover bg-center  bg1  opacity-90
+        className="pointer-events-none absolute inset-0 z-[-1] bg-cover bg-center  bg1  opacity-50
       "
       />
       {/* <div className="pointer-events-none absolute inset-0 z-[2] bg-cover bg-center bg-gradient-to-l from-black/35 sm:via-black/0 to-black/35" /> */}

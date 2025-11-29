@@ -19,54 +19,28 @@ import { useSkillSetContext } from "../lib/context-providers/skillset-context";
 import { useScreenContext } from "../lib/context-providers/screen-context";
 const features = ["Web", "Interactivity", "Direction", "Experiments"];
 
-export default function Byline({ mt = "20" }: { mt?: string }) {
+export default function BylineInternal({ mt = "20" }: { mt?: string }) {
   const { profileClicked } = useActiveSection();
   const { controls } = useInitialAnimation(0.2, 1, profileClicked > 0);
 
   return (
-    <div className=" h-[3230px] sm:h-[170px] relative w-full">
-      <motion.div
-        className={`${mt}`}
-        initial={{ opacity: 0, y: 50 }}
-        animate={controls}
-        transition={{ type: "tween", duration: 0.9 }}
-        // onClick={(e) => fadeIn(e)}
-      >
-        <IntroCardTemplate>
-          <div className="items-center my-3 sm:my-4 select-none flex flex-col  ">
-            {profileClicked > 0 && (
-              <>
-                <motion.div className="mx-5 text-center flex sm:flex-row flex-wrap capitalize items-center justify-center mb-2 sm:mb-0 gap-y-2 gap-x-5 tracking-wider Text-secondary font-light  text-white text-[10pt]">
-                  {brags.map((b, index) => (
-                    <motion.p
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 1, delay: index * 0.2 + 0.3 }}
-                      key={b}
-                      className="rounded-2xl"
-                    >
-                      {b}
-                    </motion.p>
-                  ))}
-                </motion.div>
-                <hr className="w-full border-t border-gray-950 border-2 my-2 sm:my-4 " />
-                <Welcome />
-              </>
-            )}
-          </div>
-        </IntroCardTemplate>
+    <>
+      <motion.div className="mx-5 text-center flex sm:flex-row flex-wrap capitalize items-center justify-center mb-2 sm:mb-0 gap-y-2 gap-x-5 tracking-wider Text-secondary font-light  text-white text-[10pt]">
+        {brags.map((b, index) => (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: index * 0.2 + 0.3 }}
+            key={b}
+            className="rounded-2xl"
+          >
+            {b}
+          </motion.p>
+        ))}
       </motion.div>
-      <div className="z-1000 text-white  fixed bottom-0  left-1/2 -translate-x-1/2">
-        <ClickPrompt2
-          onClick={false}
-          Trigger={profileClicked > 0}
-          direction="down"
-          onScroll={true}
-        >
-          Scroll Down for more
-        </ClickPrompt2>
-      </div>
-    </div>
+      <hr className="w-full border-t border-gray-950 border-2 my-2 sm:my-4 " />
+      <Welcome />
+    </>
   );
 }
 
