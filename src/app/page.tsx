@@ -61,11 +61,11 @@ export default function Home() {
         {/* <EffectBg /> */}
         <div
           id="headerDiv"
-          className=" pointer-events-none pt-2  sm:pt-5  w-full md:w-[700px] lg:w-[950px]  flex flex-col  items-center    z-900"
+          className=" pointer-events-none pt-2  sm:pt-5  w-full md:w-[700px] lg:w-[950px]  flex flex-col justify-center items-center    z-900"
         >
-          <Intro mt={` w-full    sm:px-0  mt-10 sm:mt-30`} />
+          <Intro mt={` w-full  max-w-150  sm:px-0  mt-10 sm:mt-30`} />
           <ProfilePhoto mt="mt-0 sm:mt-0" />
-          <Byline mt="mt-11" />
+          <Byline mt="mt-11  " />
           {/* <Blurb mt="mt-5 sm:mt-10" /> */}
           {/* <div className="absolute left-70 h-full w-[1px] bg-gray-800" /> */}
           <hr className="opacity-0 md:opacity-100 border-gray-950 sm:mb-18 sm:mt-20 w-screen border-1" />

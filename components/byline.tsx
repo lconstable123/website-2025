@@ -24,7 +24,7 @@ export default function Byline({ mt = "20" }: { mt?: string }) {
   const { controls } = useInitialAnimation(0.2, 1, profileClicked > 0);
 
   return (
-    <div className=" h-[330px] sm:h-[200px] relative w-full">
+    <div className=" h-[330px] sm:h-[200px] relative w-full max-w-150 ">
       <motion.div
         className={`${mt}`}
         initial={{ opacity: 0, y: 50 }}
@@ -33,10 +33,10 @@ export default function Byline({ mt = "20" }: { mt?: string }) {
         // onClick={(e) => fadeIn(e)}
       >
         <IntroCardTemplate>
-          <div className="items-center my-3 sm:my-4 select-none flex flex-col  ">
+          <div className="items-center  my-3 sm:my-4 select-none flex flex-col  ">
             {profileClicked > 0 && (
               <>
-                <motion.div className="mx-5 text-center flex sm:flex-row flex-wrap capitalize items-center justify-center mb-2 sm:mb-0 gap-y-2 gap-x-5 tracking-wider Text-secondary font-light  text-white text-[10pt]">
+                <motion.div className="mx-5  text-center flex sm:flex-row flex-wrap capitalize items-center justify-center mb-2 sm:mb-0 gap-y-2 gap-x-5 tracking-wider Text-secondary font-light  text-white text-[10pt]">
                   {brags.map((b, index) => (
                     <motion.p
                       initial={{ opacity: 0 }}
@@ -90,7 +90,7 @@ const Welcome = () => {
         transition={{ duration: 0.4, delay: 1.9 }}
       >
         <p>Check out my work, sorted by my different hats:</p>
-        <div className=" border-1  py-2 px-4  rounded-lg border-gray-700  mt-2 sm:mt-2  flex flex-row  flex-wrap  gap-2 sm:gap-4 justify-center">
+        <div className="   py-2 px-4  rounded-lg border-gray-700  mt-2 sm:mt-2  flex flex-row  flex-wrap  gap-2 sm:gap-4 justify-center">
           {categories.map((feature, index) =>
             FeatureBubble({
               text: feature.title,

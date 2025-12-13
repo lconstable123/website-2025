@@ -252,7 +252,7 @@ export const WebData: projectType[] = [
     link: "https://lukeconstable.com/vids/react-mid.mp4",
     low: "https://lukeconstable.com/vids/react-low.mp4",
     byline: "Ecommerce Site",
-    imageUrl: "/new-images/thumbs/shoe_thumb.jpg",
+    imageUrl: "/new-images/thumbs/melbstreet.png",
 
     // imageUrl: "/new-images/thumbs/hooks_thumb.png",
     playable: true,
