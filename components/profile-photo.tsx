@@ -70,7 +70,7 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
   return (
     <div
       id="profilephoto"
-      className={`pointer-events-auto! w-70 sm:w-90 pt-10 sm:pt-10 h-full relative  `}
+      className={`pointer-events-auto! w-60 sm:w-60 pt-10 sm:pt-10 h-full relative  `}
     >
       {!profileClicked && <ClickListener handle={handlePress} />}
       {!profileClicked && <ScrollListener handle={handlePress} />}
@@ -106,14 +106,10 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
               height={400}
               quality={95}
               priority={true}
-              className="z-30 object-cover  pointer-events-none"
+              className="z-30 object-cover scale-170 translate-y-12 pointer-events-none"
             />
-            {/* <AttractorGallery /> */}
           </div>
-
-          {/* <PhotoGradient /> */}
         </IntroCardTemplate>
-        {/* </Suspense> */}
       </motion.div>
       <BgSpotlight />
 

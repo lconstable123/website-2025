@@ -58,6 +58,7 @@ export const RefinedallSkills = [
   "3d Assets",
   "AWS",
   "DynamoDB",
+  "Headless",
   "GraphQL",
 ] as const;
 

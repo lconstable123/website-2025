@@ -32,6 +32,7 @@ export const mainThumbs = [
   "/new-images/thumbs/29-4-diffusion[square]_thumb.jpg",
   "/new-images/thumbs/flippies_thumb.jpg",
   "/new-images/thumbs/social_thumb.jpg",
+  // "/new-images/thumbs/shoe_thumb.jpg",
 ];
 
 type projectType = {
@@ -70,7 +71,9 @@ export const webThumbs = [
 
 export const InterThumbs = [
   "/new-images/thumbs/website_thumb.jpg",
+  "/new-images/thumbs/melbstreet.jpg",
   "/new-images/thumbs/hooks_thumb.jpg",
+  // "/new-images/thumbs/shoe_thumb.jpg",
   "/new-images/thumbs/poke_thumb.jpg",
   "/new-images/thumbs/plans_thumb.png",
   "/new-images/thumbs/kawsplaytime_thumb.jpg",
@@ -229,6 +232,37 @@ export const gameData: projectType[] = [
 
 export const WebData: projectType[] = [
   {
+    title: "Ecommerce demo",
+    client:
+      "A headless cms ready, mobile-first ecommerce site with Figma, React and Next.",
+    description:
+      "A headless cms ready, mobile-first ecommerce site for a totally made up shoe company",
+    tags: [
+      "React",
+      "TypeScript",
+      "Full-Stack",
+      "Web Design",
+      "Figma",
+      "Tailwind",
+      "Next.JS",
+      "UI/UX",
+      "Headless",
+    ],
+
+    link: "https://lukeconstable.com/vids/react-mid.mp4",
+    low: "https://lukeconstable.com/vids/react-low.mp4",
+    byline: "Ecommerce Site",
+    imageUrl: "/new-images/thumbs/shoe_thumb.jpg",
+
+    // imageUrl: "/new-images/thumbs/hooks_thumb.png",
+    playable: true,
+    playableLink: "https://shoesite-sooty.vercel.app/",
+    IsCodeDemo: true,
+    git: "https://github.com/lconstable123/shoesite",
+    figma:
+      "https://www.figma.com/design/GPhhJDOqG3orqjtD3CGDkr/Shoesite?t=L8ffhdv0HnExpe2W-1",
+  },
+  {
     title: "PokeApp",
     client:
       "I designed this app that fetches from an API and stores on Postgres to with cutting edge full-stack, optimistic UI, and authentication.",
@@ -284,7 +318,7 @@ export const WebData: projectType[] = [
       "DynamoDB",
       "GraphQL",
     ],
-    imageUrl: "/new-images/thumbs/melbstreet.jpg",
+    imageUrl: "/new-images/thumbs/melbstreet.png",
     link: "https://lukeconstable.com/vids/react-mid.mp4",
     low: "https://lukeconstable.com/vids/react-low.mp4",
     byline: "Full Stack Community Project",

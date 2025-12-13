@@ -98,8 +98,8 @@ export default function CodeProject({
                     src={imageUrl}
                     alt={title}
                     style={{ objectFit: "cover" }}
-                    width={1920}
-                    height={1080}
+                    width={960}
+                    height={240}
                   />
                 </div>
               </>

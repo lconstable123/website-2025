@@ -63,7 +63,7 @@ export default function Home() {
           id="headerDiv"
           className=" pointer-events-none pt-2  sm:pt-5  w-full md:w-[700px] lg:w-[950px]  flex flex-col  items-center    z-900"
         >
-          <Intro mt={` w-full  md:w-[500px]  sm:px-0  mt-10 sm:mt-30`} />
+          <Intro mt={` w-full    sm:px-0  mt-10 sm:mt-30`} />
           <ProfilePhoto mt="mt-0 sm:mt-0" />
           <Byline mt="mt-11" />
           {/* <Blurb mt="mt-5 sm:mt-10" /> */}

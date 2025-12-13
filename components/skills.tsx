@@ -63,9 +63,9 @@ const SkillsGrid = ({
 }: skillsGridType) => {
   return (
     <>
-      {skills?.map((skill) => (
+      {selectedSkills?.map((skill, index) => (
         <motion.li
-          key={skill}
+          key={skill + index}
           transition={{ type: "tween", stiffness: 500, damping: 30 }}
           className={clsx(
             "border-0 bg-gray-950 rounded-b-md  overflow-hidden transition-all  outline-1 rounded-t-xs duration-600 delay-50 py-[1px] px-2  hover:bg-gray-800",
