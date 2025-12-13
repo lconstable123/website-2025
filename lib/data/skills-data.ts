@@ -48,6 +48,7 @@ export const RefinedallSkills = [
   "Editing",
   //   "Unreal Blueprints",
   //   "Unreal C++",
+  "Headless",
   "Houdini",
   "Lighting",
   "VEX",

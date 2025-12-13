@@ -32,7 +32,7 @@ export default function VideoProject({
 }: projectCard) {
   // --------------------------------------------------------------- states
 
-  const { isInEyeline, selectedVideoData } = useSkillSetContext();
+  // const { isInEyeline, selectedVideoData } = useSkillSetContext();
   const { controls, fadeInAnimationVariants } = useCarouseAnimation();
   const [isFocussed, setIsFocussed] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,7 +42,7 @@ export default function VideoProject({
   const modalTargetRef = useRef<HTMLDivElement>(null);
 
   //---------------------------------------------------------------- handles
-
+  const isInEyeline = true;
   const handleMouseOver = () => {
     if (isInView) {
       setIsFocussed(true);

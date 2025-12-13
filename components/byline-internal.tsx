@@ -38,7 +38,7 @@ export default function BylineInternal({ mt = "20" }: { mt?: string }) {
           </motion.p>
         ))}
       </motion.div>
-      <hr className="w-full border-t border-gray-950 border-2 my-2 sm:my-4 " />
+      {/* <hr className="w-full border-t border-gray-950 border-2 my-2 sm:my-4 " /> */}
       <Welcome />
     </>
   );
@@ -53,7 +53,7 @@ const Welcome = () => {
       transition={{ duration: 0.3, delay: 1.7 }}
       className=" mx-4 md:mx-8   text-center  leading-[14pt] Text-secondary font-light  text-gray-300 text-[10pt] tracking-wider"
     >
-      <motion.div
+      {/* <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4, delay: 1.9 }}
@@ -68,7 +68,7 @@ const Welcome = () => {
             })
           )}
         </div>
-      </motion.div>
+      </motion.div> */}
     </motion.div>
   );
 };

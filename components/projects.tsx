@@ -41,8 +41,8 @@ export default function Projects({
   // const id = searchParams.get("id");
   const {
     ref,
-    isInViewDeep,
-    isInViewShort,
+    // isInViewDeep,
+    // isInViewShort,
     setApi,
     page,
     handleSelectCategory,
@@ -53,7 +53,9 @@ export default function Projects({
     selectedUICategory,
     carouselInitial,
   } = useVideoCarousel(searchParams);
-
+  // const navOffsetTop = 0;
+  const isInViewDeep = true;
+  const isInViewShort = true;
   const { Videodata, selectedVideoData } = useSkillSetContext();
   const { imagesLoaded } = useSkillSetContext();
   const { scrollRef } = useActiveSection();
