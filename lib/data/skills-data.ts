@@ -60,6 +60,10 @@ export const RefinedallSkills = [
   "DynamoDB",
   "Headless",
   "GraphQL",
+  "Three.js",
+  "WebGL",
+  "Shader Programming",
+  "GSAP",
 ] as const;
 
 export type RefinedSkillSelection = (typeof RefinedallSkills)[number];

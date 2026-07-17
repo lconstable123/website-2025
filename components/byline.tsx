@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import IntroCardTemplate from "./sub-components/intro-card-template";
 import { blurb } from "../lib/data/data-blurb";
@@ -22,45 +22,57 @@ const features = ["Web", "Interactivity", "Direction", "Experiments"];
 export default function Byline({ mt = "20" }: { mt?: string }) {
   const { profileClicked } = useActiveSection();
   const { controls } = useInitialAnimation(0.2, 1, profileClicked > 0);
+  const [fontsLoaded, setFontsLoaded] = useState(false);
 
+  useEffect(() => {
+    if (document?.fonts) {
+      document.fonts.ready.then(() => {
+        setFontsLoaded(true);
+      });
+    } else {
+      setFontsLoaded(false);
+    }
+  }, []);
   return (
     <div className=" h-[330px] sm:h-[200px] relative w-full max-w-150 ">
-      <motion.div
-        className={`${mt}`}
-        initial={{ opacity: 0, y: 50 }}
-        animate={controls}
-        transition={{ type: "tween", duration: 0.9 }}
-        // onClick={(e) => fadeIn(e)}
-      >
-        <IntroCardTemplate>
-          <div className="items-center  my-3 sm:my-4 select-none flex flex-col  ">
-            {profileClicked > 0 && (
-              <>
-                <motion.div className="mx-5  text-center flex sm:flex-row flex-wrap capitalize items-center justify-center mb-2 sm:mb-0 gap-y-2 gap-x-5 tracking-wider Text-secondary font-light  text-white text-[10pt]">
-                  {brags.map((b, index) => (
-                    <motion.p
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 1, delay: index * 0.2 + 0.3 }}
-                      key={b}
-                      className="rounded-2xl"
-                    >
-                      {b}
-                    </motion.p>
-                  ))}
-                  {/* <p className="Text-secondary font-light  text-white text-[10pt] tracking-wider text-center">
+      {fontsLoaded && (
+        <motion.div
+          className={`${mt}`}
+          initial={{ opacity: 0, y: 50 }}
+          animate={controls}
+          transition={{ type: "tween", duration: 0.9 }}
+          // onClick={(e) => fadeIn(e)}
+        >
+          <IntroCardTemplate>
+            <div className="items-center  my-3 sm:my-4 select-none flex flex-col  ">
+              {profileClicked > 0 && (
+                <>
+                  <motion.div className="mx-5  text-center flex sm:flex-row flex-wrap capitalize items-center justify-center mb-2 sm:mb-0 gap-y-2 gap-x-5 tracking-wider Text-secondary font-light  text-white text-[10pt]">
+                    {brags.map((b, index) => (
+                      <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1, delay: index * 0.2 + 0.3 }}
+                        key={b}
+                        className="rounded-2xl"
+                      >
+                        {b}
+                      </motion.p>
+                    ))}
+                    {/* <p className="Text-secondary font-light  text-white text-[10pt] tracking-wider text-center">
                     Technical artist, interactive developer, award-winning
                     director.
                   </p> */}
-                  {/* <Features profileClicked={profileClicked} /> */}
-                </motion.div>
-                <hr className="w-full border-t border-gray-950 border-2 my-2 sm:my-4 " />
-                <Welcome />
-              </>
-            )}
-          </div>
-        </IntroCardTemplate>
-      </motion.div>
+                    {/* <Features profileClicked={profileClicked} /> */}
+                  </motion.div>
+                  <hr className="w-full border-t border-gray-950 border-2 my-2 sm:my-4 " />
+                  <Welcome />
+                </>
+              )}
+            </div>
+          </IntroCardTemplate>
+        </motion.div>
+      )}
       <div className="z-1000 text-white  fixed bottom-0  left-1/2 -translate-x-1/2">
         <ClickPrompt2
           onClick={false}

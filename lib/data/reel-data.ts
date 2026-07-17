@@ -16,6 +16,7 @@ export const categories = [
 ] as const;
 
 export const mainThumbs = [
+  "/new-images/thumbs/melbstreet.jpg",
   "/new-images/thumbs/tb_thumb.jpg",
   "/new-images/thumbs/poke_thumb.png",
   "/new-images/thumbs/hooks_thumb.png",
@@ -32,7 +33,7 @@ export const mainThumbs = [
   "/new-images/thumbs/29-4-diffusion[square]_thumb.jpg",
   "/new-images/thumbs/flippies_thumb.jpg",
   "/new-images/thumbs/social_thumb.jpg",
-  // "/new-images/thumbs/shoe_thumb.jpg",
+  "/new-images/thumbs/shoe_thumb.jpg",
 ];
 
 type projectType = {
@@ -73,11 +74,13 @@ export const InterThumbs = [
   "/new-images/thumbs/website_thumb.jpg",
   "/new-images/thumbs/melbstreet.jpg",
   "/new-images/thumbs/hooks_thumb.jpg",
-  // "/new-images/thumbs/shoe_thumb.jpg",
+  "/new-images/thumbs/shoe_thumb.jpg",
   "/new-images/thumbs/poke_thumb.jpg",
   "/new-images/thumbs/plans_thumb.png",
   "/new-images/thumbs/kawsplaytime_thumb.jpg",
   "/new-images/thumbs/react_thumb.jpg",
+  "/new-images/thumbs/anzac_thumb.jpg",
+  "/new-images/thumbs/manyhands_thumb.jpg",
 ];
 
 export const LoFiThumbs = [
@@ -112,6 +115,7 @@ export const ExperiThumbs = [
   "/new-images/thumbs/12-10_2_1_thumb.jpg",
   "/new-images/thumbs/4-12_thumb.jpg",
   "/new-images/thumbs/4-5_thumb.jpg",
+  "/new-images/thumbs/livecode_thumb.jpg",
 ];
 
 /////////////////////////////////// Game Data
@@ -298,6 +302,42 @@ export const WebData: projectType[] = [
       "https://www.figma.com/site/ZcR2vHTTx1aPtWgONZFTHe/Untitled?node-id=0-1&t=WxxQnBj1wSVkmk0L-1",
   },
   {
+    title: "Australian War Memorial- Anzac Hall",
+    client:
+      "Working with Grumpy Sailor to develop a touch screen kiosk experience built in Unreal for the Australian War Memorial's Anzac Hall.",
+    description: "",
+    tags: ["Figma", "Unreal Engine"],
+    imageUrl: "/new-images/thumbs/anzac_thumb.jpg",
+    link: "https://lukeconstable.com/vids/Anzac-low.mp4",
+    low: "https://lukeconstable.com/vids/Anzac-mobile.mp4",
+    byline: "Interactive Kiosk",
+
+    playable: false,
+
+    // playableLink: "https://melbglyphs.vercel.app/",
+    IsCodeDemo: false,
+
+    // git: "https://github.com/lconstable123/melbGlyphs",
+  },
+  {
+    title: "Many Hands Plugin - Make Light Work",
+    client:
+      "I developed a Three.js extension to make designing lights in WebGL fast and designer-friendly",
+    description: "",
+    tags: ["React", "TypeScript", "Web Design", "UI/UX", "Three.js", "WebGL"],
+    imageUrl: "/new-images/thumbs/manyhands_thumb.jpg",
+    link: "https://lukeconstable.com/vids/Manyhands_low.mp4",
+    low: "https://lukeconstable.com/vids/Manyhands_mobile.mp4",
+    byline: "Three.js App",
+
+    playable: false,
+
+    playableLink: "https://melbglyphs.vercel.app/",
+    IsCodeDemo: false,
+
+    // git: "https://github.com/lconstable123/melbGlyphs",
+  },
+  {
     title: "Melbourne Street Project",
     client:
       "A full stack app that geotags and maps street art in Melbourne and with GraphQL, AWS Lambda, S3 and DynamoDB.",
@@ -318,7 +358,7 @@ export const WebData: projectType[] = [
       "DynamoDB",
       "GraphQL",
     ],
-    imageUrl: "/new-images/thumbs/melbstreet.png",
+    imageUrl: "/new-images/thumbs/shoe_thumb.jpg",
     link: "https://lukeconstable.com/vids/react-mid.mp4",
     low: "https://lukeconstable.com/vids/react-low.mp4",
     byline: "Full Stack Community Project",
@@ -834,6 +874,19 @@ export const ExperimentData: projectType[] = [
     link: "https://lukeconstable.com/vids/VA/29-4-diffusion[square].mp4",
     low: "https://lukeconstable.com/vids/VA/mobile/29-4-diffusion[square].mp4",
     byline: "Solver study",
+    playable: false,
+    square: true,
+  },
+  {
+    title: "Gsap + Gaussian distribution ",
+    client: "A test using React and GSAP",
+    description:
+      "Exploring the interactive web motion capabilities of React and GSAP, with a little maths.",
+    tags: ["Web Design", "GSAP", "React", "TypeScript", "Tailwind"],
+    imageUrl: "/new-images/thumbs/livecode_thumb.jpg",
+    link: "https://lukeconstable.com/vids/VA/Livecode_low.mp4",
+    low: "https://lukeconstable.com/vids/VA/mobile/Livecode_mobile.mp4",
+    byline: "A test using React and GSAP",
     playable: false,
     square: true,
   },

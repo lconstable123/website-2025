@@ -23,6 +23,18 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
 
   const { setProfileClicked, profileClicked } = useActiveSection();
 
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+
+  useEffect(() => {
+    if (document?.fonts) {
+      document.fonts.ready.then(() => {
+        setFontsLoaded(true);
+      });
+    } else {
+      setFontsLoaded(false);
+    }
+  }, []);
+
   const handlePress = (e?: any) => {
     e?.preventDefault();
     e?.stopPropagation();
@@ -106,7 +118,7 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
               height={400}
               quality={95}
               priority={true}
-              className="z-30 object-cover scale-170 translate-y-12 pointer-events-none"
+              className="z-30 object-cover scale-170 translate-y-10 pointer-events-none"
             />
           </div>
         </IntroCardTemplate>
@@ -115,7 +127,7 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
 
       {/* <Rings pressed={isPressed} /> */}
       {/* <Rings pressed={isPressed} /> */}
-      <ClickPrompt trigger={profileClicked > 0} />
+      {fontsLoaded && <ClickPrompt trigger={profileClicked > 0} />}
     </div>
   );
 }
