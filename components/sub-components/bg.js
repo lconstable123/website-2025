@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import PixelBlast from "../PixelBlast";
 
 export default function Bg() {
   return (

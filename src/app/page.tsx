@@ -6,7 +6,6 @@ import Projects from "../../components/projects";
 import ContactLinks from "../../components/sub-components/contactLinks";
 
 import ProfilePhoto from "../../components/profile-photo";
-import EffectBg from "../../components/sub-components/effect-bg";
 import { Suspense, useEffect, useState } from "react";
 import Loader from "../../components/sub-components/loader";
 import Byline from "../../components/byline";
@@ -59,7 +58,6 @@ export default function Home() {
           </>
         }
       >
-        {/* <EffectBg /> */}
         <div
           id="headerDiv"
           className=" pointer-events-none pt-2  sm:pt-7  w-full md:w-[700px] lg:w-[950px]  flex flex-col justify-center items-center    z-900"

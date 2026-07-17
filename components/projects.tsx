@@ -54,8 +54,7 @@ export default function Projects({
     carouselInitial,
   } = useVideoCarousel(searchParams);
 
-  const { Videodata, selectedVideoData } = useSkillSetContext();
-  const { imagesLoaded } = useSkillSetContext();
+  const { Videodata, selectedVideoData, imagesLoaded } = useSkillSetContext();
   const { scrollRef } = useActiveSection();
   const isLongEnough = Videodata?.length || 0 > 3;
   return (
@@ -113,7 +112,7 @@ export default function Projects({
                         " flex justify-center  transition-[flex] duration-100 ease-in-out",
                         isLongEnough
                           ? "flex-[0_0_95%]  sm:flex-[0_0_86%] lg:flex-[0_0_76%] 2xl:flex-[0_0_56%]"
-                          : "flex-[0_0_100%]"
+                          : "flex-[0_0_100%]",
                       )}
                     >
                       {project.IsCodeDemo ? (
