@@ -20,7 +20,7 @@ export default function Navigator({
       <nav className="  pt-5 sm:pt-7 flex flex-row  items-center justify-center relative ">
         <div
           className={clsx(
-            "    group border-2  shadow-xl  shadow-black/20 transition-all  duration-600 border-yellow-700   hover:border-yellow-600 rounded-full my-0   flex flex-row gap-0 styleDarker top-0 text-center overflow-hidden "
+            "    group border-2  shadow-xl  shadow-black/20 transition-all  duration-600 border-yellow-700   hover:border-yellow-600 rounded-full my-0   flex flex-row gap-0 styleDarker top-0 text-center overflow-hidden ",
           )}
         >
           {categories.map((category) => (
@@ -30,7 +30,7 @@ export default function Navigator({
                 handleSelectCategory(category.title);
               }}
               className={clsx(
-                "group w-[75px] sm:w-25 h-12 relative cursor-pointer not-last:border-r-1  border-white/5  transition-all duration-500 font-normal Text-primary text-md py-3 px-3  tracking-wider z-100  text-center"
+                "group w-[75px] sm:w-25 h-12 relative cursor-pointer not-last:border-r-1  border-white/5  transition-all duration-500 font-normal Text-primary text-md py-3 px-3  tracking-wider z-100  text-center",
               )}
             >
               {selectedCategory === category.title && (
@@ -59,7 +59,7 @@ export default function Navigator({
                   handleSelectCategory(category.title);
                 }}
                 className={clsx(
-                  "group w-18 sm:w-25 h-12   cursor-pointer transition-all duration-500 font-normal Text-primary text-md py-3 px-3  tracking-wide z-100  text-center"
+                  "group w-18 sm:w-25 h-12   cursor-pointer transition-all duration-500 font-normal Text-primary text-md py-3 px-3  tracking-wide z-100  text-center",
                 )}
               >
                 <div className=" flex items-center  justify-center gap-0 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2   relative z-[999]">
@@ -78,7 +78,7 @@ export default function Navigator({
         </div>
       </nav>
       <ClickPrompt2 Trigger={inView} ref={navRef} direction="up">
-        explore categories
+        explore more
       </ClickPrompt2>
     </div>
   );

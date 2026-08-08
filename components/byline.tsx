@@ -21,7 +21,7 @@ const features = ["Web", "Interactivity", "Direction", "Experiments"];
 
 export default function Byline({ mt = "20" }: { mt?: string }) {
   const { profileClicked } = useActiveSection();
-  const { controls } = useInitialAnimation(0.2, 1, profileClicked > 0);
+  const { controls } = useInitialAnimation(0.2, 1, false);
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
   useEffect(() => {
@@ -38,37 +38,35 @@ export default function Byline({ mt = "20" }: { mt?: string }) {
       {fontsLoaded && (
         <motion.div
           className={`${mt}`}
-          initial={{ opacity: 0, y: 50 }}
-          animate={controls}
-          transition={{ type: "tween", duration: 0.9 }}
+          initial={{ opacity: 0, y: 0, scale: 0.94 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ type: "tween", duration: 0.5, ease: "easeOut" }}
           // onClick={(e) => fadeIn(e)}
         >
           <IntroCardTemplate>
             <div className="items-center  my-3 sm:my-4 select-none flex flex-col  ">
-              {profileClicked > 0 && (
-                <>
-                  <motion.div className="mx-5  text-center flex sm:flex-row flex-wrap capitalize items-center justify-center mb-2 sm:mb-0 gap-y-2 gap-x-5 tracking-wider Text-secondary font-light  text-white text-[10pt]">
-                    {brags.map((b, index) => (
-                      <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 1, delay: index * 0.2 + 0.3 }}
-                        key={b}
-                        className="rounded-2xl"
-                      >
-                        {b}
-                      </motion.p>
-                    ))}
-                    {/* <p className="Text-secondary font-light  text-white text-[10pt] tracking-wider text-center">
+              <>
+                <motion.div className="mx-5  text-center flex sm:flex-row flex-wrap capitalize items-center justify-center mb-2 sm:mb-0 gap-y-2 gap-x-5 tracking-wider Text-secondary font-light  text-white text-[10pt]">
+                  {brags.map((b, index) => (
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 1, delay: index * 0.4 + 0.2 }}
+                      key={b}
+                      className="rounded-2xl"
+                    >
+                      {b}
+                    </motion.p>
+                  ))}
+                  {/* <p className="Text-secondary font-light  text-white text-[10pt] tracking-wider text-center">
                     Technical artist, interactive developer, award-winning
                     director.
                   </p> */}
-                    {/* <Features profileClicked={profileClicked} /> */}
-                  </motion.div>
-                  <hr className="w-full border-t border-gray-950 border-2 my-2 sm:my-4 " />
-                  <Welcome />
-                </>
-              )}
+                  {/* <Features profileClicked={profileClicked} /> */}
+                </motion.div>
+                <hr className="w-full border-t border-gray-950 border-2 my-2 sm:my-4 " />
+                <Welcome />
+              </>
             </div>
           </IntroCardTemplate>
         </motion.div>
@@ -93,22 +91,22 @@ const Welcome = () => {
     <motion.div
       initial={{ height: 0 }}
       animate={{ height: "auto" }}
-      transition={{ duration: 0.3, delay: 1.7 }}
+      transition={{ duration: 0.3, delay: 1.3 }}
       className=" mx-4 md:mx-8   text-center  leading-[14pt] Text-secondary font-light  text-gray-300 text-[10pt] tracking-wider"
     >
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, delay: 1.9 }}
+        transition={{ duration: 0.4, delay: 1.5 }}
       >
-        <p>Check out my work, sorted by my different hats:</p>
+        <p>I invite you to explore some of my projects.</p>
         <div className="   py-2 px-4  rounded-lg border-gray-700  mt-2 sm:mt-2  flex flex-row  flex-wrap  gap-2 sm:gap-4 justify-center">
           {categories.map((feature, index) =>
             FeatureBubble({
               text: feature.title,
               icon: feature.icon,
               key: index,
-            })
+            }),
           )}
         </div>
       </motion.div>

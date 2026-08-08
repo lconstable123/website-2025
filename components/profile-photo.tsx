@@ -72,8 +72,8 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
       transition: {
         type: "tween",
         ease: "easeOut",
-        stiffness: 250,
-        damping: 20,
+        // stiffness: 250,
+        // damping: 20,
         duration: 0.4,
       },
     });
@@ -82,7 +82,7 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
   return (
     <div
       id="profilephoto"
-      className={`pointer-events-auto! w-60 sm:w-60 pt-10 sm:pt-10 h-full relative  `}
+      className={`pointer-events-auto!   pt-8 sm:pt-8 h-full relative  `}
     >
       {!profileClicked && <ClickListener handle={handlePress} />}
       {!profileClicked && <ScrollListener handle={handlePress} />}
@@ -97,8 +97,8 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
           bounce: 2,
           stiffness: 200,
           damping: 20,
-          duration: 2,
-          delay: 0.5,
+          duration: 0.5,
+          ease: "easeOut",
         }}
         // onMouseDown={() => setIsPressed(true)}
         onMouseDown={(e) => handlePress(e)}
@@ -110,12 +110,12 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
           secondaryRounded={true}
           outline={true}
         >
-          <div className="cursor-pointer flex flex-row   bg-black">
+          <div className="cursor-pointer flex flex-row justify-center   bg-black">
             <Image
               src="/new-images/profile2.jpg"
               alt="profile pic"
-              width={400}
-              height={400}
+              width={200}
+              height={200}
               quality={95}
               priority={true}
               className="z-30 object-cover scale-170 translate-y-10 pointer-events-none"
@@ -127,7 +127,7 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
 
       {/* <Rings pressed={isPressed} /> */}
       {/* <Rings pressed={isPressed} /> */}
-      {fontsLoaded && <ClickPrompt trigger={profileClicked > 0} />}
+      {/* {fontsLoaded && <ClickPrompt trigger={profileClicked > 0} />} */}
     </div>
   );
 }

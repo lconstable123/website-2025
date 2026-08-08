@@ -18,7 +18,7 @@ export const useNativeVideoPlayer = (
   monitorCurrentTime: number = 0,
   isModalOpen: boolean = false,
   link: string = "",
-  low: string = ""
+  low: string = "",
 ) => {
   //-------------------------------------------------------------internal states
   const { selectedVideoData } = useSkillSetContext();
@@ -129,17 +129,12 @@ export const useNativeVideoPlayer = (
     // timer to only load after scroll has settled
 
     if (videoRef.current) {
-      // if out of sight, pause and mute
+      // if out of sight, pause and mute (src stays intact so it can resume)
       if (!isInView || !isInEyeline) {
         setPaused(true);
         videoRef.current.pause();
         setIsLocallyMuted(true);
         setInteractedEnough(false);
-        //unload video if not in view
-        if (!isInView) {
-          videoRef.current.removeAttribute("src");
-          videoRef.current.load();
-        }
       } else {
         //set timer if in view
         watchingTimer = setTimeout(() => {
@@ -155,10 +150,6 @@ export const useNativeVideoPlayer = (
         } else {
           //remember selected muting state regardless of local muting
           setIsLocallyMuted(isGloballyMuted);
-        }
-        if (!isModalOpen) {
-          videoRef.current.src = selectedSrc;
-          videoRef.current.load();
         }
       }
     }
@@ -185,13 +176,8 @@ export const useNativeVideoPlayer = (
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    if (isInView) {
-      // toast.success(`Video ${video.src} loaded.`);
-      if (!isModalOpen) {
-        video.src = "";
-      }
-    }
-    video.currentTime = monitorCurrentTime;
+    // Avoid forcing a media load on fresh videos so the poster stays until play.
+    if (monitorCurrentTime > 0) video.currentTime = monitorCurrentTime;
 
     const updateBuffered = () => {
       if (video.buffered.length > 0) {

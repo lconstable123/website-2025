@@ -65,7 +65,7 @@ export default function NativeVideoPlayer({
     monitorCurrentTime,
     isModalOpen,
     srcHigh,
-    srcLow
+    srcLow,
   );
 
   const [vidControls, handleAnimateClose] = useAnimationTrigger({
@@ -78,7 +78,7 @@ export default function NativeVideoPlayer({
   // ------------------------  states
   const Animcontrols = useAnimation();
 
-  const [videoIsLoading, setVideoIsLoading] = useState(true);
+  const [videoIsLoading, setVideoIsLoading] = useState(false);
   // ------------------------ animation handlers
   const handleClick = async () => {
     togglePlay();
@@ -117,8 +117,8 @@ export default function NativeVideoPlayer({
     if (!videoRef.current) return;
 
     const timeout = setTimeout(() => {
-      if (videoRef.current) {
-        videoRef.current.currentTime = monitorCurrentTime || 0;
+      if (videoRef.current && (monitorCurrentTime ?? 0) > 0) {
+        videoRef.current.currentTime = monitorCurrentTime ?? 0;
       }
       handleAnimateClose();
     }, 200); // allow layout reflow
@@ -172,7 +172,7 @@ export default function NativeVideoPlayer({
             className={` videoBox ${!isSquare ? "object-cover" : ""} video-js vjs-default-skin`}
             // src={selectedSrc}
             src={selectedSrc}
-            preload="metadata"
+            preload="none"
             poster={poster}
             controls={false}
             // playsInline={isMobile}
@@ -181,6 +181,8 @@ export default function NativeVideoPlayer({
             onClick={handleClick}
             disablePictureInPicture
             onLoadedData={() => setVideoIsLoading(false)}
+            onLoadedMetadata={() => setVideoIsLoading(false)}
+            onCanPlay={() => setVideoIsLoading(false)}
           />
 
           <div

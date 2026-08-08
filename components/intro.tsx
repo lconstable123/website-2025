@@ -26,7 +26,7 @@ export default function Intro({ mt = "" }: { mt?: string }) {
   return (
     <div
       id="intro"
-      className="select-none min-h-33  sm:min-h-50   w-full  flex flex-col  items-center    z-2000"
+      className="select-none min-h-33  sm:min-h-50 w-full max-w-150   w-full  flex flex-col  items-center    z-2000"
     >
       <section
         className={`min-h-[100px] relative w-full  ${mt} `}
@@ -39,7 +39,7 @@ export default function Intro({ mt = "" }: { mt?: string }) {
             className="  "
             initial={{ opacity: 0, scale: 0.94 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.25 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <IntroCard />
           </motion.h1>

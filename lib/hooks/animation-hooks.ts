@@ -1,4 +1,4 @@
-import { useAnimation } from "framer-motion";
+import { useAnimation, type Variants } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 import toast from "react-hot-toast";
@@ -8,7 +8,7 @@ import { useActiveSection } from "../context-providers/active-section-context";
 export const useCarouseAnimation = () => {
   const { isCategoryChanging } = useSkillSetContext();
   const controls = useAnimation();
-  const fadeInAnimationVariants = {
+  const fadeInAnimationVariants: Variants = {
     initial: (index: number) => ({
       opacity: 0,
       scale: 0.4,
@@ -20,7 +20,8 @@ export const useCarouseAnimation = () => {
       opacity: 1,
       scale: 1,
       transition: {
-        duration: 0.2,
+        duration: 0.45,
+        ease: [0.22, 1, 0.36, 1] as const,
         // delay: 0.1,
       },
     }),
@@ -29,6 +30,7 @@ export const useCarouseAnimation = () => {
       scale: 0.7,
       transition: {
         duration: 0.17,
+        ease: "easeInOut",
       },
     }),
     exit: {
@@ -64,7 +66,7 @@ export const useCarouseAnimation = () => {
 export const useInitialAnimation = (
   delay = 0,
   toOpacity = 1,
-  trigger: boolean
+  trigger: boolean,
 ) => {
   const controls = useAnimation();
 
@@ -137,6 +139,7 @@ export const useAnimationTrigger = ({
       scale: toScale,
       transition: {
         type: "tween",
+        ease: "easeInOut",
         duration: duration,
         delay,
       },
@@ -154,6 +157,7 @@ export const useAnimationTrigger = ({
       scale: fromScale,
       transition: {
         type: "tween",
+        ease: "easeInOut",
 
         duration: duration,
         delay,

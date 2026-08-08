@@ -63,8 +63,8 @@ export default function Projects({
       <motion.section
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ type: "spring", duration: 1.3 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ type: "tween", duration: 0.4, ease: "easeOut" }}
         id="projects"
         style={{ opacity: 0 }}
         className="mt-20 sm:mt-0  large-width-2 relative flex flex-col scroll-mt-28  border-white/20"
@@ -138,17 +138,18 @@ export default function Projects({
             </div>
           </Carousel>
 
-          <ClickPrompt2
+          {/* <ClickPrompt2
             Trigger={isInViewDeep}
             ref={carouselSectionRef}
             direction="across"
           >
             swipe for more
-          </ClickPrompt2>
-          <Skills2
+          </ClickPrompt2> */}
+          <div className="py-2" />
+          {/* <Skills2
             skills={[...RefinedallSkills]}
             selectedSkills={selectedVideoData?.tags}
-          />
+          /> */}
         </IntroCardTemplate>
       </motion.section>
     </div>

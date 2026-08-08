@@ -11,16 +11,28 @@ import { useDoubleIntersectionObserver } from "../lib/hooks/double-intersection-
 export default function Clients({ mt = "25" }: { mt?: string }) {
   const afwidth = 150;
   const afheight = 30;
+  const delayLen = 1.5; // Adjust this value to set the delay length in seconds
+  const SCROLL_THRESHOLD = 50;
+  const [delay, setDelay] = React.useState(delayLen);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setDelay(window.scrollY > SCROLL_THRESHOLD ? 0 : delayLen);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <div className="relative large-width-2 ">
+    <div className="">
       <motion.div
         // ref={ref}
         className={`${mt} `}
-        initial={{ opacity: 0, y: 50 }}
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
-        transition={{ type: "spring", duration: 1.3 }}
+        transition={{ type: "spring", duration: 1.3, delay }}
       >
         <IntroCardTemplate>
           <div className=" select-none text-center  tracking-wider Text-secondary font-light  text-white text-[10pt] my-4 mx-4   leading-tight  ">

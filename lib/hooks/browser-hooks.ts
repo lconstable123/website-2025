@@ -2,25 +2,12 @@ import { use, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export function useOptimizedVideoSource(highSrc: string, lowSrc: string) {
-  const [selectedSrc, setSelectedSrc] = useState(highSrc);
-  const [res, setRes] = useState("high");
+  // Always serve the lighter file to avoid buffering/stalling on large clips.
+  const [selectedSrc, setSelectedSrc] = useState(lowSrc);
+  const [res, setRes] = useState("low");
   useEffect(() => {
-    const connection =
-      (navigator as any).connection ||
-      (navigator as any).mozConnection ||
-      (navigator as any).webkitConnection;
-
-    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-    const isSlowConnection =
-      connection?.effectiveType === "2g" ||
-      connection?.effectiveType === "slow-2g" ||
-      connection?.saveData;
-
-    if (isMobile || isSlowConnection) {
-      setRes("low");
-      setSelectedSrc(lowSrc);
-    }
-    // toast.success(`Video source changed to ${highSrc} quality`);
+    setRes("low");
+    setSelectedSrc(lowSrc);
   }, [highSrc, lowSrc]);
 
   return { selectedSrc, res };
