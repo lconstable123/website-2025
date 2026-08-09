@@ -36,6 +36,8 @@ type SkillsetContextType = {
   setSelectedUICategory: React.Dispatch<React.SetStateAction<Category>>;
   imagesLoaded: boolean;
   setImagesLoaded: React.Dispatch<React.SetStateAction<boolean>>;
+  affiliateImagesLoaded: boolean;
+  setAffiliateImagesLoaded: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 /////////////////// context
@@ -56,18 +58,19 @@ export default function SkillsetContextProvider({
 
   // const paramfromURL = "";
   const [selectedSkillSet, setSelectedSkillSet] = useState<Skillsets>(
-    (paramfromURL as Skillsets) || "Direction"
+    (paramfromURL as Skillsets) || "Direction",
   );
   const [Videodata, setVideoData] = useState<VideoData[] | null>([]);
   const skills = allSkills;
   const [isCategoryChanging, setIsCategoryChanging] = useState(false);
   const [selectedVideoIndex, setSelectedVideoIndex] = useState<number>(0);
   const [selectedVideoData, setSelectedVideoData] = useState<VideoData | null>(
-    Videodata?.[selectedVideoIndex] || null
+    Videodata?.[selectedVideoIndex] || null,
   );
   const [selectedUICategory, setSelectedUICategory] =
     useState<Category>(selectedSkillSet);
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [affiliateImagesLoaded, setAffiliateImagesLoaded] = useState(false);
   const [isInEyeline, setIsInEyeline] = useState(false);
 
   const allData = [
@@ -144,6 +147,8 @@ export default function SkillsetContextProvider({
         setSelectedUICategory,
         imagesLoaded,
         setImagesLoaded,
+        affiliateImagesLoaded,
+        setAffiliateImagesLoaded,
       }}
     >
       {children}
@@ -155,7 +160,7 @@ export const useSkillSetContext = () => {
   const context = React.useContext(SkillsetContext);
   if (!context) {
     throw new Error(
-      "useSkillSetContext must be used within a SkillsetContextProvider"
+      "useSkillSetContext must be used within a SkillsetContextProvider",
     );
   }
   return context;

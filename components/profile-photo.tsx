@@ -112,7 +112,7 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
         >
           <div className="cursor-pointer flex flex-row justify-center   bg-black">
             <Image
-              src="/new-images/profile2.jpg"
+              src="https://pub-545b5a9f7a3d4468946219f6d7837e3c.r2.dev/assets/profile2.webp"
               alt="profile pic"
               width={200}
               height={200}

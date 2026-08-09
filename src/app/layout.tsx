@@ -24,7 +24,11 @@ const roboto = Roboto({
   variable: "--font-roboto",
   display: "swap",
 });
-<link rel="preload" href="/new-images/bg/BG16.jpg" as="image" />;
+<link
+  rel="preload"
+  href="https://pub-545b5a9f7a3d4468946219f6d7837e3c.r2.dev/assets/BG16.jpg"
+  as="image"
+/>;
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -51,7 +55,7 @@ export default function RootLayout({
         <meta property="og:url" content="https://www.lukeconstable.com" />
         <meta
           property="og:image"
-          content="https://www.lukeconstable.com/new-images/opengraph-low.jpg"
+          content="https://pub-545b5a9f7a3d4468946219f6d7837e3c.r2.dev/assets/opengraph-low.jpg"
         />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />

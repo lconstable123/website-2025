@@ -8,7 +8,7 @@ export default function Opengraph() {
       <div className="w-full h-full  outline-gray-800 overflow-hidden  border-yellow-700 flex items-center  rounded-2xl">
         <div className="relative overflow-hidden w-[500px]">
           <Image
-            src="/new-images/profile2.jpg"
+            src="https://pub-545b5a9f7a3d4468946219f6d7837e3c.r2.dev/assets/profile2.webp"
             alt="profile pic"
             width={500}
             height={500}

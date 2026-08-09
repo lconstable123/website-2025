@@ -18,7 +18,13 @@ type Props = {
 
 export default function ImageLoader({ currentCategory }: Props) {
   const [primaryImagesLoaded, setPrimaryImagesLoaded] = useState(false);
-  const { imagesLoaded, setImagesLoaded } = useSkillSetContext();
+  const {
+    imagesLoaded,
+    setImagesLoaded,
+    affiliateImagesLoaded,
+    setAffiliateImagesLoaded,
+  } = useSkillSetContext();
+
   // const [isImagesLoaded, setIsImagesLoaded] = useState(false);
 
   // Choose image array based on category
@@ -50,6 +56,37 @@ export default function ImageLoader({ currentCategory }: Props) {
       default:
         return [];
     }
+  };
+
+  // Affiliate logos live on R2 at logos/1.webp ... logos/44.webp
+  const getAffiliateImageArray = (): string[] =>
+    Array.from(
+      { length: 44 },
+      (_, i) =>
+        `https://pub-545b5a9f7a3d4468946219f6d7837e3c.r2.dev/logos/${i + 1}.webp`,
+    );
+
+  const preloadAffiliateImages = (imageUrls: string[]) => {
+    let loadedCount = 0;
+    const total = imageUrls.length;
+
+    if (total === 0) {
+      setAffiliateImagesLoaded(true);
+      return;
+    }
+
+    imageUrls.forEach((url) => {
+      const img = new Image();
+      img.src = url;
+      const done = () => {
+        loadedCount++;
+        if (loadedCount === total) {
+          setAffiliateImagesLoaded(true);
+        }
+      };
+      img.onload = done;
+      img.onerror = done; // count errors as loaded to avoid hanging
+    });
   };
 
   // Preload images and optionally wait until all are loaded
@@ -94,6 +131,12 @@ export default function ImageLoader({ currentCategory }: Props) {
     const Primaryurls = getImageArray();
     preloadImages(Primaryurls);
   }, [currentCategory]);
+
+  useEffect(() => {
+    if (!affiliateImagesLoaded) {
+      preloadAffiliateImages(getAffiliateImageArray());
+    }
+  }, []);
 
   useEffect(() => {
     if (primaryImagesLoaded) {

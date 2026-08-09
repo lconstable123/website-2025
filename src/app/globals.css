@@ -104,7 +104,7 @@ body {
 }
 
 .bg1 {
-  @apply bg-[url('/new-images/bg/BG16.jpg')];
+  @apply bg-[url('https://pub-545b5a9f7a3d4468946219f6d7837e3c.r2.dev/assets/BG16.jpg')];
   background-size: 160px auto;
 }
 .videoBox {

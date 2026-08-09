@@ -18,6 +18,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "www.lukeconstable.com",
       },
+      {
+        protocol: "https",
+        hostname: "pub-545b5a9f7a3d4468946219f6d7837e3c.r2.dev",
+      },
     ],
   },
   eslint: {

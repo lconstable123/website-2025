@@ -31,7 +31,9 @@ export default function AffiliatesScroller({
   const baseAffiliates: string[] = Array.from(
     { length: affiliatesCountPerPage },
     (_, i) =>
-      `/new-images/logos/${i + 1 + (page - 1) * affiliatesCountPerPage}.jpg`
+      `https://pub-545b5a9f7a3d4468946219f6d7837e3c.r2.dev/logos/${
+        i + 1 + (page - 1) * affiliatesCountPerPage
+      }.webp`,
   );
 
   useEffect(() => {
