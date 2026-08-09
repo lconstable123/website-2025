@@ -311,8 +311,7 @@ export const WebData: projectType[] = [
     ],
     imageUrl:
       "https://pub-545b5a9f7a3d4468946219f6d7837e3c.r2.dev/thumbs/poke_thumb.png",
-    link: "https://pub-545b5a9f7a3d4468946219f6d7837e3c.r2.dev/main/react-mid.mp4",
-    low: "https://pub-545b5a9f7a3d4468946219f6d7837e3c.r2.dev/main/react-low.mp4",
+
     byline: "React App",
 
     playable: true,
@@ -418,8 +417,8 @@ export const WebData: projectType[] = [
     tags: ["UI/UX", "2d Motion Design", "Immersive Design", "Learning Design"],
     imageUrl:
       "https://pub-545b5a9f7a3d4468946219f6d7837e3c.r2.dev/thumbs/ict_thumb.webp",
-    link: "https://pub-545b5a9f7a3d4468946219f6d7837e3c.r2.dev/main/Ict_Mobile.mp4",
-    low: "https://pub-545b5a9f7a3d4468946219f6d7837e3c.r2.dev/main/Ict_Mobile.mp4",
+    link: "https://pub-545b5a9f7a3d4468946219f6d7837e3c.r2.dev/main/Ict-low.mp4",
+    low: "https://pub-545b5a9f7a3d4468946219f6d7837e3c.r2.dev/main/Ict-Mobile.mp4",
 
     byline: "Educational Series (2018)",
     playable: false,

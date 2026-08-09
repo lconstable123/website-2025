@@ -35,24 +35,23 @@ export const useNativeVideoPlayer = (
   const { selectedSkillSet } = useSkillSetContext();
   // ----------------------------------------------------------- custom hooks
   const { isMobile } = useScreenContext();
-  const { selectedSrc, res } = useOptimizedVideoSource(link, low || link);
+  const { selectedSrc, res } = useOptimizedVideoSource(
+    link,
+    low || link,
+    isMobile,
+  );
 
   //-------------------------------------------------------------functions
 
   const videoRef = externalVideoRef;
 
   const playVideo = async (video: HTMLVideoElement) => {
-    if (video.readyState >= 2) {
-      await video.play().catch((e) => {
-        // toast.error("Video playback failed. Please try again.");
-      });
-    } else {
-      const onCanPlay = () => {
-        video.removeEventListener("canplay", onCanPlay);
-        video.play();
-        // .catch(() => toast.error("Playback failed after reparenting."));
-      };
-      video.addEventListener("canplay", onCanPlay);
+    // play() initiates loading itself, even with preload="none", and resolves
+    // once playback starts — so it works whether or not the video is buffered.
+    try {
+      await video.play();
+    } catch (e) {
+      // playback rejected (e.g. autoplay policy); ignore
     }
   };
 
