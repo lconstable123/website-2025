@@ -30,5 +30,5 @@
     "components/sub-components/bg.js",
     "components/PixelBlast.js"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "functions"]
 }
