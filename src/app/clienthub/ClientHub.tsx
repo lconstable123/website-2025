@@ -60,11 +60,11 @@ type Sync = "loading" | "saved" | "saving" | "error" | "local";
 type Tab = "time" | "bill" | "exp";
 
 const C = {
-  weekend: "rgba(90, 174, 242, 0.09)",
-  open: "rgba(232, 180, 80, 0.14)",
-  paid: "rgba(92, 192, 138, 0.11)",
-  ot: "#5aaef2",
-  boundary: "#6b4a2b",
+  weekend: "#d6e8fa",
+  open: "#fff9d6",
+  paid: "#def3e2",
+  ot: "#2996f0",
+  boundary: "#696969",
 };
 
 const dateHint = () => {
@@ -177,8 +177,8 @@ function EditCell({ value, onCommit, cellKey, className = "", placeholder, list,
           e.currentTarget.blur();
         }
       }}
-      className={`w-full min-w-0 bg-transparent px-2 py-1.5 rounded-[3px] outline-none placeholder:text-[#f2ead8]/25 focus:bg-[#15110d] focus:ring-2 focus:ring-[#b07d4a] ${
-        bad ? "ring-2 ring-[#e8735a] bg-[#15110d]" : ""
+      className={`w-full min-w-0 bg-transparent px-2 py-1.5 rounded-[3px] outline-none placeholder:text-black/25 focus:bg-white focus:ring-2 focus:ring-[#2996f0] ${
+        bad ? "ring-2 ring-[#d92d20] bg-white" : ""
       } ${className}`}
     />
   );
@@ -207,10 +207,10 @@ function Btn({
       title={title}
       disabled={disabled}
       onClick={onClick}
-      className={`inline-flex min-h-[36px] items-center justify-center gap-1.5 whitespace-nowrap rounded-lg px-3.5 py-1.5 text-[13px] font-medium tracking-[0.02em] transition-[background,color,transform] duration-150 hover:-translate-y-px focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-[#b07d4a] disabled:opacity-50 ${
+      className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-md px-3 py-1.5 text-[13px] font-medium transition-colors disabled:opacity-50 ${
         kind === "primary"
-          ? "border-[1.5px] border-[#b07d4a] bg-[#b07d4a]/[0.12] font-bold text-[#f2ead8] hover:bg-[#b07d4a] hover:text-black"
-          : "border-[1.5px] border-[#f2ead8]/75 text-[#f2ead8] hover:border-[#f2ead8] hover:bg-[#f2ead8] hover:text-black"
+          ? "bg-[#1f2937] text-white hover:bg-black"
+          : "border border-black/15 bg-white text-[#1f2937] hover:bg-black/[0.04]"
       }`}
     >
       {children}
@@ -226,7 +226,7 @@ function DelButton({ onClick, label, visible }: { onClick: () => void; label: st
       aria-label={label}
       title={label}
       onClick={onClick}
-      className={`mx-auto grid h-7 w-7 place-items-center rounded border border-[#e8735a]/60 text-[#e8735a] hover:bg-[#e8735a]/15 focus-visible:opacity-100 ${
+      className={`mx-auto grid h-7 w-7 place-items-center rounded border border-[#b22222]/60 text-[#b22222] hover:bg-[#b22222]/10 focus-visible:opacity-100 ${
         visible ? "opacity-100" : "opacity-0 group-hover:opacity-100"
       }`}
     >
@@ -237,8 +237,8 @@ function DelButton({ onClick, label, visible }: { onClick: () => void; label: st
   );
 }
 
-const th = "px-2 py-2 text-left text-[12px] font-semibold uppercase tracking-wide text-[#b07d4a] whitespace-nowrap";
-const td = "p-0 align-middle border-b border-[#f2ead8]/[0.08]";
+const th = "px-2 py-2 text-left text-[12px] font-semibold uppercase tracking-wide text-black/55 whitespace-nowrap";
+const td = "p-0 align-middle border-b border-black/[0.07]";
 const ro = "px-2 py-1.5 whitespace-nowrap tabular-nums";
 const mono = { fontFamily: 'ui-monospace, "Cascadia Mono", Consolas, monospace' };
 
@@ -248,7 +248,7 @@ function SummaryBlock({ rows, s }: { rows: Row[]; s: State }) {
   const f = summaryFigures(rows, s);
   const h = (v: number) => `${fix2(v)} h`;
   const line = (label: string, hours: number, lieu: number, exp: number | null, strong = false) => (
-    <tr className={strong ? "font-semibold" : "text-[#f2ead8]/75"}>
+    <tr className={strong ? "font-semibold" : "text-black/70"}>
       <td className="py-1 pr-6">{label}</td>
       <td className="py-1 pr-6 tabular-nums">{h(hours)}</td>
       <td className="py-1 pr-6 tabular-nums">{lieuText(lieu, s.fullDayHours)}</td>
@@ -257,9 +257,9 @@ function SummaryBlock({ rows, s }: { rows: Row[]; s: State }) {
   );
   return (
     <div className="overflow-x-auto">
-      <table className="whitespace-nowrap text-[14px]">
+      <table className="text-[14px]">
         <thead>
-          <tr className="text-[12px] uppercase tracking-wide text-[#a9b0b8]">
+          <tr className="text-[12px] uppercase tracking-wide text-black/45">
             <th className="pr-6 text-left font-medium" />
             <th className="pr-6 text-left font-medium">Hours</th>
             <th className="pr-6 text-left font-medium">Time in lieu</th>
@@ -387,7 +387,7 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
       <div className="flex flex-wrap items-center gap-2">
         <label className="flex items-center gap-2 text-[14px] font-semibold">
           Standard hours per day (including lunch):
-          <span className={isRO ? "" : "w-20 rounded-md border border-[#f2ead8]/40"}>
+          <span className={isRO ? "" : "w-20 rounded-md border border-black/15 bg-white"}>
             <EditCell
               label="Standard hours per day"
               inputMode="decimal"
@@ -400,15 +400,15 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
             />
           </span>
         </label>
-        <span className="text-[13px] text-[#a9b0b8]">
+        <span className="text-[13px] text-black/50">
           Hours over {fmtShort(s.fullDayHours)} in a day are overtime, and all weekend hours are overtime.
         </span>
       </div>
 
-      <div className="overflow-x-auto rounded-[10px] border border-[#b07d4a]/30 bg-black">
+      <div className="overflow-x-auto rounded-lg border border-black/10 bg-white">
         <table className="w-full min-w-[860px] border-collapse text-[14px]">
-          <thead className="bg-[#b07d4a]/[0.07]">
-            <tr className="border-b border-[#b07d4a]/30">
+          <thead className="bg-[#f7f8fa]">
+            <tr className="border-b border-black/10">
               <th className="w-5" />
               <th className={`${th} w-[140px]`}>Client</th>
               <th className={`${th} w-[130px]`}>Date</th>
@@ -423,7 +423,7 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
           <tbody>
             {view.length === 0 && (
               <tr>
-                <td colSpan={9} className="px-4 py-10 text-center text-[#a9b0b8]">
+                <td colSpan={9} className="px-4 py-10 text-center text-black/45">
                   {isRO ? (
                     "No days yet."
                   ) : (
@@ -448,10 +448,10 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
                   onFocusCapture={() => setSelected(r.id)}
                   onClick={() => setSelected(r.id)}
                 >
-                  <td className={`${td} text-center text-[10px] text-[#b07d4a]`} style={line}>
+                  <td className={`${td} text-center text-[10px] text-[#2996f0]`} style={line}>
                     {sel ? "▶" : ""}
                   </td>
-                  <td className={td} style={{ ...line, ...clientCell(c, s.clientHues) }}>
+                  <td className={td} style={{ ...line, background: c ? clientCss(c, s.clientHues) : undefined }}>
                     <EditCell
                       label="Client"
                       list="ch-clients"
@@ -565,10 +565,10 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
       <div className="flex flex-wrap gap-2">
         <Btn edits onClick={add}>Add billing period</Btn>
       </div>
-      <div className="overflow-x-auto rounded-[10px] border border-[#b07d4a]/30 bg-black">
+      <div className="overflow-x-auto rounded-lg border border-black/10 bg-white">
         <table className="w-full min-w-[980px] border-collapse text-[14px]">
-          <thead className="bg-[#b07d4a]/[0.07]">
-            <tr className="border-b border-[#b07d4a]/30">
+          <thead className="bg-[#f7f8fa]">
+            <tr className="border-b border-black/10">
               <th className="w-5" />
               <th className={`${th} w-[150px]`}>Client</th>
               <th className={`${th} w-[130px]`}>From</th>
@@ -586,7 +586,7 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
           <tbody>
             {periods.length === 0 && (
               <tr>
-                <td colSpan={12} className="px-4 py-10 text-center text-[#a9b0b8]">
+                <td colSpan={12} className="px-4 py-10 text-center text-black/45">
                   No billing periods yet.
                 </td>
               </tr>
@@ -602,8 +602,8 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
                   onFocusCapture={() => setSelected(p.id)}
                   onClick={() => setSelected(p.id)}
                 >
-                  <td className={`${td} text-center text-[10px] text-[#b07d4a]`}>{sel ? "▶" : ""}</td>
-                  <td className={td} style={clientCell(p.client, s.clientHues)}>
+                  <td className={`${td} text-center text-[10px] text-[#2996f0]`}>{sel ? "▶" : ""}</td>
+                  <td className={td} style={{ background: p.client ? clientCss(p.client, s.clientHues) : undefined }}>
                     <EditCell
                       label="Client"
                       list="ch-clients"
@@ -658,7 +658,7 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
                     <input
                       type="checkbox"
                       aria-label="Paid"
-                      className="h-4 w-4 accent-[#b07d4a] disabled:opacity-100"
+                      className="h-4 w-4 accent-[#1f8a4c] disabled:opacity-100"
                       disabled={isRO}
                       checked={p.paid}
                       onChange={(e) => patch(p.id, { paid: e.target.checked })}
@@ -679,7 +679,7 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
                     <div className={ro}>{fmtMoney(x.expenses)}</div>
                   </td>
                   <td className={td}>
-                    <div className={`${ro} ${x.remaining != null && x.remaining < 0 ? "text-[#e8735a]" : ""}`}>
+                    <div className={`${ro} ${x.remaining != null && x.remaining < 0 ? "text-[#b42318]" : ""}`}>
                       {remainingText(x.remaining)}
                     </div>
                   </td>
@@ -740,10 +740,10 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
       <div className="flex flex-wrap gap-2">
         <Btn edits onClick={add}>Add expense</Btn>
       </div>
-      <div className="overflow-x-auto rounded-[10px] border border-[#b07d4a]/30 bg-black">
+      <div className="overflow-x-auto rounded-lg border border-black/10 bg-white">
         <table className="w-full min-w-[960px] border-collapse text-[14px]">
-          <thead className="bg-[#b07d4a]/[0.07]">
-            <tr className="border-b border-[#b07d4a]/30">
+          <thead className="bg-[#f7f8fa]">
+            <tr className="border-b border-black/10">
               <th className="w-5" />
               <th className={`${th} w-[130px]`}>Date</th>
               <th className={`${th} w-[140px]`}>Client</th>
@@ -758,7 +758,7 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
           <tbody>
             {list.length === 0 && (
               <tr>
-                <td colSpan={9} className="px-4 py-10 text-center text-[#a9b0b8]">
+                <td colSpan={9} className="px-4 py-10 text-center text-black/45">
                   No expenses yet.
                 </td>
               </tr>
@@ -773,7 +773,7 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
                   onFocusCapture={() => setSelected(x.id)}
                   onClick={() => setSelected(x.id)}
                 >
-                  <td className={`${td} text-center text-[10px] text-[#b07d4a]`}>{sel ? "▶" : ""}</td>
+                  <td className={`${td} text-center text-[10px] text-[#2996f0]`}>{sel ? "▶" : ""}</td>
                   <td className={td}>
                     <EditCell
                       label="Date"
@@ -786,7 +786,7 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
                       }}
                     />
                   </td>
-                  <td className={td} style={clientCell(x.client, s.clientHues)}>
+                  <td className={td} style={{ background: x.client ? clientCss(x.client, s.clientHues) : undefined }}>
                     <EditCell
                       label="Client"
                       list="ch-clients"
@@ -817,7 +817,7 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
                     <input
                       type="checkbox"
                       aria-label="Paid"
-                      className="h-4 w-4 accent-[#b07d4a] disabled:opacity-100"
+                      className="h-4 w-4 accent-[#1f8a4c] disabled:opacity-100"
                       disabled={isRO}
                       checked={x.paid}
                       onChange={(e) => patch(x.id, { paid: e.target.checked })}
@@ -834,8 +834,8 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
       </div>
       <div className="flex flex-wrap gap-x-8 gap-y-1 text-[14px] font-semibold">
         <span>Outstanding: {fmtMoney(open)}</span>
-        <span className="text-[#f2ead8]/75">Paid: {fmtMoney(paid)}</span>
-        <span className="text-[#f2ead8]/75">Total: {fmtMoney(open + paid)}</span>
+        <span className="text-black/70">Paid: {fmtMoney(paid)}</span>
+        <span className="text-black/70">Total: {fmtMoney(open + paid)}</span>
       </div>
     </div>
   );
@@ -1031,10 +1031,7 @@ export default function ClientHub() {
 
   if (!state || !now) {
     return (
-      <div
-        className="grid min-h-screen place-items-center bg-black text-[12px] uppercase tracking-[0.14em] text-[#a9b0b8]"
-        style={rootFont}
-      >
+      <div className="grid min-h-screen place-items-center bg-[#f4f5f7] text-[14px] text-black/50" style={rootFont}>
         Loading timesheet…
       </div>
     );
@@ -1120,224 +1117,160 @@ export default function ClientHub() {
     local: "This browser only",
   };
   const syncColor: Record<Sync, string> = {
-    loading: "#a9b0b8",
-    saved: "#5cc08a",
-    saving: "#e0a85a",
-    error: "#e8735a",
-    local: "#e0a85a",
+    loading: "#9ca3af",
+    saved: "#1f8a4c",
+    saving: "#d97706",
+    error: "#b42318",
+    local: "#d97706",
   };
-
-  const banner = "flex flex-wrap items-center gap-3 rounded-lg border border-[#e8735a]/50 bg-[#e8735a]/10 px-4 py-2.5 text-[13px]";
 
   return (
     <ReadOnly.Provider value={!!viewer}>
-      <div className="ch-root min-h-screen bg-black text-[#f2ead8]" style={rootFont}>
-        <style>{hubCss}</style>
-        {viewer && (
-          <div className="border-b border-[#6b4a2b] bg-[#b07d4a]/[0.12] px-4 py-2 text-center text-[11px] font-bold uppercase tracking-[0.18em]">
-            Viewing in read-only mode as {viewer}
-          </div>
-        )}
-        <datalist id="ch-clients">
-          {clients.map((c) => (
-            <option key={c} value={c} />
-          ))}
-        </datalist>
+    <div className="min-h-screen bg-[#f4f5f7] text-[#16181d]" style={rootFont}>
+      {viewer && (
+        <div className="bg-[#1f2937] px-4 py-2 text-center text-[13px] font-medium text-white">
+          Viewing in read-only mode as {viewer}
+        </div>
+      )}
+      <datalist id="ch-clients">
+        {clients.map((c) => (
+          <option key={c} value={c} />
+        ))}
+      </datalist>
 
-        <header className="mx-auto flex max-w-[1240px] flex-wrap items-center gap-x-6 gap-y-4 px-4 pb-6 pt-8">
-          <div className="mr-auto flex min-w-0 items-center gap-4">
-            <VaBadge />
-            <div className="min-w-0">
-              <h1 className="text-[16px] font-bold uppercase leading-tight tracking-[0.14em] sm:text-[24px] sm:tracking-[0.24em]">
-                Virtually Anything
-              </h1>
-              <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px] font-medium tracking-[0.04em] text-[#a9b0b8]">
-                <span>{viewer ? `Timesheet · ${viewer}` : "Timesheet"}</span>
-                {!viewer && (
-                  <span className="inline-flex items-center gap-1.5 text-[12px]">
-                    <span className="inline-block h-2 w-2 rounded-full" style={{ background: syncColor[sync] }} />
-                    {syncText[sync]}
-                  </span>
-                )}
+      <header className="border-b border-black/10 bg-white">
+        <div className="mx-auto flex max-w-[1240px] flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3">
+          <div className="mr-auto min-w-0">
+            <h1 className="text-[17px] font-semibold leading-tight">
+              VirtuallyAnything Timesheet{viewer ? ` · ${viewer}` : ""}
+            </h1>
+            {!viewer && (
+              <div className="mt-0.5 flex items-center gap-1.5 text-[12px] text-black/55">
+                <span className="inline-block h-2 w-2 rounded-full" style={{ background: syncColor[sync] }} />
+                {syncText[sync]}
               </div>
-            </div>
+            )}
           </div>
 
           {!viewer && (
-            <div className="flex items-center gap-4">
-              <div className="text-right leading-tight">
-                <div className="flex items-center justify-end gap-1.5 text-[11px] font-bold uppercase tracking-[0.18em]">
-                  <span
-                    className="inline-block h-2 w-2 rounded-full"
-                    style={{ background: clock.on ? "#5cc08a" : "#6b4a2b" }}
-                  />
-                  {clock.on ? "On" : "Off"}
-                </div>
-                <div className="mt-1 text-[13px] tabular-nums text-[#a9b0b8]">
-                  {clock.on
-                    ? `since ${fmtTime(clock.since as number)} · ${fix2(clock.live)} h`
-                    : clock.todayWorked > 0
-                    ? `today ${fix2(clock.todayWorked)} h, OT ${fix2(clock.todayOt)}`
-                    : "not clocked on today"}
-                </div>
+          <div className="flex items-center gap-3">
+            <div className="text-right text-[13px] leading-tight">
+              <div className="font-semibold" style={{ color: clock.on ? "#1f8a4c" : "#b42318" }}>
+                {clock.on ? "ON" : "OFF"}
               </div>
-              <button
-                type="button"
-                onClick={doClock}
-                className={`inline-flex min-h-[52px] items-center gap-2.5 rounded-lg border-[1.5px] px-5 text-[15px] font-bold tracking-[0.06em] text-[#f2ead8] transition-[background,color,transform] duration-150 hover:-translate-y-px hover:text-black focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-[#b07d4a] ${
-                  clock.on
-                    ? "border-[#e8735a] bg-[#e8735a]/[0.14] hover:bg-[#e8735a]"
-                    : "border-[#b07d4a] bg-[#b07d4a]/[0.14] hover:bg-[#b07d4a]"
-                }`}
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-                  <circle cx="12" cy="12" r="9" />
-                  <path d="M12 12V7M12 12l3.5 2.5" />
-                </svg>
-                {clock.on ? "Clock Off" : "Clock On"}
-              </button>
+              <div className="text-black/55 tabular-nums">
+                {clock.on
+                  ? `since ${fmtTime(clock.since as number)} · ${fix2(clock.live)} h`
+                  : clock.todayWorked > 0
+                  ? `today ${fix2(clock.todayWorked)} h, OT ${fix2(clock.todayOt)}`
+                  : "not clocked on today"}
+              </div>
             </div>
+            <button
+              type="button"
+              onClick={doClock}
+              className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-[14px] font-semibold text-white shadow-sm transition-colors"
+              style={{ background: clock.on ? "#c83737" : "#28a745" }}
+            >
+              <svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true">
+                <circle cx="16" cy="16" r="14" fill="none" stroke="white" strokeWidth="3" />
+                <path d="M16 16V8M16 16l5 4" stroke="white" strokeWidth="3" strokeLinecap="round" />
+              </svg>
+              {clock.on ? "Clock Off" : "Clock On"}
+            </button>
+          </div>
           )}
-        </header>
 
-        <div className="mx-auto max-w-[1240px] px-4">
-          <div className="rounded-[20px] border-2 border-[#6b4a2b] p-1.5">
-            <div className="rounded-[14px] border border-[#b07d4a]/25 px-3 pb-6 pt-3 sm:px-5">
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
-                <nav className="-mb-px mr-auto flex gap-1 overflow-x-auto" role="tablist">
-                  {(
-                    [
-                      ["time", "Timesheet"],
-                      ["bill", "Billing period"],
-                      ["exp", "Expenses"],
-                    ] as [Tab, string][]
-                  ).map(([k, label]) => (
-                    <button
-                      key={k}
-                      type="button"
-                      role="tab"
-                      aria-selected={tab === k}
-                      onClick={() => chooseTab(k)}
-                      className={`whitespace-nowrap border-b-2 px-3 py-2.5 text-[12px] font-bold uppercase tracking-[0.14em] transition-colors ${
-                        tab === k
-                          ? "border-[#b07d4a] text-[#f2ead8]"
-                          : "border-transparent text-[#a9b0b8] hover:text-[#f2ead8]"
-                      }`}
-                    >
-                      {label}
-                    </button>
-                  ))}
-                </nav>
-                <div className="flex flex-wrap gap-2">
-                  <Btn onClick={doExport} title="Download every sheet as an Excel workbook">
-                    Export to Excel
-                  </Btn>
-                  <Btn onClick={doCsv} title={`Download the ${tabNames[tab]} tab as a CSV file`}>
-                    Export {tabNames[tab]} CSV
-                  </Btn>
-                  <Btn
-                    edits
-                    onClick={() => fileRef.current?.click()}
-                    title="Import timesheet.csv, billing.csv, expenses.csv, client-colors.csv and settings.ini from the desktop app's records folder"
-                  >
-                    Import from desktop…
-                  </Btn>
-                  <input
-                    ref={fileRef}
-                    type="file"
-                    multiple
-                    accept=".csv,.ini,text/csv"
-                    className="hidden"
-                    onChange={(e) => doImport(e.target.files)}
-                  />
-                </div>
-              </div>
-              <hr className="mb-5 mt-0 h-px border-0 bg-[linear-gradient(90deg,transparent,rgba(176,125,74,0.6),transparent)]" />
-
-              {(sync === "local" || (stale && !viewer)) && (
-                <div className="mb-4 space-y-2">
-                  {sync === "local" && (
-                    <div className={banner}>Cloud storage isn&apos;t connected, so changes are only saved in this browser.</div>
-                  )}
-                  {stale && !viewer && (
-                    <div className={banner}>
-                      <span>
-                        <b>Missing clock-off:</b> nothing recorded on {fmtDate(stale.date)}.
-                      </span>
-                      <button
-                        type="button"
-                        className="font-semibold text-[#b07d4a] hover:underline"
-                        onClick={() => {
-                          chooseTab("time");
-                          focusCell(`${stale.id}:off`);
-                        }}
-                      >
-                        Fix it
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              <main>
-                {tab === "time" && <TimesheetTab s={state} rows={rows} update={update} />}
-                {tab === "bill" && <BillingTab s={state} rows={rows} update={update} />}
-                {tab === "exp" && <ExpensesTab s={state} update={update} />}
-              </main>
-            </div>
+          <div className="flex flex-wrap gap-2">
+            <Btn onClick={doExport} title="Download every sheet as an Excel workbook">
+              Export to Excel
+            </Btn>
+            <Btn onClick={doCsv} title={`Download the ${tabNames[tab]} tab as a CSV file`}>
+              Export {tabNames[tab]} CSV
+            </Btn>
+            <Btn
+              edits
+              onClick={() => fileRef.current?.click()}
+              title="Import timesheet.csv, billing.csv, expenses.csv, client-colors.csv and settings.ini from the desktop app's records folder"
+            >
+              Import from desktop…
+            </Btn>
+            <a
+              href="/clienthub/logout"
+              className="inline-flex items-center rounded-md px-3 py-1.5 text-[13px] font-medium text-black/60 hover:bg-black/[0.04]"
+            >
+              Sign out
+            </a>
+            <input
+              ref={fileRef}
+              type="file"
+              multiple
+              accept=".csv,.ini,text/csv"
+              className="hidden"
+              onChange={(e) => doImport(e.target.files)}
+            />
           </div>
         </div>
+      </header>
 
-        <footer className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 px-4 pb-10 pt-6 text-[12px] uppercase tracking-[0.08em] text-[#a9b0b8]">
-          <a href="https://virtuallyanything.xyz/" className="opacity-80 hover:text-[#f2ead8] hover:opacity-100">
-            virtuallyanything.xyz
-          </a>
-          <a href="/clienthub/logout" className="opacity-80 hover:text-[#f2ead8] hover:opacity-100">
-            Sign out
-          </a>
-        </footer>
+      <div className="mx-auto max-w-[1240px] space-y-2 px-4 pt-4">
+        {sync === "local" && (
+          <div className="rounded-lg border border-[#f5c46b] bg-[#fff7e6] px-4 py-2.5 text-[13px]">
+            Cloud storage isn't connected, so changes are only saved in this browser.
+          </div>
+        )}
+        {stale && !viewer && (
+          <div className="flex flex-wrap items-center gap-3 rounded-lg border border-[#f5c46b] bg-[#fff7e6] px-4 py-2.5 text-[13px]">
+            <span>
+              <b>Missing clock-off:</b> nothing recorded on {fmtDate(stale.date)}.
+            </span>
+            <button
+              type="button"
+              className="font-semibold text-[#2563eb] hover:underline"
+              onClick={() => {
+                chooseTab("time");
+                focusCell(`${stale.id}:off`);
+              }}
+            >
+              Fix it
+            </button>
+          </div>
+        )}
       </div>
+
+      <nav className="mx-auto flex max-w-[1240px] gap-1 overflow-x-auto px-4 pt-3" role="tablist">
+        {(
+          [
+            ["time", "Timesheet"],
+            ["bill", "Billing period"],
+            ["exp", "Expenses"],
+          ] as [Tab, string][]
+        ).map(([k, label]) => (
+          <button
+            key={k}
+            type="button"
+            role="tab"
+            aria-selected={tab === k}
+            onClick={() => chooseTab(k)}
+            className={`whitespace-nowrap rounded-t-md border-b-2 px-4 py-2 text-[14px] font-medium ${
+              tab === k ? "border-[#16181d] text-[#16181d]" : "border-transparent text-black/50 hover:text-black/80"
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+      </nav>
+
+      <main className="mx-auto max-w-[1240px] px-4 pb-16 pt-4">
+        {tab === "time" && <TimesheetTab s={state} rows={rows} update={update} />}
+        {tab === "bill" && <BillingTab s={state} rows={rows} update={update} />}
+        {tab === "exp" && <ExpensesTab s={state} update={update} />}
+      </main>
+    </div>
     </ReadOnly.Provider>
   );
 }
 
-/** The Virtually Anything badge (same artwork as virtuallyanything.xyz/icon.svg). */
-function VaBadge() {
-  return (
-    <svg
-      viewBox="0 0 512 512"
-      aria-hidden="true"
-      className="h-10 w-10 flex-none rounded-full shadow-[0_0_0_2px_#f2ead8,0_0_0_4px_#6b4a2b] sm:h-11 sm:w-11"
-    >
-      <rect width="512" height="512" fill="#264653" />
-      <circle cx="392" cy="128" r="22" fill="#f2e8cf" opacity="0.9" />
-      <ellipse cx="256" cy="420" rx="190" ry="44" fill="#2a9d8f" />
-      <rect x="186" y="176" width="140" height="236" rx="70" fill="#e76f51" />
-      <circle cx="230" cy="250" r="12" fill="#264653" />
-      <circle cx="282" cy="250" r="12" fill="#264653" />
-      <path d="M232 292 q24 20 48 0" stroke="#264653" strokeWidth="9" fill="none" strokeLinecap="round" />
-    </svg>
-  );
-}
-
 const rootFont: React.CSSProperties = {
-  fontFamily: 'var(--font-montserrat), Montserrat, system-ui, -apple-system, "Segoe UI", sans-serif',
-  colorScheme: "dark",
+  fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
 };
-
-// Page-wide touches the component's classes can't reach: the site's toast pop-ups, autofill and selection colours.
-const hubCss = `
-body:has(.ch-root) { background: #000; }
-body:has(.ch-root) div:has(> [role="status"]) {
-  background: #0d0a07 !important; color: #f2ead8 !important; border: 1px solid rgba(176,125,74,0.55);
-  font-family: var(--font-montserrat), Montserrat, system-ui, sans-serif;
-}
-.ch-root input:-webkit-autofill { -webkit-text-fill-color: #f2ead8; transition: background-color 9999s; }
-.ch-root ::selection { background: rgba(176,125,74,0.45); }
-.ch-root ::-webkit-scrollbar { height: 10px; width: 10px; }
-.ch-root ::-webkit-scrollbar-thumb { background: #3a2a1b; border-radius: 8px; }
-`;
-
-/** A client's colour band, with dark text so the name stays readable on the pastel. */
-const clientCell = (name: string, hues: Record<string, number>): React.CSSProperties =>
-  name ? { background: clientCss(name, hues), color: "#1a1410", fontWeight: 600 } : {};

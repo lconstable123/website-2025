@@ -58,13 +58,6 @@ function readCookie(req: Request, name: string): string {
   return "";
 }
 
-// The Virtually Anything badge (same artwork as virtuallyanything.xyz/icon.svg).
-const VA_ICON =
-  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" fill="#264653"/>' +
-  '<circle cx="392" cy="128" r="22" fill="#f2e8cf" opacity="0.9"/><ellipse cx="256" cy="420" rx="190" ry="44" fill="#2a9d8f"/>' +
-  '<rect x="186" y="176" width="140" height="236" rx="70" fill="#e76f51"/><circle cx="230" cy="250" r="12" fill="#264653"/>' +
-  '<circle cx="282" cy="250" r="12" fill="#264653"/><path d="M232 292 q24 20 48 0" stroke="#264653" stroke-width="9" fill="none" stroke-linecap="round"/></svg>';
-
 const noStore = {
   "Cache-Control": "no-store",
   "X-Robots-Tag": "noindex, nofollow",
@@ -72,52 +65,28 @@ const noStore = {
 
 function loginPage(failed: boolean): Response {
   const html = `<!doctype html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#000000"><meta name="robots" content="noindex,nofollow">
-<title>Client Hub · Virtually Anything</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,${encodeURIComponent(VA_ICON)}">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Client Hub</title>
 <style>
-  :root{--ink:#000;--copper:#6b4a2b;--copper-hi:#b07d4a;--cream:#f2ead8;--muted:#a9b0b8;--coral:#e8735a;color-scheme:dark}
-  *{box-sizing:border-box}html,body{margin:0;min-height:100%}
-  body{min-height:100dvh;background:var(--ink);color:var(--cream);font-family:Montserrat,system-ui,-apple-system,"Segoe UI",sans-serif}
-  .wrap{min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;
-    padding:48px 28px calc(48px + env(safe-area-inset-bottom))}
-  .panel{width:min(100%,440px);padding:6px;border-radius:20px;border:2px solid var(--copper);background:#000}
-  .inner{border-radius:14px;border:1px solid rgba(176,125,74,.25);padding:28px 24px;text-align:center}
-  .badge{width:52px;height:52px;border-radius:50%;display:block;margin:0 auto 18px;box-shadow:0 0 0 2px var(--cream),0 0 0 4px var(--copper)}
-  h1{margin:0;font-weight:700;font-size:clamp(20px,5vw,28px);letter-spacing:.24em;text-indent:.24em;text-transform:uppercase}
-  .tag{margin:8px 0 0;font-size:15px;font-weight:500;letter-spacing:.04em;color:var(--muted)}
-  .rule{height:1px;border:0;margin:20px auto;background:linear-gradient(90deg,transparent,rgba(176,125,74,.6),transparent)}
-  label{display:block;text-align:left;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-  input{width:100%;font:inherit;font-size:16px;min-height:46px;padding:10px 14px;border:1.5px solid rgba(242,234,216,.5);border-radius:8px;
-    background:transparent;color:var(--cream);transition:border-color .15s}
-  input:focus{outline:none;border-color:var(--copper-hi);box-shadow:0 0 0 3px rgba(176,125,74,.25)}
-  button{margin-top:16px;width:100%;min-height:52px;font:inherit;font-size:16px;font-weight:700;letter-spacing:.06em;color:var(--cream);
-    border:1.5px solid var(--copper-hi);border-radius:8px;background:rgba(176,125,74,.12);cursor:pointer;
-    transition:background .15s,color .15s,transform .15s}
-  button:hover{background:var(--copper-hi);color:var(--ink);transform:translateY(-1px)}
-  button:focus-visible{outline:2px solid var(--copper-hi);outline-offset:3px}
-  .err{margin:12px 0 0;font-size:13px;color:var(--coral);text-align:left}
-  footer{font-size:12px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;opacity:.8}
-  footer a{color:inherit;text-decoration:none}footer a:hover{color:var(--cream)}
-  @media (max-width:480px){.wrap{padding:36px 18px calc(36px + env(safe-area-inset-bottom));gap:20px}.inner{padding:24px 16px}}
+  :root{color-scheme:light dark;--bg:#f4f5f7;--card:#fff;--fg:#16181d;--muted:#666b76;--line:#d9dce2;--accent:#1f8a4c;--bad:#b42318}
+  @media (prefers-color-scheme:dark){:root{--bg:#0f1115;--card:#181b21;--fg:#eceef2;--muted:#9aa0ab;--line:#2c3038;--accent:#3cb371;--bad:#f97066}}
+  *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:var(--bg);color:var(--fg);
+  font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:16px}
+  form{width:100%;max-width:340px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:28px}
+  h1{margin:0 0 4px;font-size:20px}p{margin:0 0 20px;color:var(--muted);font-size:14px}
+  label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
+  input{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:transparent;color:inherit}
+  input:focus{outline:2px solid var(--accent);outline-offset:1px}
+  button{margin-top:16px;width:100%;font:inherit;font-weight:600;padding:10px;border:0;border-radius:8px;background:var(--accent);color:#fff;cursor:pointer}
+  .err{color:var(--bad);font-size:13px;margin:10px 0 0}
 </style></head>
-<body><div class="wrap">
-  <main class="panel"><form class="inner" method="post" action="/clienthub/login">
-    <img class="badge" alt="" width="52" height="52" src="data:image/svg+xml,${encodeURIComponent(VA_ICON)}">
-    <h1>Client Hub</h1>
-    <p class="tag">Virtually Anything timesheets</p>
-    <hr class="rule">
-    <label for="pw">Password</label>
-    <input id="pw" name="password" type="password" autocomplete="current-password" autofocus required>
-    ${failed ? '<p class="err">That password isn\'t right.</p>' : ""}
-    <button type="submit">Sign in</button>
-  </form></main>
-  <footer><a href="https://virtuallyanything.xyz/">virtuallyanything.xyz</a></footer>
-</div></body></html>`;
+<body><form method="post" action="/clienthub/login">
+  <h1>Client Hub</h1><p>VirtuallyAnything Timesheet</p>
+  <label for="pw">Password</label>
+  <input id="pw" name="password" type="password" autocomplete="current-password" autofocus required>
+  ${failed ? '<p class="err">That password isn\'t right.</p>' : ""}
+  <button type="submit">Sign in</button>
+</form></body></html>`;
   return new Response(html, {
     status: 401,
     headers: { "Content-Type": "text/html; charset=utf-8", ...noStore },
