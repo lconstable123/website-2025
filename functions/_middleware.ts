@@ -68,16 +68,22 @@ function loginPage(failed: boolean): Response {
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>Client Hub</title>
 <style>
-  :root{color-scheme:light dark;--bg:#f4f5f7;--card:#fff;--fg:#16181d;--muted:#666b76;--line:#d9dce2;--accent:#1f8a4c;--bad:#b42318}
-  @media (prefers-color-scheme:dark){:root{--bg:#0f1115;--card:#181b21;--fg:#eceef2;--muted:#9aa0ab;--line:#2c3038;--accent:#3cb371;--bad:#f97066}}
+  /* Colours from lukeconstable.com's dark menus: black page, gray-950 panel, yellow-700 border (yellow-600 on hover). */
+  :root{color-scheme:dark;--bg:#000;--card:#030712;--fg:#fff;--muted:#9ca3af;--line:#1f2937;--field:#111827;
+    --gold:#a16207;--gold-hi:#ca8a04;--bad:#f87171}
   *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:var(--bg);color:var(--fg);
   font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:16px}
-  form{width:100%;max-width:340px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:28px}
+  form{width:100%;max-width:340px;background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:28px;
+    box-shadow:0 20px 25px -5px rgba(0,0,0,.2),0 8px 10px -6px rgba(0,0,0,.2);transition:border-color .3s}
+  form:hover,form:focus-within{border-color:var(--gold-hi)}
   h1{margin:0 0 4px;font-size:20px}p{margin:0 0 20px;color:var(--muted);font-size:14px}
-  label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
-  input{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:transparent;color:inherit}
-  input:focus{outline:2px solid var(--accent);outline-offset:1px}
-  button{margin-top:16px;width:100%;font:inherit;font-weight:600;padding:10px;border:0;border-radius:8px;background:var(--accent);color:#fff;cursor:pointer}
+  label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:#e5e7eb}
+  input{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#000;color:inherit}
+  input:focus{outline:2px solid var(--gold-hi);outline-offset:1px;border-color:transparent}
+  button{margin-top:16px;width:100%;font:inherit;font-weight:600;padding:10px;border:2px solid var(--gold);border-radius:8px;
+    background:var(--field);color:var(--gold-hi);cursor:pointer;transition:border-color .2s,background .2s,color .2s}
+  button:hover{border-color:var(--gold-hi);background:var(--gold-hi);color:#000}
+  button:focus-visible{outline:2px solid var(--gold-hi);outline-offset:2px}
   .err{color:var(--bad);font-size:13px;margin:10px 0 0}
 </style></head>
 <body><form method="post" action="/clienthub/login">
