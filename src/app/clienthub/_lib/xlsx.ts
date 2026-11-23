@@ -328,11 +328,12 @@ export function buildWorkbook(s: State): Uint8Array {
   sheets.push(bp);
 
   // --- Expenses ---
-  const ex: XSheet = { name: "Expenses", widths: [15, 28, 22, 28, 11, 8], rows: [] };
-  ex.rows.push(["Date", "Item", "Company", "Use", "Price", "Paid"].map((h) => c(h, hdr)));
+  const ex: XSheet = { name: "Expenses", widths: [15, 18, 28, 22, 28, 11, 8], rows: [] };
+  ex.rows.push(["Date", "Client", "Item", "Company", "Use", "Price", "Paid"].map((h) => c(h, hdr)));
   for (const x of sortExpenses(s.expenses))
     ex.rows.push([
       c({ date: x.date }, date),
+      c(x.client || null, x.client ? clientStyle(x.client) : 0),
       c(x.item, 0),
       c(x.company, 0),
       c(x.use || null, 0),
@@ -341,6 +342,7 @@ export function buildWorkbook(s: State): Uint8Array {
     ]);
   ex.rows.push([
     c("Total", hdr),
+    c(null, 0),
     c(null, 0),
     c(null, 0),
     c(null, 0),

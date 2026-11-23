@@ -1,22 +1,44 @@
 // Cloudflare Pages middleware: password-protects everything under /clienthub (the page, its data API).
 // public/_routes.json limits Functions to /clienthub*, so the rest of the site is served statically as before.
 //
-// The password is the CLIENTHUB_PASSWORD environment variable (Cloudflare Pages > Settings > Variables),
-// falling back to "va" if it isn't set.
+// Two kinds of login:
+//  - owner: full editing. Password = CLIENTHUB_PASSWORD env var, default "va".
+//  - read-only client viewers: see only their own days, billing periods and expenses.
+//    CLIENTHUB_VIEWERS env var, entries separated by ";", each  password:client name|other name:Display name
+//    default "lr:LR|Lucky Robots|LuckyRobots:Lucky Robots".
+// The role is handed to the API in ctx.data.session.
 
 interface Env {
   CLIENTHUB_PASSWORD?: string;
+  CLIENTHUB_VIEWERS?: string;
 }
 
-type Ctx = { request: Request; env: Env; next: () => Promise<Response> };
+export type Session = { role: "owner" } | { role: "viewer"; id: string; display: string; clients: string[] };
+
+type Ctx = { request: Request; env: Env; next: () => Promise<Response>; data: Record<string, unknown> };
 
 const COOKIE = "clienthub_session";
 const YEAR = 60 * 60 * 24 * 365;
+const DEFAULT_VIEWERS = "lr:LR|Lucky Robots|LuckyRobots:Lucky Robots";
 
-async function sessionToken(password: string): Promise<string> {
+type Login = { password: string; session: Session };
+
+function logins(env: Env): Login[] {
+  const list: Login[] = [{ password: env.CLIENTHUB_PASSWORD || "va", session: { role: "owner" } }];
+  for (const part of (env.CLIENTHUB_VIEWERS ?? DEFAULT_VIEWERS).split(";")) {
+    const [password, names, display] = part.split(":").map((x) => (x ?? "").trim());
+    if (!password || !names) continue;
+    const clients = names.split("|").map((x) => x.trim()).filter(Boolean);
+    list.push({ password, session: { role: "viewer", id: password, display: display || clients[0], clients } });
+  }
+  return list;
+}
+
+async function sessionToken(l: Login): Promise<string> {
+  const who = l.session.role === "owner" ? "owner" : "viewer:" + l.session.id;
   const buf = await crypto.subtle.digest(
     "SHA-256",
-    new TextEncoder().encode("clienthub-session:v1:" + password)
+    new TextEncoder().encode("clienthub-session:v2:" + who + ":" + l.password)
   );
   return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
@@ -84,17 +106,19 @@ export const onRequest = async (ctx: Ctx): Promise<Response> => {
     path === "/clienthub" || path.startsWith("/clienthub/") || path.startsWith("/clienthub.");
   if (!protectedPath) return ctx.next();
 
-  const expected = await sessionToken(ctx.env.CLIENTHUB_PASSWORD || "va");
+  const all = logins(ctx.env);
+  const tokens = await Promise.all(all.map(sessionToken));
   const secure = url.protocol === "https:" ? "; Secure" : "";
 
   if (path === "/clienthub/login") {
     if (ctx.request.method !== "POST") return redirect("/clienthub");
     const form = await ctx.request.formData().catch(() => null);
     const given = String(form?.get("password") ?? "");
-    if (!safeEqual(await sessionToken(given), expected)) return loginPage(true);
+    const i = all.findIndex((l) => safeEqual(l.password, given));
+    if (i < 0) return loginPage(true);
     return redirect(
       "/clienthub",
-      `${COOKIE}=${expected}; Path=/; Max-Age=${YEAR}; HttpOnly; SameSite=Lax${secure}`
+      `${COOKIE}=${tokens[i]}; Path=/; Max-Age=${YEAR}; HttpOnly; SameSite=Lax${secure}`
     );
   }
 
@@ -102,7 +126,10 @@ export const onRequest = async (ctx: Ctx): Promise<Response> => {
     return redirect("/clienthub", `${COOKIE}=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax${secure}`);
   }
 
-  if (!safeEqual(readCookie(ctx.request, COOKIE), expected)) {
+  const cookie = readCookie(ctx.request, COOKIE);
+  const who = tokens.findIndex((t) => safeEqual(cookie, t));
+  if (who >= 0) ctx.data.session = all[who].session;
+  else {
     if (path.startsWith("/clienthub/api/")) {
       return new Response(JSON.stringify({ error: "unauthorized" }), {
         status: 401,

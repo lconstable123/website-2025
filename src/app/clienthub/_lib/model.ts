@@ -28,6 +28,7 @@ export type Expense = {
   use: string; // what the expense was for
   price: number;
   paid: boolean;
+  client: string; // who the expense is for; tagged expenses show in that client's read-only view
 };
 
 export type State = {
@@ -57,7 +58,7 @@ export function normalizeState(raw: unknown): State {
     fullDayHours: fd > 0 && fd <= 24 ? fd : 8,
     entries: Array.isArray(s.entries) ? s.entries : [],
     periods: Array.isArray(s.periods) ? s.periods : [],
-    expenses: Array.isArray(s.expenses) ? s.expenses : [],
+    expenses: Array.isArray(s.expenses) ? s.expenses.map((x) => ({ ...x, client: x.client ?? "" })) : [],
     clientHues: s.clientHues && typeof s.clientHues === "object" ? s.clientHues : {},
   };
 }
@@ -270,7 +271,11 @@ export function clientFor(date: string, periods: Period[]): string {
 
 export function knownClients(s: State): string[] {
   const seen = new Map<string, string>();
-  for (const n of [...s.periods.map((p) => p.client), ...s.entries.map((e) => e.client)]) {
+  for (const n of [
+    ...s.periods.map((p) => p.client),
+    ...s.entries.map((e) => e.client),
+    ...s.expenses.map((x) => x.client),
+  ]) {
     const t = (n || "").trim();
     if (t && !seen.has(t.toLowerCase())) seen.set(t.toLowerCase(), t);
   }
@@ -332,13 +337,52 @@ export const clientCss = (name: string, hues: Record<string, number>) => `rgb(${
 
 // ---------- billing / summary ----------
 
+const sameClient = (a: string, b: string) => a.trim().toLowerCase() === b.trim().toLowerCase();
+
+/** An expense counts towards a billing period when it's dated inside it and isn't tagged for a different client. */
+export function expenseInPeriod(x: Expense, p: Period): boolean {
+  return x.date >= p.from && x.date <= p.to && (!x.client || !p.client || sameClient(x.client, p.client));
+}
+
+/**
+ * What a client sees in read-only mode: only their days (typed on the day, or from the billing period), their
+ * billing periods and expenses tagged for them. Done on the server, so other clients' data is never sent.
+ * On a day shared with another client, the overtime is fixed to this client's share of the day's overtime.
+ */
+export function filterForClient(s: State, names: string[]): State {
+  const is = (n: string) => !!n && names.some((m) => sameClient(m, n));
+  const all = annotate(s.entries, s.fullDayHours);
+  const kept = all.filter((r) => is(r.client || clientFor(r.date, s.periods)));
+  const entries: Entry[] = [];
+  for (const date of [...new Set(kept.map((r) => r.date))]) {
+    const mine = kept.filter((r) => r.date === date);
+    const mixed = all.filter((r) => r.date === date).length !== mine.length;
+    const out: Entry[] = mine.map(({ worked: _w, hours: _h, overtime: _o, ...e }) => ({ ...e, ot: mixed ? null : e.ot }));
+    if (mixed) {
+      const share = mine.reduce((a, r) => a + (r.worked != null ? r.worked - (r.hours ?? 0) : 0), 0);
+      const lastWorked = [...mine].reverse().find((r) => r.worked != null);
+      if (lastWorked) out.find((e) => e.id === lastWorked.id)!.ot = round2(share);
+    }
+    entries.push(...out);
+  }
+  const hues: Record<string, number> = {};
+  for (const [k, v] of Object.entries(s.clientHues)) if (is(k)) hues[k] = v;
+  return {
+    ...s,
+    entries,
+    periods: s.periods.filter((p) => is(p.client)),
+    expenses: s.expenses.filter((x) => is(x.client)),
+    clientHues: hues,
+  };
+}
+
 export type PeriodStats = { reg: number; ot: number; worked: number; expenses: number; remaining: number | null };
 
 export function periodStats(p: Period, rows: Row[], expenses: Expense[]): PeriodStats {
   const inP = rows.filter((x) => x.date >= p.from && x.date <= p.to);
   const reg = inP.reduce((a, x) => a + (x.hours ?? 0), 0);
   const ot = inP.reduce((a, x) => a + (x.overtime ?? 0), 0);
-  const exp = expenses.filter((x) => x.date >= p.from && x.date <= p.to).reduce((a, x) => a + x.price, 0);
+  const exp = expenses.filter((x) => expenseInPeriod(x, p)).reduce((a, x) => a + x.price, 0);
   return { reg, ot, worked: reg + ot, expenses: exp, remaining: p.hours > 0 ? p.hours - reg - ot : null };
 }
 

@@ -5,7 +5,11 @@
 // `rev` goes up by one on every save; a save based on an older rev is refused so one device can't
 // silently overwrite changes made on another. The first save of each day also keeps a copy of the
 // state as it was (table clienthub_backup, last 120 days).
-// Authentication is done by functions/_middleware.ts.
+// Authentication is done by functions/_middleware.ts. Read-only client viewers only ever receive their own
+// client's data (filtered here, on the server) and can't save.
+
+import type { Session } from "../../_middleware";
+import { filterForClient, normalizeState } from "../../../src/app/clienthub/_lib/model";
 
 interface D1Result {
   meta: { changes: number };
@@ -22,7 +26,7 @@ interface D1 {
 interface Env {
   CLIENTHUB_DB?: D1;
 }
-type Ctx = { request: Request; env: Env };
+type Ctx = { request: Request; env: Env; data: { session?: Session } };
 type Row = { rev: number; saved_at: string; data: string };
 
 const MAX_BYTES = 5 * 1024 * 1024;
@@ -51,8 +55,16 @@ async function db(env: Env): Promise<D1 | null> {
   return d;
 }
 
-const notConfigured = () =>
-  json({ error: "storage-not-configured", detail: "Add a D1 binding named CLIENTHUB_DB." }, 503);
+const notConfigured = (session?: Session) =>
+  json(
+    {
+      error: "storage-not-configured",
+      detail: "Add a D1 binding named CLIENTHUB_DB.",
+      role: session?.role,
+      viewer: session?.role === "viewer" ? session.display : undefined,
+    },
+    503
+  );
 
 async function current(d: D1) {
   const row = await d.prepare("SELECT rev, saved_at, data FROM clienthub_state WHERE id = 1").first<Row>();
@@ -61,13 +73,24 @@ async function current(d: D1) {
     : { rev: 0, savedAt: null, data: null };
 }
 
-export const onRequestGet = async ({ env }: Ctx) => {
+export const onRequestGet = async ({ env, data: ctxData }: Ctx) => {
+  const session = ctxData.session;
+  if (!session) return json({ error: "unauthorized" }, 401);
   const d = await db(env);
-  if (!d) return notConfigured();
-  return json(await current(d));
+  if (!d) return notConfigured(session);
+  const cur = await current(d);
+  if (session.role === "owner") return json({ ...cur, role: "owner" });
+  return json({
+    rev: cur.rev,
+    savedAt: cur.savedAt,
+    role: "viewer",
+    viewer: session.display,
+    data: cur.data ? filterForClient(normalizeState(cur.data), session.clients) : null,
+  });
 };
 
-export const onRequestPut = async ({ request, env }: Ctx) => {
+export const onRequestPut = async ({ request, env, data: ctxData }: Ctx) => {
+  if (ctxData.session?.role !== "owner") return json({ error: "read-only" }, 403);
   const d = await db(env);
   if (!d) return notConfigured();
 

@@ -97,6 +97,7 @@ function parseExpenses(text: string): Expense[] {
       price: parseMoney(f[3] ?? "") ?? 0,
       paid: yes(f[4]),
       use: f[5] ?? "",
+      client: (f[6] ?? "").trim(),
     });
   }
   return out;

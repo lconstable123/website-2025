@@ -3,7 +3,7 @@
 // Client Hub - the web version of the VirtuallyAnything Timesheet desktop app.
 // Data is kept in Cloudflare D1 via /clienthub/api/data (see functions/), mirrored in localStorage.
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import {
   addDays,
@@ -46,6 +46,10 @@ import {
 } from "./_lib/model";
 import { buildWorkbook } from "./_lib/xlsx";
 import { importFiles } from "./_lib/import";
+import { buildCsv } from "./_lib/csv";
+
+/** True when signed in as a read-only client viewer: every cell is plain text and nothing can be changed. */
+const ReadOnly = createContext(false);
 
 const API = "/clienthub/api/data";
 const LS_DATA = "clienthub:data:v1";
@@ -106,6 +110,7 @@ type CellProps = {
 };
 
 function EditCell({ value, onCommit, cellKey, className = "", placeholder, list, inputMode, label, style }: CellProps) {
+  const readOnly = useContext(ReadOnly);
   const [draft, setDraft] = useState(value);
   const [bad, setBad] = useState(false);
   const focused = useRef(false);
@@ -116,6 +121,14 @@ function EditCell({ value, onCommit, cellKey, className = "", placeholder, list,
       setBad(false);
     }
   }, [value]);
+
+  if (readOnly) {
+    return (
+      <div className={`min-h-[32px] px-2 py-1.5 ${className}`} style={style}>
+        {value}
+      </div>
+    );
+  }
 
   const commit = () => {
     const v = draft.trim();
@@ -177,13 +190,17 @@ function Btn({
   kind = "plain",
   title,
   disabled,
+  edits = false,
 }: {
   children: React.ReactNode;
   onClick: () => void;
   kind?: "plain" | "primary";
   title?: string;
   disabled?: boolean;
+  edits?: boolean; // changes data, so hidden in read-only mode
 }) {
+  const readOnly = useContext(ReadOnly);
+  if (edits && readOnly) return null;
   return (
     <button
       type="button"
@@ -202,6 +219,7 @@ function Btn({
 }
 
 function DelButton({ onClick, label, visible }: { onClick: () => void; label: string; visible: boolean }) {
+  if (useContext(ReadOnly)) return null;
   return (
     <button
       type="button"
@@ -261,6 +279,7 @@ function SummaryBlock({ rows, s }: { rows: Row[]; s: State }) {
 // ---------------------------------------------------------------- timesheet tab
 
 function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Update }) {
+  const isRO = useContext(ReadOnly);
   const [selected, setSelected] = useState<string | null>(null);
   const periods = useMemo(() => sortPeriods(s.periods), [s.periods]);
 
@@ -368,7 +387,7 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
       <div className="flex flex-wrap items-center gap-2">
         <label className="flex items-center gap-2 text-[14px] font-semibold">
           Standard hours per day (including lunch):
-          <span className="w-20 rounded-md border border-black/15 bg-white">
+          <span className={isRO ? "" : "w-20 rounded-md border border-black/15 bg-white"}>
             <EditCell
               label="Standard hours per day"
               inputMode="decimal"
@@ -405,7 +424,13 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
             {view.length === 0 && (
               <tr>
                 <td colSpan={9} className="px-4 py-10 text-center text-black/45">
-                  No days yet. Use <b>Clock On</b> at the top, or <b>Add day</b> below.
+                  {isRO ? (
+                    "No days yet."
+                  ) : (
+                    <>
+                      No days yet. Use <b>Clock On</b> at the top, or <b>Add day</b> below.
+                    </>
+                  )}
                 </td>
               </tr>
             )}
@@ -489,8 +514,8 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <Btn onClick={() => addEntry(todayIso())}>Add day</Btn>
-        <Btn onClick={insertAfter}>Insert day after selected</Btn>
+        <Btn edits onClick={() => addEntry(todayIso())}>Add day</Btn>
+        <Btn edits onClick={insertAfter}>Insert day after selected</Btn>
       </div>
       <SummaryBlock rows={rows} s={s} />
     </div>
@@ -500,6 +525,7 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
 // ---------------------------------------------------------------- billing tab
 
 function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update }) {
+  const isRO = useContext(ReadOnly);
   const [selected, setSelected] = useState<string | null>(null);
   const periods = useMemo(() => sortPeriods(s.periods), [s.periods]);
 
@@ -537,7 +563,7 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap gap-2">
-        <Btn onClick={add}>Add billing period</Btn>
+        <Btn edits onClick={add}>Add billing period</Btn>
       </div>
       <div className="overflow-x-auto rounded-lg border border-black/10 bg-white">
         <table className="w-full min-w-[980px] border-collapse text-[14px]">
@@ -632,7 +658,8 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
                     <input
                       type="checkbox"
                       aria-label="Paid"
-                      className="h-4 w-4 accent-[#1f8a4c]"
+                      className="h-4 w-4 accent-[#1f8a4c] disabled:opacity-100"
+                      disabled={isRO}
                       checked={p.paid}
                       onChange={(e) => patch(p.id, { paid: e.target.checked })}
                     />
@@ -673,6 +700,7 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
 // ---------------------------------------------------------------- expenses tab
 
 function ExpensesTab({ s, update }: { s: State; update: Update }) {
+  const isRO = useContext(ReadOnly);
   const [selected, setSelected] = useState<string | null>(null);
   const list = useMemo(() => sortExpenses(s.expenses), [s.expenses]);
 
@@ -683,7 +711,11 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
     const id = uid();
     update((st) => ({
       ...st,
-      expenses: [...st.expenses, { id, date: todayIso(), item: "", company: "", use: "", price: 0, paid: false }],
+      expenses: [
+        ...st.expenses,
+        // tagged for today's billing-period client to start with
+        { id, date: todayIso(), item: "", company: "", use: "", price: 0, paid: false, client: clientFor(todayIso(), st.periods) },
+      ],
     }));
     setSelected(id);
     focusCell(`${id}:item`);
@@ -706,14 +738,15 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap gap-2">
-        <Btn onClick={add}>Add expense</Btn>
+        <Btn edits onClick={add}>Add expense</Btn>
       </div>
       <div className="overflow-x-auto rounded-lg border border-black/10 bg-white">
-        <table className="w-full min-w-[820px] border-collapse text-[14px]">
+        <table className="w-full min-w-[960px] border-collapse text-[14px]">
           <thead className="bg-[#f7f8fa]">
             <tr className="border-b border-black/10">
               <th className="w-5" />
               <th className={`${th} w-[130px]`}>Date</th>
+              <th className={`${th} w-[140px]`}>Client</th>
               <th className={th}>Item</th>
               <th className={`${th} w-[170px]`}>Company</th>
               <th className={th}>Use</th>
@@ -725,7 +758,7 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
           <tbody>
             {list.length === 0 && (
               <tr>
-                <td colSpan={8} className="px-4 py-10 text-center text-black/45">
+                <td colSpan={9} className="px-4 py-10 text-center text-black/45">
                   No expenses yet.
                 </td>
               </tr>
@@ -753,6 +786,17 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
                       }}
                     />
                   </td>
+                  <td className={td} style={{ background: x.client ? clientCss(x.client, s.clientHues) : undefined }}>
+                    <EditCell
+                      label="Client"
+                      list="ch-clients"
+                      placeholder={isRO ? "" : "—"}
+                      value={x.client}
+                      onCommit={(v) => {
+                        patch(x.id, { client: v });
+                      }}
+                    />
+                  </td>
                   {text(x, "item", "Item")}
                   {text(x, "company", "Company")}
                   {text(x, "use", "Use")}
@@ -773,7 +817,8 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
                     <input
                       type="checkbox"
                       aria-label="Paid"
-                      className="h-4 w-4 accent-[#1f8a4c]"
+                      className="h-4 w-4 accent-[#1f8a4c] disabled:opacity-100"
+                      disabled={isRO}
                       checked={x.paid}
                       onChange={(e) => patch(x.id, { paid: e.target.checked })}
                     />
@@ -810,8 +855,11 @@ export default function ClientHub() {
   const cloudRef = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  const [viewer, setViewer] = useState<string | null>(null); // read-only client name, e.g. "Lucky Robots"
+  const viewerRef = useRef<string | null>(null);
 
   const persistLocal = useCallback(() => {
+    if (viewerRef.current) return; // never keep a client's view in this browser's owner cache
     try {
       localStorage.setItem(
         LS_DATA,
@@ -873,7 +921,7 @@ export default function ClientHub() {
   const update: Update = useCallback(
     (fn) => {
       const cur = stateRef.current;
-      if (!cur) return;
+      if (!cur || viewerRef.current) return;
       const next = ensureHues(fn(cur));
       if (next === cur) return;
       stateRef.current = next;
@@ -901,8 +949,17 @@ export default function ClientHub() {
       try {
         const res = await fetch(API, { cache: "no-store" });
         if (res.status === 401) return location.reload();
-        if (!res.ok) throw new Error(String(res.status));
-        const body = await res.json();
+        const body = await res.json().catch(() => null);
+        if (body?.role === "viewer") {
+          viewerRef.current = body.viewer || "client";
+          setViewer(viewerRef.current);
+          cloudRef.current = true;
+          revRef.current = body.rev ?? 0;
+          apply(res.ok && body.data ? normalizeState(body.data) : emptyState());
+          setSync("saved");
+          return;
+        }
+        if (!res.ok || !body) throw new Error(String(res.status));
         cloudRef.current = true;
         if (local && local.dirty && local.rev === body.rev && hasContent(local.data)) {
           // unsaved changes from last time, made on top of the current cloud copy
@@ -996,19 +1053,27 @@ export default function ClientHub() {
     );
   };
 
-  const doExport = () => {
-    const bytes = buildWorkbook(state);
-    const blob = new Blob([bytes as BlobPart], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    });
+  const download = (data: BlobPart, type: string, name: string) => {
     const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = `VirtuallyAnything Timesheet ${todayIso()}.xlsx`;
+    a.href = URL.createObjectURL(new Blob([data], { type }));
+    a.download = name;
     document.body.appendChild(a);
     a.click();
     a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 5000);
   };
+  const filePrefix = viewer ? `${viewer} - VirtuallyAnything` : "VirtuallyAnything";
+  const tabNames: Record<Tab, string> = { time: "Timesheet", bill: "Billing periods", exp: "Expenses" };
+
+  const doExport = () =>
+    download(
+      buildWorkbook(state) as BlobPart,
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      `${filePrefix} Timesheet ${todayIso()}.xlsx`
+    );
+
+  const doCsv = () =>
+    download(buildCsv(tab, state), "text/csv;charset=utf-8", `${filePrefix} ${tabNames[tab]} ${todayIso()}.csv`);
 
   const doImport = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
@@ -1060,7 +1125,13 @@ export default function ClientHub() {
   };
 
   return (
+    <ReadOnly.Provider value={!!viewer}>
     <div className="min-h-screen bg-[#f4f5f7] text-[#16181d]" style={rootFont}>
+      {viewer && (
+        <div className="bg-[#1f2937] px-4 py-2 text-center text-[13px] font-medium text-white">
+          Viewing in read-only mode as {viewer}
+        </div>
+      )}
       <datalist id="ch-clients">
         {clients.map((c) => (
           <option key={c} value={c} />
@@ -1070,13 +1141,18 @@ export default function ClientHub() {
       <header className="border-b border-black/10 bg-white">
         <div className="mx-auto flex max-w-[1240px] flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3">
           <div className="mr-auto min-w-0">
-            <h1 className="text-[17px] font-semibold leading-tight">VirtuallyAnything Timesheet</h1>
-            <div className="mt-0.5 flex items-center gap-1.5 text-[12px] text-black/55">
-              <span className="inline-block h-2 w-2 rounded-full" style={{ background: syncColor[sync] }} />
-              {syncText[sync]}
-            </div>
+            <h1 className="text-[17px] font-semibold leading-tight">
+              VirtuallyAnything Timesheet{viewer ? ` · ${viewer}` : ""}
+            </h1>
+            {!viewer && (
+              <div className="mt-0.5 flex items-center gap-1.5 text-[12px] text-black/55">
+                <span className="inline-block h-2 w-2 rounded-full" style={{ background: syncColor[sync] }} />
+                {syncText[sync]}
+              </div>
+            )}
           </div>
 
+          {!viewer && (
           <div className="flex items-center gap-3">
             <div className="text-right text-[13px] leading-tight">
               <div className="font-semibold" style={{ color: clock.on ? "#1f8a4c" : "#b42318" }}>
@@ -1103,12 +1179,17 @@ export default function ClientHub() {
               {clock.on ? "Clock Off" : "Clock On"}
             </button>
           </div>
+          )}
 
           <div className="flex flex-wrap gap-2">
             <Btn onClick={doExport} title="Download every sheet as an Excel workbook">
               Export to Excel
             </Btn>
+            <Btn onClick={doCsv} title={`Download the ${tabNames[tab]} tab as a CSV file`}>
+              Export {tabNames[tab]} CSV
+            </Btn>
             <Btn
+              edits
               onClick={() => fileRef.current?.click()}
               title="Import timesheet.csv, billing.csv, expenses.csv, client-colors.csv and settings.ini from the desktop app's records folder"
             >
@@ -1138,7 +1219,7 @@ export default function ClientHub() {
             Cloud storage isn't connected, so changes are only saved in this browser.
           </div>
         )}
-        {stale && (
+        {stale && !viewer && (
           <div className="flex flex-wrap items-center gap-3 rounded-lg border border-[#f5c46b] bg-[#fff7e6] px-4 py-2.5 text-[13px]">
             <span>
               <b>Missing clock-off:</b> nothing recorded on {fmtDate(stale.date)}.
@@ -1186,6 +1267,7 @@ export default function ClientHub() {
         {tab === "exp" && <ExpensesTab s={state} update={update} />}
       </main>
     </div>
+    </ReadOnly.Provider>
   );
 }
 
