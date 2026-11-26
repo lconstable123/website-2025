@@ -1,5 +1,6 @@
-// Cloudflare Pages middleware: password-protects everything under /clienthub (the page, its data API).
-// public/_routes.json limits Functions to /clienthub*, so the rest of the site is served statically as before.
+// Cloudflare Pages middleware: password-protects everything under /tools/clienthub (the page, its data API).
+// The old /clienthub address redirects (308) to /tools/clienthub so bookmarks and shared links keep working.
+// public/_routes.json limits Functions to /tools/clienthub* (and the old /clienthub* redirect), so the rest of the site is served statically as before.
 //
 // Two kinds of login:
 //  - owner: full editing. Password = CLIENTHUB_PASSWORD env var, default "va".
@@ -67,6 +68,9 @@ function loginPage(failed: boolean): Response {
   const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>Client Hub</title>
+<link rel="icon" type="image/png" href="/tools/hub-logo.png"><link rel="apple-touch-icon" href="/tools/hub-logo.png">
+<meta property="og:type" content="website"><meta property="og:title" content="Client Hub"><meta property="og:description" content="VirtuallyAnything Timesheet">
+<meta property="og:image" content="https://lukeconstable.com/tools/hub-og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
 <style>
   /* Colours from lukeconstable.com's dark menus: black page, gray-950 panel, yellow-700 border (yellow-600 on hover). */
   :root{color-scheme:dark;--bg:#000;--card:#030712;--fg:#fff;--muted:#9ca3af;--line:#1f2937;--field:#111827;
@@ -86,7 +90,8 @@ function loginPage(failed: boolean): Response {
   button:focus-visible{outline:2px solid var(--gold-hi);outline-offset:2px}
   .err{color:var(--bad);font-size:13px;margin:10px 0 0}
 </style></head>
-<body><form method="post" action="/clienthub/login">
+<body><form method="post" action="/tools/clienthub/login">
+  <img src="/tools/hub-logo.png" alt="" width="72" height="72" style="display:block;margin:0 0 12px;image-rendering:pixelated">
   <h1>Client Hub</h1><p>VirtuallyAnything Timesheet</p>
   <label for="pw">Password</label>
   <input id="pw" name="password" type="password" autocomplete="current-password" autofocus required>
@@ -108,35 +113,39 @@ function redirect(to: string, cookie?: string): Response {
 export const onRequest = async (ctx: Ctx): Promise<Response> => {
   const url = new URL(ctx.request.url);
   const path = url.pathname;
+  // old address -> new address (308 keeps the method, so a login POST or API PUT is not broken)
+  if (path === "/clienthub" || path.startsWith("/clienthub/") || path.startsWith("/clienthub.")) {
+    return new Response(null, { status: 308, headers: { Location: "/tools" + path + url.search, ...noStore } });
+  }
   const protectedPath =
-    path === "/clienthub" || path.startsWith("/clienthub/") || path.startsWith("/clienthub.");
+    path === "/tools/clienthub" || path.startsWith("/tools/clienthub/") || path.startsWith("/tools/clienthub.");
   if (!protectedPath) return ctx.next();
 
   const all = logins(ctx.env);
   const tokens = await Promise.all(all.map(sessionToken));
   const secure = url.protocol === "https:" ? "; Secure" : "";
 
-  if (path === "/clienthub/login") {
-    if (ctx.request.method !== "POST") return redirect("/clienthub");
+  if (path === "/tools/clienthub/login") {
+    if (ctx.request.method !== "POST") return redirect("/tools/clienthub");
     const form = await ctx.request.formData().catch(() => null);
     const given = String(form?.get("password") ?? "");
     const i = all.findIndex((l) => safeEqual(l.password, given));
     if (i < 0) return loginPage(true);
     return redirect(
-      "/clienthub",
+      "/tools/clienthub",
       `${COOKIE}=${tokens[i]}; Path=/; Max-Age=${YEAR}; HttpOnly; SameSite=Lax${secure}`
     );
   }
 
-  if (path === "/clienthub/logout") {
-    return redirect("/clienthub", `${COOKIE}=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax${secure}`);
+  if (path === "/tools/clienthub/logout") {
+    return redirect("/tools/clienthub", `${COOKIE}=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax${secure}`);
   }
 
   const cookie = readCookie(ctx.request, COOKIE);
   const who = tokens.findIndex((t) => safeEqual(cookie, t));
   if (who >= 0) ctx.data.session = all[who].session;
   else {
-    if (path.startsWith("/clienthub/api/")) {
+    if (path.startsWith("/tools/clienthub/api/")) {
       return new Response(JSON.stringify({ error: "unauthorized" }), {
         status: 401,
         headers: { "Content-Type": "application/json", ...noStore },

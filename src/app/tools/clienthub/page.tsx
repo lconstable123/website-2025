@@ -5,6 +5,13 @@ import ClientHub from "./ClientHub";
 export const metadata: Metadata = {
   title: "Client Hub · VirtuallyAnything Timesheet",
   robots: { index: false, follow: false },
+  icons: { icon: "/tools/hub-logo.png", apple: "/tools/hub-logo.png" },
+  openGraph: {
+    title: "Client Hub",
+    description: "VirtuallyAnything Timesheet",
+    images: [{ url: "/tools/hub-og.png", width: 1200, height: 630 }],
+  },
+  twitter: { card: "summary_large_image", images: ["/tools/hub-og.png"] },
 };
 
 export default function ClientHubPage() {

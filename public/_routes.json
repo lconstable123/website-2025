@@ -1,5 +1,5 @@
 {
   "version": 1,
-  "include": ["/clienthub", "/clienthub*"],
+  "include": ["/tools/clienthub", "/tools/clienthub*", "/clienthub", "/clienthub*"],
   "exclude": []
 }

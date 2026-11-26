@@ -1,7 +1,7 @@
 "use client";
 
 // Client Hub - the web version of the VirtuallyAnything Timesheet desktop app.
-// Data is kept in Cloudflare D1 via /clienthub/api/data (see functions/), mirrored in localStorage.
+// Data is kept in Cloudflare D1 via /tools/clienthub/api/data (see functions/), mirrored in localStorage.
 
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
@@ -50,7 +50,7 @@ import { buildCsv } from "./_lib/csv";
 /** True when signed in as a read-only client viewer: every cell is plain text and nothing can be changed. */
 const ReadOnly = createContext(false);
 
-const API = "/clienthub/api/data";
+const API = "/tools/clienthub/api/data";
 const LS_DATA = "clienthub:data:v1";
 const LS_TAB = "clienthub:tab";
 
@@ -1139,6 +1139,8 @@ export default function ClientHub() {
 
       <header className="border-b border-black/10 bg-white">
         <div className="mx-auto flex max-w-[1240px] flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/tools/hub-logo.png" alt="" width={44} height={44} className="h-11 w-11 shrink-0" style={{ imageRendering: "pixelated" }} />
           <div className="mr-auto min-w-0">
             <h1 className="text-[17px] font-semibold leading-tight">
               VirtuallyAnything Timesheet{viewer ? ` · ${viewer}` : ""}
@@ -1202,7 +1204,7 @@ export default function ClientHub() {
               Import from desktop…
             </Btn>
             <a
-              href="/clienthub/logout"
+              href="/tools/clienthub/logout"
               className="inline-flex items-center rounded-md px-3 py-1.5 text-[13px] font-medium text-black/60 hover:bg-black/[0.04]"
             >
               Sign out

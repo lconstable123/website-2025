@@ -1,5 +1,5 @@
-// GET  /clienthub/api/data -> { rev, savedAt, data }   (data is null until the first save)
-// PUT  /clienthub/api/data <- { rev, data }            -> { rev, savedAt }, or 409 + the current copy
+// GET  /tools/clienthub/api/data -> { rev, savedAt, data }   (data is null until the first save)
+// PUT  /tools/clienthub/api/data <- { rev, data }            -> { rev, savedAt }, or 409 + the current copy
 //
 // The whole Client Hub state is one JSON document in Cloudflare D1 (binding CLIENTHUB_DB).
 // `rev` goes up by one on every save; a save based on an older rev is refused so one device can't
@@ -9,7 +9,7 @@
 // client's data (filtered here, on the server) and can't save.
 
 import type { Session } from "../../_middleware";
-import { filterForClient, normalizeState } from "../../../src/app/clienthub/_lib/model";
+import { filterForClient, normalizeState } from "../../../../src/app/tools/clienthub/_lib/model";
 
 interface D1Result {
   meta: { changes: number };
