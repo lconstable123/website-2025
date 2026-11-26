@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PDF Editor</title>
+<link rel="icon" type="image/png" href="/tools/pdf/icon.png">
+<style>
+  :root {
+    --bg: #e9ebef; --panel: #ffffff; --ink: #1b1f27; --muted: #667085; --line: #d5d9e0;
+    --accent: #2563eb; --accent-ink: #fff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #14161a; --panel: #1f2329; --ink: #e8eaee; --muted: #9aa3b2; --line: #343a44; --accent: #4c8dff; --accent-ink: #0b1220; }
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body { background: var(--bg); color: var(--ink); font: 14px/1.4 system-ui, Segoe UI, sans-serif; display: flex; flex-direction: column; }
+  #bar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 8px 12px; background: var(--panel); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 20; }
+  #bar .sep { width: 1px; height: 24px; background: var(--line); margin: 0 4px; }
+  button, .btn { font: inherit; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  button:hover, .btn:hover { border-color: var(--accent); }
+  button.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
+  button:disabled { opacity: .4; cursor: default; }
+  input[type=number] { width: 58px; font: inherit; padding: 5px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); color: var(--ink); }
+  input[type=color] { width: 32px; height: 30px; padding: 0; border: 1px solid var(--line); border-radius: 6px; background: none; }
+  #name { color: var(--muted); max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #scroller { flex: 1; overflow: auto; padding: 20px 12px 60px; }
+  #pages { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .page { position: relative; background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,.25); }
+  .page canvas { display: block; }
+  .overlay { position: absolute; inset: 0; }
+  .tool-text .overlay { cursor: text; } .tool-tick .overlay, .tool-cross .overlay, .tool-sig .overlay { cursor: crosshair; }
+  .item { position: absolute; outline: 1px dashed transparent; }
+  .item:hover { outline-color: var(--accent); }
+  .item.sel { outline: 1.5px solid var(--accent); }
+  .item.mark, .item.sig { cursor: move; }
+  .item svg, .item img { width: 100%; height: 100%; display: block; pointer-events: none; }
+  .item.text .t { white-space: pre; outline: none; min-width: 20px; cursor: text; padding: 0; line-height: 1.2; font-family: Helvetica, Arial, sans-serif; }
+  .item .grip, .item .del, .item .rz { display: none; position: absolute; background: var(--accent); color: var(--accent-ink); font-size: 11px; line-height: 16px; text-align: center; width: 16px; height: 16px; border-radius: 4px; user-select: none; }
+  .item.sel .grip, .item.sel .del, .item.sel .rz { display: block; }
+  .item .grip { left: -18px; top: 0; cursor: move; } .item .del { right: -18px; top: 0; cursor: pointer; }
+  .item .rz { right: -8px; bottom: -8px; cursor: nwse-resize; }
+  .field { position: absolute; margin: 0; padding: 0 2px; border: 1px solid #5b8def; background: rgba(120,160,255,.18); font-family: Helvetica, Arial, sans-serif; color: #000; }
+  .field:focus { outline: 2px solid var(--accent); background: rgba(120,160,255,.08); }
+  input[type=checkbox].field, input[type=radio].field { appearance: auto; accent-color: var(--accent); }
+  #empty { margin: 14vh auto 0; text-align: center; color: var(--muted); max-width: 420px; padding: 40px; border: 2px dashed var(--line); border-radius: 14px; }
+  #empty.drag { border-color: var(--accent); color: var(--accent); }
+  dialog { border: 1px solid var(--line); border-radius: 12px; background: var(--panel); color: var(--ink); padding: 18px; width: min(520px, 94vw); }
+  dialog::backdrop { background: rgba(0,0,0,.45); }
+  dialog h3 { margin: 0 0 10px; }
+  #sigpad { width: 100%; height: 180px; border: 1px solid var(--line); border-radius: 8px; background: #fff; touch-action: none; cursor: crosshair; display: block; }
+  #sigtype { width: 100%; font: 44px "Segoe Script", "Brush Script MT", cursive; padding: 8px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: #111; }
+  .tabs { display: flex; gap: 6px; margin-bottom: 10px; }
+  .row { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; align-items: center; }
+  #toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 8px 14px; border-radius: 8px; opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 50; }
+  #toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div id="bar">
+  <label class="btn">📂 Open<input id="file" type="file" accept="application/pdf" hidden></label>
+  <span id="name">No file</span>
+  <span class="sep"></span>
+  <button data-tool="select" class="on" title="Select / move (V)">↖ Select</button>
+  <button data-tool="text" title="Add text (T)">T Text</button>
+  <button data-tool="tick" title="Add tick (C)">✓ Tick</button>
+  <button data-tool="cross" title="Add cross (X)">✗ Cross</button>
+  <button data-tool="sig" title="Add signature (S)">✍ Signature</button>
+  <span class="sep"></span>
+  <input id="color" type="color" value="#111111" title="Colour">
+  <input id="size" type="number" min="6" max="96" value="14" title="Text size (pt)">
+  <span class="sep"></span>
+  <button id="undo" title="Undo (Ctrl+Z)">↶ Undo</button>
+  <button id="zout">−</button><span id="zlabel">130%</span><button id="zin">+</button><button id="zfit">Fit</button>
+  <span style="flex:1"></span>
+  <button id="save" class="primary" disabled>💾 Save PDF</button>
+</div>
+
+<div id="scroller">
+  <div id="empty">Drop a PDF here or click <b>Open</b><br><small>Everything stays on your computer.</small></div>
+  <div id="pages"></div>
+</div>
+
+<dialog id="sigdlg">
+  <h3>Your signature</h3>
+  <div class="tabs"><button id="tabDraw" class="on">Draw</button><button id="tabType">Type</button><span style="flex:1"></span><button id="savedSig" hidden>Use saved</button></div>
+  <div id="drawPane"><canvas id="sigpad" width="960" height="360"></canvas></div>
+  <div id="typePane" hidden><input id="sigtype" placeholder="Type your name"></div>
+  <div class="row"><button id="sigclear">Clear</button><span style="flex:1"></span><button id="sigcancel">Cancel</button><button id="sigok" class="primary">Use signature</button></div>
+</dialog>
+<div id="toast"></div>
+
+<script src="/tools/pdf/lib/pdf.min.js"></script>
+<script src="/tools/pdf/lib/pdf-lib.min.js"></script>
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = '/tools/pdf/lib/pdf.worker.min.js';
+const $ = s => document.querySelector(s);
+const state = { bytes: null, doc: null, name: 'document.pdf', zoom: 1.3, tool: 'select', items: [], sel: null,
+                pages: [], form: {}, widgets: [], undo: [], sig: null, handle: null };
+let uid = 1;
+
+/* ---------- helpers ---------- */
+function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('show'), 2500); }
+const hexRgb = h => PDFLib.rgb(parseInt(h.slice(1,3),16)/255, parseInt(h.slice(3,5),16)/255, parseInt(h.slice(5,7),16)/255);
+function pushUndo() { state.undo.push(JSON.stringify(state.items)); if (state.undo.length > 100) state.undo.shift(); }
+function setTool(t) {
+  state.tool = t;
+  document.querySelectorAll('[data-tool]').forEach(b => b.classList.toggle('on', b.dataset.tool === t));
+  $('#pages').className = 'tool-' + t;
+}
+
+/* ---------- open ---------- */
+async function openFile(file) {
+  if (!file) return;
+  state.bytes = new Uint8Array(await file.arrayBuffer());
+  state.name = file.name; state.items = []; state.form = {}; state.undo = []; state.sel = null;
+  $('#name').textContent = file.name;
+  try {
+    state.doc = await pdfjsLib.getDocument({ data: state.bytes.slice() }).promise;
+  } catch (e) { toast('Could not open that PDF: ' + e.message); return; }
+  $('#empty').hidden = true; $('#save').disabled = false;
+  await renderAll();
+}
+if (window.desktop) desktop.onOpen((name, data) => openFile(new File([data], name, { type: 'application/pdf' })));
+$('#file').onchange = e => openFile(e.target.files[0]);
+const empty = $('#empty');
+['dragover','dragenter'].forEach(ev => addEventListener(ev, e => { e.preventDefault(); empty.classList.add('drag'); }));
+['dragleave','drop'].forEach(ev => addEventListener(ev, e => { e.preventDefault(); empty.classList.remove('drag'); }));
+addEventListener('drop', e => { const f = e.dataTransfer.files[0]; if (f && /pdf$/i.test(f.type + f.name)) openFile(f); });
+
+/* ---------- render ---------- */
+async function renderAll() {
+  const host = $('#pages'); host.innerHTML = ''; state.pages = [];
+  $('#zlabel').textContent = Math.round(state.zoom * 100) + '%';
+  for (let n = 1; n <= state.doc.numPages; n++) {
+    const page = await state.doc.getPage(n);
+    const v1 = page.getViewport({ scale: 1 });
+    const vz = page.getViewport({ scale: state.zoom });
+    const div = document.createElement('div'); div.className = 'page';
+    div.style.width = vz.width + 'px'; div.style.height = vz.height + 'px';
+    const cv = document.createElement('canvas'); const dpr = window.devicePixelRatio || 1;
+    cv.width = vz.width * dpr; cv.height = vz.height * dpr; cv.style.width = vz.width + 'px'; cv.style.height = vz.height + 'px';
+    const ov = document.createElement('div'); ov.className = 'overlay';
+    div.append(cv, ov); host.append(div);
+    state.pages[n-1] = { n, div, ov, w: v1.width, h: v1.height, v1 };
+    ov.addEventListener('pointerdown', e => overlayDown(e, n-1));
+    await page.render({ canvasContext: cv.getContext('2d'), viewport: vz, transform: dpr !== 1 ? [dpr,0,0,dpr,0,0] : null, annotationMode: 2 }).promise;
+    const annots = await page.getAnnotations({ intent: 'display' });
+    annots.filter(a => a.subtype === 'Widget').forEach(a => addWidget(a, n-1));
+  }
+  state.items.forEach(drawItem);
+}
+
+/* ---------- existing form fields ---------- */
+function addWidget(a, pi) {
+  const P = state.pages[pi]; const z = state.zoom;
+  if (a.pushButton || a.readOnly || !a.fieldName) return;
+  const [x1,y1,x2,y2] = P.v1.convertToViewportRectangle(a.rect);
+  const x = Math.min(x1,x2) * z, y = Math.min(y1,y2) * z, w = Math.abs(x2-x1) * z, h = Math.abs(y2-y1) * z;
+  let el;
+  if (a.checkBox || a.radioButton) {
+    el = document.createElement('input'); el.type = a.checkBox ? 'checkbox' : 'radio';
+    if (a.radioButton) el.name = 'r_' + a.fieldName;
+    const cur = state.form[a.fieldName];
+    el.checked = cur !== undefined ? (a.checkBox ? cur : cur === a.buttonValue) : (a.checkBox ? !!a.fieldValue && a.fieldValue !== 'Off' : a.fieldValue === a.buttonValue);
+    el.onchange = () => { state.form[a.fieldName] = a.checkBox ? el.checked : a.buttonValue; };
+  } else if (a.combo || a.options?.length) {
+    el = document.createElement('select');
+    (a.options || []).forEach(o => { const op = new Option(o.displayValue, o.exportValue); el.append(op); });
+    const cur = state.form[a.fieldName] ?? (Array.isArray(a.fieldValue) ? a.fieldValue[0] : a.fieldValue);
+    el.value = cur ?? ''; el.onchange = () => { state.form[a.fieldName] = el.value; };
+  } else {
+    el = document.createElement(a.multiLine ? 'textarea' : 'input');
+    el.value = state.form[a.fieldName] ?? (Array.isArray(a.fieldValue) ? a.fieldValue[0] : a.fieldValue) ?? '';
+    // no character limit: type as much as you like (comb / max-length is lifted on save)
+    el.style.fontSize = Math.max(8, Math.min(h * 0.7, 16 * z)) + 'px';
+    el.oninput = () => { state.form[a.fieldName] = el.value; };
+  }
+  el.className = 'field';
+  Object.assign(el.style, { left: x+'px', top: y+'px', width: w+'px', height: h+'px' });
+  el.addEventListener('pointerdown', e => e.stopPropagation());
+  P.ov.append(el);
+}
+
+/* ---------- items (text / tick / cross / signature) ---------- */
+function overlayDown(e, pi) {
+  if (e.target !== state.pages[pi].ov) return;
+  const P = state.pages[pi], r = P.ov.getBoundingClientRect();
+  const x = (e.clientX - r.left) / state.zoom, y = (e.clientY - r.top) / state.zoom;
+  const color = $('#color').value;
+  if (state.tool === 'select') { select(null); return; }
+  if (state.tool === 'sig' && !state.sig) { openSigDialog(); return; }
+  pushUndo();
+  let it;
+  if (state.tool === 'text') it = { type: 'text', text: '', size: +$('#size').value || 14, x, y: y - 8, color };
+  else if (state.tool === 'tick' || state.tool === 'cross') { const s = 18; it = { type: state.tool, x: x - s/2, y: y - s/2, w: s, h: s, color }; }
+  else if (state.tool === 'sig') { const w = 150, h = w * state.sig.h / state.sig.w; it = { type: 'sig', x: x - w/2, y: y - h/2, w, h, data: state.sig.data }; }
+  it.id = uid++; it.page = pi; state.items.push(it);
+  const el = drawItem(it); select(it.id);
+  if (it.type === 'text') { e.preventDefault(); setTool('select'); el.querySelector('.t').focus(); }
+  else if (it.type === 'sig') setTool('select');
+}
+const TICK = 'M10 55 L38 85 L90 15', CROSS = 'M12 12 L88 88 M88 12 L12 88';
+function drawItem(it) {
+  const P = state.pages[it.page]; if (!P) return;
+  document.getElementById('it' + it.id)?.remove();
+  const z = state.zoom, el = document.createElement('div');
+  el.id = 'it' + it.id; el.className = 'item ' + (it.type === 'tick' || it.type === 'cross' ? 'mark' : it.type);
+  el.style.left = it.x * z + 'px'; el.style.top = it.y * z + 'px';
+  if (it.type === 'text') {
+    const t = document.createElement('div'); t.className = 't'; t.contentEditable = 'plaintext-only';
+    t.style.fontSize = it.size * z + 'px'; t.style.color = it.color; t.textContent = it.text;
+    t.oninput = () => { it.text = t.innerText.replace(/\n$/, ''); };
+    t.onfocus = () => select(it.id);
+    t.onblur = () => { if (!it.text.trim()) removeItem(it.id, false); };
+    t.onpointerdown = e => e.stopPropagation();
+    el.append(t);
+  } else {
+    el.style.width = it.w * z + 'px'; el.style.height = it.h * z + 'px';
+    if (it.type === 'sig') el.innerHTML = `<img src="${it.data}" alt="signature">`;
+    else el.innerHTML = `<svg viewBox="0 0 100 100" preserveAspectRatio="none"><path d="${it.type === 'tick' ? TICK : CROSS}" fill="none" stroke="${it.color}" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" style="stroke-width:${Math.max(2, it.w * z * 0.11)}px"/></svg>`;
+    const rz = document.createElement('div'); rz.className = 'rz'; el.append(rz);
+    rz.onpointerdown = e => startDrag(e, it, el, 'resize');
+    el.onpointerdown = e => { if (e.target === rz) return; select(it.id); startDrag(e, it, el, 'move'); };
+  }
+  const del = document.createElement('div'); del.className = 'del'; del.textContent = '×'; del.onpointerdown = e => { e.stopPropagation(); removeItem(it.id, true); };
+  el.append(del);
+  if (it.type === 'text') { const g = document.createElement('div'); g.className = 'grip'; g.textContent = '✥'; g.onpointerdown = e => { select(it.id); startDrag(e, it, el, 'move'); }; el.append(g); }
+  P.ov.append(el);
+  if (state.sel === it.id) el.classList.add('sel');
+  return el;
+}
+function select(id) {
+  state.sel = id;
+  document.querySelectorAll('.item').forEach(e => e.classList.toggle('sel', e.id === 'it' + id));
+  const it = state.items.find(i => i.id === id);
+  if (it?.type === 'text') { $('#size').value = it.size; $('#color').value = it.color; }
+  else if (it?.color) $('#color').value = it.color;
+}
+function removeItem(id, undoable) {
+  const i = state.items.findIndex(x => x.id === id); if (i < 0) return;
+  if (undoable) pushUndo();
+  state.items.splice(i, 1); document.getElementById('it' + id)?.remove(); if (state.sel === id) state.sel = null;
+}
+function startDrag(e, it, el, mode) {
+  e.preventDefault(); e.stopPropagation();
+  pushUndo();
+  const sx = e.clientX, sy = e.clientY, ox = it.x, oy = it.y, ow = it.w, oh = it.h, z = state.zoom, ratio = oh / ow;
+  const mv = ev => {
+    const dx = (ev.clientX - sx) / z, dy = (ev.clientY - sy) / z;
+    if (mode === 'move') { it.x = ox + dx; it.y = oy + dy; el.style.left = it.x * z + 'px'; el.style.top = it.y * z + 'px'; }
+    else { it.w = Math.max(8, ow + dx); it.h = it.type === 'sig' ? it.w * ratio : Math.max(8, oh + dy);
+           el.style.width = it.w * z + 'px'; el.style.height = it.h * z + 'px';
+           const p = el.querySelector('path'); if (p) p.style.strokeWidth = Math.max(2, it.w * z * 0.11) + 'px'; }
+  };
+  const up = () => { removeEventListener('pointermove', mv); removeEventListener('pointerup', up); };
+  addEventListener('pointermove', mv); addEventListener('pointerup', up);
+}
+$('#size').oninput = () => { const it = state.items.find(i => i.id === state.sel); if (it?.type === 'text') { it.size = +$('#size').value || 14; drawItem(it); } };
+$('#color').oninput = () => { const it = state.items.find(i => i.id === state.sel); if (it?.color) { it.color = $('#color').value; drawItem(it); } };
+
+/* ---------- toolbar ---------- */
+document.querySelectorAll('[data-tool]').forEach(b => b.onclick = () => { if (b.dataset.tool === 'sig' && !state.sig) openSigDialog(); else setTool(b.dataset.tool); });
+$('#undo').onclick = doUndo;
+function doUndo() { const s = state.undo.pop(); if (!s) return; state.items = JSON.parse(s); state.sel = null; document.querySelectorAll('.item').forEach(e => e.remove()); state.items.forEach(drawItem); }
+function zoomTo(z) { state.zoom = Math.max(0.4, Math.min(4, z)); if (state.doc) renderAll(); }
+$('#zin').onclick = () => zoomTo(state.zoom + 0.15); $('#zout').onclick = () => zoomTo(state.zoom - 0.15);
+$('#zfit').onclick = () => { if (state.pages[0]) zoomTo(($('#scroller').clientWidth - 60) / state.pages[0].w); };
+addEventListener('keydown', e => {
+  const typing = e.target.isContentEditable || /INPUT|TEXTAREA|SELECT/.test(e.target.tagName);
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !typing) { e.preventDefault(); doUndo(); }
+  if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); save(); }
+  if (typing) return;
+  if ((e.key === 'Delete' || e.key === 'Backspace') && state.sel) removeItem(state.sel, true);
+  const m = { v: 'select', t: 'text', c: 'tick', x: 'cross', s: 'sig' }[e.key.toLowerCase()];
+  if (m && !e.ctrlKey) { if (m === 'sig' && !state.sig) openSigDialog(); else setTool(m); }
+  if (e.key === 'Escape') setTool('select');
+});
+
+/* ---------- signature dialog ---------- */
+const dlg = $('#sigdlg'), pad = $('#sigpad'), pctx = pad.getContext('2d');
+let drawing = false, mode = 'draw';
+function openSigDialog() {
+  pctx.clearRect(0, 0, pad.width, pad.height); $('#sigtype').value = ''; showMode('draw');
+  try { $('#savedSig').hidden = !localStorage.getItem('sig'); } catch { $('#savedSig').hidden = true; }
+  dlg.showModal();
+}
+function showMode(m) { mode = m; $('#drawPane').hidden = m !== 'draw'; $('#typePane').hidden = m !== 'type'; $('#tabDraw').classList.toggle('on', m === 'draw'); $('#tabType').classList.toggle('on', m === 'type'); }
+$('#tabDraw').onclick = () => showMode('draw'); $('#tabType').onclick = () => { showMode('type'); $('#sigtype').focus(); };
+function padPos(e) { const r = pad.getBoundingClientRect(); return [(e.clientX - r.left) * pad.width / r.width, (e.clientY - r.top) * pad.height / r.height]; }
+pad.onpointerdown = e => { drawing = true; pad.setPointerCapture(e.pointerId); const [x,y] = padPos(e); pctx.lineWidth = 5; pctx.lineCap = pctx.lineJoin = 'round'; pctx.strokeStyle = '#111'; pctx.beginPath(); pctx.moveTo(x, y); pctx.lineTo(x + .1, y + .1); pctx.stroke(); };
+pad.onpointermove = e => { if (!drawing) return; const [x,y] = padPos(e); pctx.lineTo(x, y); pctx.stroke(); };
+pad.onpointerup = () => { drawing = false; };
+$('#sigclear').onclick = () => { pctx.clearRect(0, 0, pad.width, pad.height); $('#sigtype').value = ''; };
+$('#sigcancel').onclick = () => dlg.close();
+function cropCanvas(src) {
+  const c = src.getContext('2d'), d = c.getImageData(0, 0, src.width, src.height).data;
+  let x0 = src.width, y0 = src.height, x1 = 0, y1 = 0;
+  for (let y = 0; y < src.height; y++) for (let x = 0; x < src.width; x++) if (d[(y * src.width + x) * 4 + 3] > 10) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+  if (x1 < x0) return null;
+  const m = 6, out = document.createElement('canvas'); out.width = x1 - x0 + 1 + m*2; out.height = y1 - y0 + 1 + m*2;
+  out.getContext('2d').drawImage(src, x0, y0, x1 - x0 + 1, y1 - y0 + 1, m, m, x1 - x0 + 1, y1 - y0 + 1);
+  return out;
+}
+$('#sigok').onclick = () => {
+  let src = pad;
+  if (mode === 'type') {
+    const txt = $('#sigtype').value.trim(); if (!txt) return;
+    src = document.createElement('canvas'); src.width = 1400; src.height = 260; const c = src.getContext('2d');
+    c.font = '110px "Segoe Script","Brush Script MT",cursive'; c.fillStyle = '#111'; c.textBaseline = 'middle'; c.fillText(txt, 20, 130);
+  }
+  const out = cropCanvas(src); if (!out) { toast('Draw or type a signature first'); return; }
+  state.sig = { data: out.toDataURL('image/png'), w: out.width, h: out.height };
+  try { localStorage.setItem('sig', JSON.stringify(state.sig)); } catch {}
+  dlg.close(); setTool('sig'); toast('Click on the page to place your signature');
+};
+$('#savedSig').onclick = () => { try { state.sig = JSON.parse(localStorage.getItem('sig')); dlg.close(); setTool('sig'); toast('Click on the page to place your signature'); } catch {} };
+try { const s = localStorage.getItem('sig'); if (s) state.sig = JSON.parse(s); } catch {}
+
+/* ---------- save ---------- */
+const winAnsi = s => s.replace(/[^\x09\x0A\x20-\x7E\xA0-\xFF]/g, '?');
+async function save() {
+  if (!state.bytes) return;
+  try {
+    const { PDFDocument, StandardFonts, PDFTextField, PDFCheckBox, PDFRadioGroup, PDFDropdown, PDFOptionList, LineCapStyle } = PDFLib;
+    const pdf = await PDFDocument.load(state.bytes, { ignoreEncryption: true });
+    const font = await pdf.embedFont(StandardFonts.Helvetica);
+    // existing form fields
+    if (Object.keys(state.form).length) {
+      const form = pdf.getForm();
+      for (const [name, val] of Object.entries(state.form)) {
+        try {
+          const f = form.getField(name);
+          if (f instanceof PDFTextField) {
+            try { f.disableCombing(); } catch {}
+            try { f.setMaxLength(undefined); } catch {}
+            f.setText(winAnsi(String(val)));
+          }
+          else if (f instanceof PDFCheckBox) val ? f.check() : f.uncheck();
+          else if (f instanceof PDFRadioGroup) f.select(val);
+          else if (f instanceof PDFDropdown || f instanceof PDFOptionList) f.select(val);
+        } catch (e) { console.warn('field', name, e); }
+      }
+    }
+    const pages = pdf.getPages();
+    for (const it of state.items) {
+      const pg = pages[it.page]; const col = it.color ? hexRgb(it.color) : undefined;
+      // map on-screen (scale 1, y-down) coords to PDF user space, honouring page rotation and CropBox offset
+      const V = state.pages[it.page].v1;
+      const toPdf = (vx, vy) => { const [px, py] = V.convertToPdfPoint(vx, vy); return { x: px, y: py }; };
+      const o0 = toPdf(0, 0), ox1 = toPdf(1, 0);
+      const ang = Math.atan2(ox1.y - o0.y, ox1.x - o0.x) * 180 / Math.PI;   // rotation of the view's x-axis in PDF space
+      const rot = PDFLib.degrees(ang);
+      if (it.type === 'text') {
+        const lines = winAnsi(it.text).split('\n');
+        lines.forEach((ln, i) => { if (ln) { const p = toPdf(it.x, it.y + it.size * 0.95 + i * it.size * 1.2); pg.drawText(ln, { x: p.x, y: p.y, size: it.size, font, color: col, rotate: rot }); } });
+      } else if (it.type === 'sig') {
+        const img = await pdf.embedPng(it.data);
+        const p = toPdf(it.x, it.y + it.h);   // bottom-left of the image as seen on screen
+        pg.drawImage(img, { x: p.x, y: p.y, width: it.w, height: it.h, rotate: rot });
+      } else {
+        const pts = it.type === 'tick' ? [[[10,55],[38,85]], [[38,85],[90,15]]] : [[[12,12],[88,88]], [[88,12],[12,88]]];
+        const t = Math.max(1, it.w * 0.11);
+        for (const [a, b] of pts) pg.drawLine({ start: toPdf(it.x + a[0]/100*it.w, it.y + a[1]/100*it.h), end: toPdf(it.x + b[0]/100*it.w, it.y + b[1]/100*it.h), thickness: t, color: col, lineCap: LineCapStyle.Round });
+      }
+    }
+    const out = await pdf.save();
+    const blob = new Blob([out], { type: 'application/pdf' });
+    const fname = state.name.replace(/\.pdf$/i, '') + '-edited.pdf';
+    if (window.showSaveFilePicker) {
+      try {
+        const h = await showSaveFilePicker({ suggestedName: fname, types: [{ description: 'PDF', accept: { 'application/pdf': ['.pdf'] } }] });
+        const w = await h.createWritable(); await w.write(blob); await w.close(); toast('Saved ' + h.name); return;
+      } catch (e) { if (e.name === 'AbortError') return; }
+    }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = fname; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+    toast('Saved ' + fname);
+  } catch (e) { console.error(e); toast('Save failed: ' + e.message); }
+}
+$('#save').onclick = save;
+</script>
+</body>
+</html>
