@@ -50,6 +50,7 @@
   .page canvas { display: block; }
   .overlay { position: absolute; inset: 0; }
   .tool-text .overlay { cursor: text; } .tool-tick .overlay, .tool-cross .overlay, .tool-sig .overlay { cursor: crosshair; }
+  body.pan, body.pan * { cursor: grab !important; } body.panning, body.panning * { cursor: grabbing !important; }
   .item { position: absolute; outline: 1px dashed transparent; }
   .item:hover { outline-color: var(--accent); }
   .item.sel { outline: 1.5px solid var(--accent); }
@@ -256,12 +257,13 @@ function overlayDown(e, pi) {
   let it;
   if (state.tool === 'text') it = { type: 'text', text: '', size: +$('#size').value || 14, x, y: y - 8, color };
   else if (state.tool === 'tick' || state.tool === 'cross') { const s = 18; it = { type: state.tool, x: x - s/2, y: y - s/2, w: s, h: s, color }; }
-  else if (state.tool === 'sig') { const w = 150, h = w * state.sig.h / state.sig.w; it = { type: 'sig', x: x - w/2, y: y - h/2, w, h, data: state.sig.data }; }
+  else if (state.tool === 'sig') { const w = 150, h = w * state.sig.h / state.sig.w; it = { type: 'sig', x: x - w/2, y: y - h/2, w, h, data: state.sig.data, strokes: state.sig.strokes, lw: state.sig.lw, sw: state.sig.w, sh: state.sig.h }; }
   it.id = uid++; it.page = pi; state.items.push(it);
   const el = drawItem(it); select(it.id);
   if (it.type === 'text') { e.preventDefault(); setTool('select'); el.querySelector('.t').focus(); }
   else if (it.type === 'sig') setTool('select');
 }
+const strokePath = st => st.length === 1 ? `M${st[0][0]} ${st[0][1]} l.1 .1` : 'M' + st.map(p => p.join(' ')).join(' L');
 const TICK = 'M10 55 L38 85 L90 15', CROSS = 'M12 12 L88 88 M88 12 L12 88';
 function drawItem(it) {
   const P = state.pages[it.page]; if (!P) return;
@@ -279,7 +281,8 @@ function drawItem(it) {
     el.append(t);
   } else {
     el.style.width = it.w * z + 'px'; el.style.height = it.h * z + 'px';
-    if (it.type === 'sig') el.innerHTML = `<img src="${it.data}" alt="signature">`;
+    if (it.type === 'sig' && it.strokes) el.innerHTML = `<svg viewBox="0 0 ${it.sw} ${it.sh}" preserveAspectRatio="none">${it.strokes.map(st => `<path d="${strokePath(st)}" fill="none" stroke="#111" stroke-width="${it.lw}" stroke-linecap="round" stroke-linejoin="round"/>`).join('')}</svg>`;
+    else if (it.type === 'sig') el.innerHTML = `<img src="${it.data}" alt="signature">`;
     else el.innerHTML = `<svg viewBox="0 0 100 100" preserveAspectRatio="none"><path d="${it.type === 'tick' ? TICK : CROSS}" fill="none" stroke="${it.color}" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" style="stroke-width:${Math.max(2, it.w * z * 0.11)}px"/></svg>`;
     const rz = document.createElement('div'); rz.className = 'rz'; el.append(rz);
     rz.onpointerdown = e => startDrag(e, it, el, 'resize');
@@ -325,9 +328,44 @@ $('#color').oninput = () => { const it = state.items.find(i => i.id === state.se
 document.querySelectorAll('[data-tool]').forEach(b => b.onclick = () => { if (b.dataset.tool === 'sig' && !state.sig) openSigDialog(); else setTool(b.dataset.tool); });
 $('#undo').onclick = doUndo;
 function doUndo() { const s = state.undo.pop(); if (!s) return; state.items = JSON.parse(s); state.sel = null; document.querySelectorAll('.item').forEach(e => e.remove()); state.items.forEach(drawItem); }
-function zoomTo(z) { state.zoom = Math.max(0.4, Math.min(4, z)); if (state.doc) renderAll(); }
-$('#zin').onclick = () => zoomTo(state.zoom + 0.15); $('#zout').onclick = () => zoomTo(state.zoom - 0.15);
+async function zoomTo(z, ax, ay) {
+  const sc = $('#scroller'), nz = Math.max(0.4, Math.min(5, z)); if (!state.doc || nz === state.zoom) return;
+  // keep the point under (ax, ay) (viewport px; default = centre) fixed while re-rendering crisply at the new scale
+  const r = sc.getBoundingClientRect(); ax = ax ?? r.left + r.width / 2; ay = ay ?? r.top + r.height / 2;
+  const px = (sc.scrollLeft + ax - r.left) / state.zoom, py = (sc.scrollTop + ay - r.top) / state.zoom;
+  state.zoom = nz;
+  await renderAll();
+  sc.scrollLeft = px * nz - (ax - r.left); sc.scrollTop = py * nz - (ay - r.top);
+}
+$('#zin').onclick = () => zoomTo(state.zoom * 1.15); $('#zout').onclick = () => zoomTo(state.zoom / 1.15);
 $('#zfit').onclick = () => { if (state.pages[0]) zoomTo(($('#scroller').clientWidth - 60) / state.pages[0].w); };
+$('#scroller').addEventListener('wheel', e => {
+  if (!(e.ctrlKey || e.metaKey)) return; e.preventDefault();
+  clearTimeout(wheelT); wheelAcc *= e.deltaY < 0 ? 1.1 : 1 / 1.1; wheelPos = [e.clientX, e.clientY];
+  wheelT = setTimeout(() => { const f = wheelAcc; wheelAcc = 1; zoomTo(state.zoom * f, ...wheelPos); }, 90);
+}, { passive: false });
+let wheelT = 0, wheelAcc = 1, wheelPos = [];
+/* hold Space + drag to pan */
+let spaceHeld = false;
+const typingNow = e => e.target.isContentEditable || /INPUT|TEXTAREA|SELECT/.test(e.target.tagName);
+addEventListener('keydown', e => { if (e.code === 'Space' && !typingNow(e)) { e.preventDefault(); if (!spaceHeld) { spaceHeld = true; document.body.classList.add('pan'); } } });
+addEventListener('keyup', e => { if (e.code === 'Space') { if (!typingNow(e)) e.preventDefault(); spaceHeld = false; document.body.classList.remove('pan'); } });
+addEventListener('blur', () => { spaceHeld = false; document.body.classList.remove('pan', 'panning'); });
+$('#scroller').addEventListener('pointerdown', e => {
+  if (!spaceHeld) return; e.preventDefault(); e.stopPropagation();
+  const sc = $('#scroller'), sx = e.clientX, sy = e.clientY, l = sc.scrollLeft, t = sc.scrollTop;
+  document.body.classList.add('panning');
+  const mv = ev => { sc.scrollLeft = l - (ev.clientX - sx); sc.scrollTop = t - (ev.clientY - sy); };
+  const up = () => { document.body.classList.remove('panning'); removeEventListener('pointermove', mv); removeEventListener('pointerup', up); };
+  addEventListener('pointermove', mv); addEventListener('pointerup', up);
+}, true);
+addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && ['=', '+', '-', '_', '0'].includes(e.key)) {
+    e.preventDefault();
+    if (e.key === '0') zoomTo(1.3); else zoomTo(state.zoom * (e.key === '-' || e.key === '_' ? 1 / 1.15 : 1.15));
+    return;
+  }
+});
 addEventListener('keydown', e => {
   const typing = e.target.isContentEditable || /INPUT|TEXTAREA|SELECT/.test(e.target.tagName);
   if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !typing) { e.preventDefault(); doUndo(); }
@@ -341,19 +379,19 @@ addEventListener('keydown', e => {
 
 /* ---------- signature dialog ---------- */
 const dlg = $('#sigdlg'), pad = $('#sigpad'), pctx = pad.getContext('2d');
-let drawing = false, mode = 'draw';
+let drawing = false, mode = 'draw', strokes = [];
 function openSigDialog() {
-  pctx.clearRect(0, 0, pad.width, pad.height); $('#sigtype').value = ''; showMode('draw');
+  pctx.clearRect(0, 0, pad.width, pad.height); strokes = []; $('#sigtype').value = ''; showMode('draw');
   try { $('#savedSig').hidden = !localStorage.getItem('sig'); } catch { $('#savedSig').hidden = true; }
   dlg.showModal();
 }
 function showMode(m) { mode = m; $('#drawPane').hidden = m !== 'draw'; $('#typePane').hidden = m !== 'type'; $('#tabDraw').classList.toggle('on', m === 'draw'); $('#tabType').classList.toggle('on', m === 'type'); }
 $('#tabDraw').onclick = () => showMode('draw'); $('#tabType').onclick = () => { showMode('type'); $('#sigtype').focus(); };
 function padPos(e) { const r = pad.getBoundingClientRect(); return [(e.clientX - r.left) * pad.width / r.width, (e.clientY - r.top) * pad.height / r.height]; }
-pad.onpointerdown = e => { drawing = true; pad.setPointerCapture(e.pointerId); const [x,y] = padPos(e); pctx.lineWidth = 5; pctx.lineCap = pctx.lineJoin = 'round'; pctx.strokeStyle = '#111'; pctx.beginPath(); pctx.moveTo(x, y); pctx.lineTo(x + .1, y + .1); pctx.stroke(); };
-pad.onpointermove = e => { if (!drawing) return; const [x,y] = padPos(e); pctx.lineTo(x, y); pctx.stroke(); };
+pad.onpointerdown = e => { drawing = true; pad.setPointerCapture(e.pointerId); const [x,y] = padPos(e); strokes.push([[x, y]]); pctx.lineWidth = 5; pctx.lineCap = pctx.lineJoin = 'round'; pctx.strokeStyle = '#111'; pctx.beginPath(); pctx.moveTo(x, y); pctx.lineTo(x + .1, y + .1); pctx.stroke(); };
+pad.onpointermove = e => { if (!drawing) return; const [x,y] = padPos(e); strokes[strokes.length - 1].push([x, y]); pctx.lineTo(x, y); pctx.stroke(); };
 pad.onpointerup = () => { drawing = false; };
-$('#sigclear').onclick = () => { pctx.clearRect(0, 0, pad.width, pad.height); $('#sigtype').value = ''; };
+$('#sigclear').onclick = () => { pctx.clearRect(0, 0, pad.width, pad.height); strokes = []; $('#sigtype').value = ''; };
 $('#sigcancel').onclick = () => dlg.close();
 function cropCanvas(src) {
   const c = src.getContext('2d'), d = c.getImageData(0, 0, src.width, src.height).data;
@@ -371,8 +409,16 @@ $('#sigok').onclick = () => {
     src = document.createElement('canvas'); src.width = 1400; src.height = 260; const c = src.getContext('2d');
     c.font = '110px "Segoe Script","Brush Script MT",cursive'; c.fillStyle = '#111'; c.textBaseline = 'middle'; c.fillText(txt, 20, 130);
   }
+  if (mode === 'draw') {
+    // keep the drawn signature as vector strokes (crisp at any size, stays vector in the saved PDF)
+    const LW = 5, m = 6, pts = strokes.flat(); if (!pts.length) { toast('Draw or type a signature first'); return; }
+    const x0 = Math.min(...pts.map(p => p[0])) - LW / 2 - m, y0 = Math.min(...pts.map(p => p[1])) - LW / 2 - m;
+    const x1 = Math.max(...pts.map(p => p[0])) + LW / 2 + m, y1 = Math.max(...pts.map(p => p[1])) + LW / 2 + m;
+    state.sig = { strokes: strokes.map(st => st.map(p => [+(p[0] - x0).toFixed(1), +(p[1] - y0).toFixed(1)])), lw: LW, w: x1 - x0, h: y1 - y0 };
+  } else {
   const out = cropCanvas(src); if (!out) { toast('Draw or type a signature first'); return; }
   state.sig = { data: out.toDataURL('image/png'), w: out.width, h: out.height };
+  }
   try { localStorage.setItem('sig', JSON.stringify(state.sig)); } catch {}
   dlg.close(); setTool('sig'); toast('Click on the page to place your signature');
 };
@@ -416,6 +462,9 @@ async function save() {
       if (it.type === 'text') {
         const lines = winAnsi(it.text).split('\n');
         lines.forEach((ln, i) => { if (ln) { const p = toPdf(it.x, it.y + it.size * 0.95 + i * it.size * 1.2); pg.drawText(ln, { x: p.x, y: p.y, size: it.size, font, color: col, rotate: rot }); } });
+      } else if (it.type === 'sig' && it.strokes) {
+        const sc = it.w / it.sw, p = toPdf(it.x, it.y);   // top-left of the signature as seen on screen
+        for (const st of it.strokes) pg.drawSvgPath(strokePath(st), { x: p.x, y: p.y, scale: sc, rotate: rot, borderWidth: it.lw, borderColor: PDFLib.rgb(0.07, 0.07, 0.07), borderLineCap: LineCapStyle.Round });
       } else if (it.type === 'sig') {
         const img = await pdf.embedPng(it.data);
         const p = toPdf(it.x, it.y + it.h);   // bottom-left of the image as seen on screen
