@@ -1185,7 +1185,14 @@ export default function ClientHub() {
               Export to Excel
             </Btn>
             <Btn onClick={doCsv} title={`Download the ${tabNames[tab]} tab as a CSV file`}>
-              Export {tabNames[tab]} CSV
+              {/* every tab's label is stacked in one spot, so the button is always as wide as the longest */}
+              <span className="grid text-center">
+                {Object.entries(tabNames).map(([k, name]) => (
+                  <span key={k} className={`col-start-1 row-start-1 ${k === tab ? "" : "invisible"}`}>
+                    Export {name} CSV
+                  </span>
+                ))}
+              </span>
             </Btn>
             <Btn
               edits
