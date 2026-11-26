@@ -91,7 +91,7 @@ function loginPage(failed: boolean): Response {
   .err{color:var(--bad);font-size:13px;margin:10px 0 0}
 </style></head>
 <body><form method="post" action="/tools/clienthub/login">
-  <img src="/tools/hub-logo.png" alt="" width="72" height="72" style="display:block;margin:0 0 12px;image-rendering:pixelated">
+  <img src="/tools/hub-logo.png" alt="" width="96" height="96" style="display:block;margin:0 0 12px;image-rendering:pixelated">
   <h1>Client Hub</h1><p>VirtuallyAnything Timesheet</p>
   <label for="pw">Password</label>
   <input id="pw" name="password" type="password" autocomplete="current-password" autofocus required>
