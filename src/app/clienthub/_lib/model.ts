@@ -386,9 +386,6 @@ export function periodStats(p: Period, rows: Row[], expenses: Expense[]): Period
   return { reg, ot, worked: reg + ot, expenses: exp, remaining: p.hours > 0 ? p.hours - reg - ot : null };
 }
 
-export const remainingText = (rem: number | null) =>
-  rem == null ? "" : rem >= 0 ? `${fix2(rem)} h to go` : `over by ${fix2(-rem)} h`;
-
 export type Summary = {
   totalH: number;
   totalO: number;

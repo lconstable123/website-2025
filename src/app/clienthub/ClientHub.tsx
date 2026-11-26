@@ -32,7 +32,6 @@ import {
   parseTime,
   Period,
   periodStats,
-  remainingText,
   resolveDate,
   Row,
   sortExpenses,
@@ -385,23 +384,25 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-2">
-        <label className="flex items-center gap-2 text-[14px] font-semibold">
-          Standard hours per day (including lunch):
-          <span className={isRO ? "" : "w-20 rounded-md border border-black/15 bg-white"}>
-            <EditCell
-              label="Standard hours per day"
-              inputMode="decimal"
-              value={fmtShort(s.fullDayHours)}
-              onCommit={(v) => {
-                const n = parseNumber(v);
-                if (n == null || n < 0.25 || n > 24) return "Enter the standard day in hours, between 0.25 and 24.";
-                update((st) => ({ ...st, fullDayHours: n }));
-              }}
-            />
-          </span>
-        </label>
+        {!isRO && (
+          <label className="flex items-center gap-2 text-[14px] font-semibold">
+            Standard hours per day (including lunch):
+            <span className="w-20 rounded-md border border-black/15 bg-white">
+              <EditCell
+                label="Standard hours per day"
+                inputMode="decimal"
+                value={fmtShort(s.fullDayHours)}
+                onCommit={(v) => {
+                  const n = parseNumber(v);
+                  if (n == null || n < 0.25 || n > 24) return "Enter the standard day in hours, between 0.25 and 24.";
+                  update((st) => ({ ...st, fullDayHours: n }));
+                }}
+              />
+            </span>
+          </label>
+        )}
         <span className="text-[13px] text-black/50">
-          Hours over {fmtShort(s.fullDayHours)} in a day are overtime, and all weekend hours are overtime.
+          Assumption is hours over {fmtShort(s.fullDayHours)} in a day are overtime, and all weekend hours are overtime.
         </span>
       </div>
 
@@ -566,7 +567,7 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
         <Btn edits onClick={add}>Add billing period</Btn>
       </div>
       <div className="overflow-x-auto rounded-lg border border-black/10 bg-white">
-        <table className="w-full min-w-[980px] border-collapse text-[14px]">
+        <table className="w-full min-w-[860px] border-collapse text-[14px]">
           <thead className="bg-[#f7f8fa]">
             <tr className="border-b border-black/10">
               <th className="w-5" />
@@ -579,14 +580,13 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
               <th className={th}>Overtime</th>
               <th className={th}>Worked</th>
               <th className={th}>Expenses</th>
-              <th className={th}>Remaining</th>
               <th className="w-10" />
             </tr>
           </thead>
           <tbody>
             {periods.length === 0 && (
               <tr>
-                <td colSpan={12} className="px-4 py-10 text-center text-black/45">
+                <td colSpan={11} className="px-4 py-10 text-center text-black/45">
                   No billing periods yet.
                 </td>
               </tr>
@@ -677,11 +677,6 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
                   </td>
                   <td className={td}>
                     <div className={ro}>{fmtMoney(x.expenses)}</div>
-                  </td>
-                  <td className={td}>
-                    <div className={`${ro} ${x.remaining != null && x.remaining < 0 ? "text-[#b42318]" : ""}`}>
-                      {remainingText(x.remaining)}
-                    </div>
                   </td>
                   <td className={td}>
                     <DelButton label="Delete billing period" visible={sel} onClick={() => del(p)} />
@@ -1126,7 +1121,11 @@ export default function ClientHub() {
 
   return (
     <ReadOnly.Provider value={!!viewer}>
-    <div className="min-h-screen bg-[#f4f5f7] text-[#16181d]" style={rootFont}>
+    {/* w-screen lays the page out across the full window, so the vertical scrollbar floats over the right padding
+        and nothing shifts when it appears or disappears (e.g. switching between a long and a short tab).
+        overflow-x-clip stops the part under the scrollbar from making the page scroll sideways. */}
+    <div className="overflow-x-clip">
+    <div className="min-h-screen w-screen bg-[#f4f5f7] text-[#16181d]" style={rootFont}>
       {viewer && (
         <div className="bg-[#1f2937] px-4 py-2 text-center text-[13px] font-medium text-white">
           Viewing in read-only mode as {viewer}
@@ -1266,6 +1265,7 @@ export default function ClientHub() {
         {tab === "bill" && <BillingTab s={state} rows={rows} update={update} />}
         {tab === "exp" && <ExpensesTab s={state} update={update} />}
       </main>
+    </div>
     </div>
     </ReadOnly.Provider>
   );
