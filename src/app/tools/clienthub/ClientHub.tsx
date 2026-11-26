@@ -123,7 +123,7 @@ function EditCell({ value, onCommit, cellKey, className = "", placeholder, list,
 
   if (readOnly) {
     return (
-      <div className={`min-h-[32px] px-2 py-1.5 ${className}`} style={style}>
+      <div className={`min-h-[22px] px-2 py-0.5 ${className}`} style={style}>
         {value}
       </div>
     );
@@ -176,7 +176,7 @@ function EditCell({ value, onCommit, cellKey, className = "", placeholder, list,
           e.currentTarget.blur();
         }
       }}
-      className={`w-full min-w-0 bg-transparent px-2 py-1.5 rounded-[3px] outline-none placeholder:text-black/25 focus:bg-white focus:ring-2 focus:ring-[#2996f0] ${
+      className={`w-full min-w-0 bg-transparent px-2 py-0.5 leading-tight rounded-[3px] outline-none placeholder:text-black/25 focus:bg-white focus:ring-2 focus:ring-[#2996f0] ${
         bad ? "ring-2 ring-[#d92d20] bg-white" : ""
       } ${className}`}
     />
@@ -236,9 +236,9 @@ function DelButton({ onClick, label, visible }: { onClick: () => void; label: st
   );
 }
 
-const th = "px-2 py-2 text-left text-[12px] font-semibold uppercase tracking-wide text-black/55 whitespace-nowrap";
+const th = "px-2 py-1 text-left text-[11px] font-semibold uppercase tracking-wide text-black/55 whitespace-nowrap";
 const td = "p-0 align-middle border-b border-black/[0.07]";
-const ro = "px-2 py-1.5 whitespace-nowrap tabular-nums";
+const ro = "px-2 py-0.5 whitespace-nowrap tabular-nums";
 const mono = { fontFamily: 'ui-monospace, "Cascadia Mono", Consolas, monospace' };
 
 // ---------------------------------------------------------------- summary
@@ -407,7 +407,7 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
       </div>
 
       <div className="overflow-x-auto rounded-lg border border-black/10 bg-white">
-        <table className="w-full min-w-[860px] border-collapse text-[14px]">
+        <table className="w-full min-w-[860px] border-collapse text-[12px]">
           <thead className="bg-[#f7f8fa]">
             <tr className="border-b border-black/10">
               <th className="w-5" />
@@ -567,7 +567,7 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
         <Btn edits onClick={add}>Add billing period</Btn>
       </div>
       <div className="overflow-x-auto rounded-lg border border-black/10 bg-white">
-        <table className="w-full min-w-[860px] border-collapse text-[14px]">
+        <table className="w-full min-w-[860px] border-collapse text-[12px]">
           <thead className="bg-[#f7f8fa]">
             <tr className="border-b border-black/10">
               <th className="w-5" />
@@ -736,7 +736,7 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
         <Btn edits onClick={add}>Add expense</Btn>
       </div>
       <div className="overflow-x-auto rounded-lg border border-black/10 bg-white">
-        <table className="w-full min-w-[960px] border-collapse text-[14px]">
+        <table className="w-full min-w-[960px] border-collapse text-[12px]">
           <thead className="bg-[#f7f8fa]">
             <tr className="border-b border-black/10">
               <th className="w-5" />
