@@ -4,7 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PDF Editor</title>
+<meta name="description" content="Fill, sign and mark up PDFs privately in your browser. Nothing is uploaded.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="PDF Editor">
+<meta property="og:description" content="Fill, sign and mark up PDFs privately in your browser. Nothing is uploaded.">
+<meta property="og:url" content="https://lukeconstable.com/tools/pdf/">
+<meta property="og:image" content="https://lukeconstable.com/tools/pdf/og.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://lukeconstable.com/tools/pdf/og.png">
 <link rel="icon" type="image/png" href="/tools/pdf/icon.png">
+<link rel="apple-touch-icon" href="/tools/pdf/icon.png">
 <style>
   :root {
     --bg: #e9ebef; --panel: #ffffff; --ink: #1b1f27; --muted: #667085; --line: #d5d9e0;
@@ -25,7 +35,15 @@
   button:disabled { opacity: .4; cursor: default; }
   input[type=number] { width: 58px; font: inherit; padding: 5px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); color: var(--ink); }
   input[type=color] { width: 32px; height: 30px; padding: 0; border: 1px solid var(--line); border-radius: 6px; background: none; }
-  #name { color: var(--muted); max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .logo { width: 28px; height: 28px; image-rendering: pixelated; flex: none; }
+  #tabs { display: flex; gap: 2px; padding: 6px 12px 0; background: var(--bg); border-bottom: 1px solid var(--line); overflow-x: auto; flex: none; }
+  #tabs[hidden] { display: none; }
+  .tab { display: inline-flex; align-items: center; gap: 8px; max-width: 220px; padding: 6px 8px 6px 12px; border: 1px solid var(--line); border-bottom: none; border-radius: 8px 8px 0 0; background: var(--panel); color: var(--muted); cursor: pointer; white-space: nowrap; margin-bottom: -1px; }
+  .tab:hover { color: var(--ink); }
+  .tab.on { color: var(--ink); font-weight: 600; border-bottom: 1px solid var(--panel); }
+  .tab .tn { overflow: hidden; text-overflow: ellipsis; }
+  .tab .tx { width: 18px; height: 18px; line-height: 16px; text-align: center; border-radius: 4px; flex: none; }
+  .tab .tx:hover { background: var(--line); color: var(--ink); }
   #scroller { flex: 1; overflow: auto; padding: 20px 12px 60px; }
   #pages { display: flex; flex-direction: column; align-items: center; gap: 16px; }
   .page { position: relative; background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,.25); }
@@ -60,8 +78,8 @@
 </head>
 <body>
 <div id="bar">
-  <label class="btn">📂 Open<input id="file" type="file" accept="application/pdf" hidden></label>
-  <span id="name">No file</span>
+  <img class="logo" src="/tools/pdf/icon.png" alt="" title="PDF Editor">
+  <label class="btn">📂 Open<input id="file" type="file" accept="application/pdf" multiple hidden></label>
   <span class="sep"></span>
   <button data-tool="select" class="on" title="Select / move (V)">↖ Select</button>
   <button data-tool="text" title="Add text (T)">T Text</button>
@@ -78,6 +96,7 @@
   <button id="save" class="primary" disabled>💾 Save PDF</button>
 </div>
 
+<div id="tabs" hidden></div>
 <div id="scroller">
   <div id="empty">Drop a PDF here or click <b>Open</b><br><small>Everything stays on your computer.</small></div>
   <div id="pages"></div>
@@ -111,31 +130,70 @@ function setTool(t) {
   $('#pages').className = 'tool-' + t;
 }
 
-/* ---------- open ---------- */
+/* ---------- open / tabs ---------- */
+// Each open PDF is a tab holding its own copy of the per-document state. `state` always mirrors the active tab.
+const tabs = []; let activeTab = null, tabId = 1;
+const DOC_KEYS = ['bytes', 'doc', 'name', 'items', 'form', 'undo'];
+function snapshotTab() { const t = activeTab; if (!t) return; DOC_KEYS.forEach(k => t[k] = state[k]); t.scroll = $('#scroller').scrollTop; }
 async function openFile(file) {
   if (!file) return;
-  state.bytes = new Uint8Array(await file.arrayBuffer());
-  state.name = file.name; state.items = []; state.form = {}; state.undo = []; state.sel = null;
-  $('#name').textContent = file.name;
-  try {
-    state.doc = await pdfjsLib.getDocument({ data: state.bytes.slice() }).promise;
-  } catch (e) { toast('Could not open that PDF: ' + e.message); return; }
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  let doc;
+  try { doc = await pdfjsLib.getDocument({ data: bytes.slice() }).promise; }
+  catch (e) { toast('Could not open ' + file.name + ': ' + e.message); return; }
+  snapshotTab();
+  const t = { id: tabId++, bytes, doc, name: file.name, items: [], form: {}, undo: [], scroll: 0 };
+  tabs.push(t);
+  await activate(t);
+}
+async function activate(t) {
+  if (t !== activeTab) snapshotTab();
+  activeTab = t;
+  DOC_KEYS.forEach(k => state[k] = t[k]); state.sel = null;
   $('#empty').hidden = true; $('#save').disabled = false;
+  document.title = t.name + ' – PDF Editor';
+  drawTabs();
   await renderAll();
+  if (activeTab === t) $('#scroller').scrollTop = t.scroll || 0;
+}
+function drawTabs() {
+  const bar = $('#tabs'); bar.innerHTML = ''; bar.hidden = tabs.length === 0;
+  tabs.forEach(t => {
+    const el = document.createElement('div'); el.className = 'tab' + (t === activeTab ? ' on' : ''); el.title = t.name;
+    const n = document.createElement('span'); n.className = 'tn'; n.textContent = t.name;
+    const x = document.createElement('span'); x.className = 'tx'; x.textContent = '×'; x.title = 'Close';
+    x.onclick = e => { e.stopPropagation(); closeTab(t); };
+    el.onclick = () => { if (t !== activeTab) activate(t); };
+    el.onauxclick = e => { if (e.button === 1) closeTab(t); };
+    el.append(n, x); bar.append(el);
+  });
+}
+async function closeTab(t) {
+  if (t === activeTab) snapshotTab();
+  const dirty = t.items.length || Object.keys(t.form).length;
+  if (dirty && !confirm('Close "' + t.name + '" without saving your changes?')) return;
+  const i = tabs.indexOf(t); tabs.splice(i, 1);
+  if (t !== activeTab) { drawTabs(); return; }
+  if (tabs.length) { activeTab = null; await activate(tabs[Math.min(i, tabs.length - 1)]); return; }
+  activeTab = null; state.bytes = null; state.doc = null; state.items = []; state.form = {}; state.undo = []; state.sel = null; state.pages = [];
+  renderToken++; $('#pages').innerHTML = ''; $('#empty').hidden = false; $('#save').disabled = true; document.title = 'PDF Editor'; drawTabs();
 }
 if (window.desktop) desktop.onOpen((name, data) => openFile(new File([data], name, { type: 'application/pdf' })));
-$('#file').onchange = e => openFile(e.target.files[0]);
+$('#file').onchange = async e => { for (const f of e.target.files) await openFile(f); e.target.value = ''; };
 const empty = $('#empty');
 ['dragover','dragenter'].forEach(ev => addEventListener(ev, e => { e.preventDefault(); empty.classList.add('drag'); }));
 ['dragleave','drop'].forEach(ev => addEventListener(ev, e => { e.preventDefault(); empty.classList.remove('drag'); }));
-addEventListener('drop', e => { const f = e.dataTransfer.files[0]; if (f && /pdf$/i.test(f.type + f.name)) openFile(f); });
+addEventListener('drop', async e => { for (const f of e.dataTransfer.files) if (/pdf$/i.test(f.type + f.name)) await openFile(f); });
 
 /* ---------- render ---------- */
+let renderToken = 0;
 async function renderAll() {
+  const my = ++renderToken, doc = state.doc;
   const host = $('#pages'); host.innerHTML = ''; state.pages = [];
   $('#zlabel').textContent = Math.round(state.zoom * 100) + '%';
-  for (let n = 1; n <= state.doc.numPages; n++) {
-    const page = await state.doc.getPage(n);
+  for (let n = 1; n <= doc.numPages; n++) {
+    const page = await doc.getPage(n);
+    if (my !== renderToken) return;
     const v1 = page.getViewport({ scale: 1 });
     const vz = page.getViewport({ scale: state.zoom });
     const div = document.createElement('div'); div.className = 'page';
@@ -147,10 +205,12 @@ async function renderAll() {
     state.pages[n-1] = { n, div, ov, w: v1.width, h: v1.height, v1 };
     ov.addEventListener('pointerdown', e => overlayDown(e, n-1));
     await page.render({ canvasContext: cv.getContext('2d'), viewport: vz, transform: dpr !== 1 ? [dpr,0,0,dpr,0,0] : null, annotationMode: 2 }).promise;
+    if (my !== renderToken) return;
     const annots = await page.getAnnotations({ intent: 'display' });
+    if (my !== renderToken) return;
     annots.filter(a => a.subtype === 'Widget').forEach(a => addWidget(a, n-1));
   }
-  state.items.forEach(drawItem);
+  if (my === renderToken) state.items.forEach(drawItem);
 }
 
 /* ---------- existing form fields ---------- */
