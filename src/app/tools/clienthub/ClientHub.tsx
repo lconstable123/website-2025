@@ -123,7 +123,7 @@ function EditCell({ value, onCommit, cellKey, className = "", placeholder, list,
 
   if (readOnly) {
     return (
-      <div className={`min-h-[22px] px-2 py-0.5 ${className}`} style={style}>
+      <div className={`min-h-[18px] px-2 py-px ${className}`} style={style}>
         {value}
       </div>
     );
@@ -176,7 +176,7 @@ function EditCell({ value, onCommit, cellKey, className = "", placeholder, list,
           e.currentTarget.blur();
         }
       }}
-      className={`w-full min-w-0 bg-transparent px-2 py-0.5 leading-tight rounded-[3px] outline-none placeholder:text-black/25 focus:bg-white focus:ring-2 focus:ring-[#2996f0] ${
+      className={`w-full min-w-0 bg-transparent px-2 py-px leading-tight rounded-[3px] outline-none placeholder:text-black/25 focus:bg-white focus:ring-2 focus:ring-[#2996f0] ${
         bad ? "ring-2 ring-[#d92d20] bg-white" : ""
       } ${className}`}
     />
@@ -225,7 +225,7 @@ function DelButton({ onClick, label, visible }: { onClick: () => void; label: st
       aria-label={label}
       title={label}
       onClick={onClick}
-      className={`mx-auto grid h-7 w-7 place-items-center rounded border border-[#b22222]/60 text-[#b22222] hover:bg-[#b22222]/10 focus-visible:opacity-100 ${
+      className={`mx-auto grid h-[18px] w-[18px] place-items-center text-[12px] leading-none rounded border border-[#b22222]/60 text-[#b22222] hover:bg-[#b22222]/10 focus-visible:opacity-100 ${
         visible ? "opacity-100" : "opacity-0 group-hover:opacity-100"
       }`}
     >
@@ -236,9 +236,9 @@ function DelButton({ onClick, label, visible }: { onClick: () => void; label: st
   );
 }
 
-const th = "px-2 py-1 text-left text-[11px] font-semibold uppercase tracking-wide text-black/55 whitespace-nowrap";
+const th = "px-2 py-0.5 text-left text-[10px] font-semibold uppercase tracking-wide text-black/55 whitespace-nowrap";
 const td = "p-0 align-middle border-b border-black/[0.07]";
-const ro = "px-2 py-0.5 whitespace-nowrap tabular-nums";
+const ro = "px-2 py-px whitespace-nowrap tabular-nums";
 const mono = { fontFamily: 'ui-monospace, "Cascadia Mono", Consolas, monospace' };
 
 // ---------------------------------------------------------------- summary
@@ -407,7 +407,7 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
       </div>
 
       <div className="overflow-x-auto rounded-lg border border-black/10 bg-white">
-        <table className="w-full min-w-[860px] border-collapse text-[12px]">
+        <table className="w-full min-w-[860px] border-collapse text-[11px]">
           <thead className="bg-[#f7f8fa]">
             <tr className="border-b border-black/10">
               <th className="w-5" />
@@ -567,7 +567,7 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
         <Btn edits onClick={add}>Add billing period</Btn>
       </div>
       <div className="overflow-x-auto rounded-lg border border-black/10 bg-white">
-        <table className="w-full min-w-[860px] border-collapse text-[12px]">
+        <table className="w-full min-w-[860px] border-collapse text-[11px]">
           <thead className="bg-[#f7f8fa]">
             <tr className="border-b border-black/10">
               <th className="w-5" />
@@ -658,7 +658,7 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
                     <input
                       type="checkbox"
                       aria-label="Paid"
-                      className="h-4 w-4 accent-[#1f8a4c] disabled:opacity-100"
+                      className="h-3.5 w-3.5 accent-[#1f8a4c] disabled:opacity-100"
                       disabled={isRO}
                       checked={p.paid}
                       onChange={(e) => patch(p.id, { paid: e.target.checked })}
@@ -736,7 +736,7 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
         <Btn edits onClick={add}>Add expense</Btn>
       </div>
       <div className="overflow-x-auto rounded-lg border border-black/10 bg-white">
-        <table className="w-full min-w-[960px] border-collapse text-[12px]">
+        <table className="w-full min-w-[960px] border-collapse text-[11px]">
           <thead className="bg-[#f7f8fa]">
             <tr className="border-b border-black/10">
               <th className="w-5" />
@@ -812,7 +812,7 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
                     <input
                       type="checkbox"
                       aria-label="Paid"
-                      className="h-4 w-4 accent-[#1f8a4c] disabled:opacity-100"
+                      className="h-3.5 w-3.5 accent-[#1f8a4c] disabled:opacity-100"
                       disabled={isRO}
                       checked={x.paid}
                       onChange={(e) => patch(x.id, { paid: e.target.checked })}
