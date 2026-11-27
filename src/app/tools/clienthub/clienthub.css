@@ -1,0 +1,106 @@
+/* Phone / narrow-window layout: each spreadsheet row becomes a compact card.
+   Keep the breakpoint in step with NARROW in ClientHub.tsx. These rules are unlayered, so they win over
+   the Tailwind classes that style the desktop table. */
+@media (max-width: 899.98px) {
+  .ch-wrap { overflow: visible; border: 0; background: transparent; border-radius: 0; }
+  .ch-table { display: block; min-width: 0; font-size: 15px; }
+  .ch-table thead { display: none; }
+  .ch-table tbody { display: flex; flex-direction: column; gap: 8px; }
+
+  .ch-table tbody tr {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) 32px;
+    align-items: end;
+    gap: 4px;
+    padding: 6px;
+    border: 1px solid rgb(0 0 0 / 0.12);
+    border-radius: 10px;
+    background-color: #fff;
+  }
+  /* a new client or billing period starts here */
+  .ch-table tbody tr[data-boundary] { margin-top: 10px; }
+  .ch-table tbody tr[data-selected] { border-color: #2996f0; box-shadow: 0 0 0 1px #2996f0; }
+  .ch-table tbody tr.ch-empty { display: block; }
+  .ch-table tbody tr.ch-empty td { display: block; }
+
+  /* the boundary line is an inline style on each desktop cell, hence !important */
+  .ch-table td { min-width: 0; border: 0 !important; }
+  .ch-table td.ch-mark { display: none; }
+  .ch-table td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    padding: 0 4px;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    color: rgb(0 0 0 / 0.5);
+  }
+
+  /* 16px stops iPhones zooming the page when a field is tapped */
+  .ch-root input:not([type="checkbox"]) { font-size: 16px; }
+  .ch-table td input:not([type="checkbox"]),
+  .ch-table td > div {
+    height: 30px;
+    padding: 0 4px;
+    line-height: 30px;
+    border-radius: 6px;
+  }
+  .ch-table td input:not([type="checkbox"]):not(:focus) { box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.1); }
+  .ch-table td input:not([type="checkbox"]):not(:focus):not(.ring-2) { background: rgb(255 255 255 / 0.6); }
+  .ch-table td input { text-overflow: ellipsis; }
+  .ch-table td input::placeholder { color: rgb(0 0 0 / 0.35); }
+  .ch-table td > div { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .ch-table td.ch-client { border-radius: 6px; }
+  .ch-table td.ch-client input:not(:focus):not(.ring-2) { background: transparent; }
+  .ch-table td.ch-client input,
+  .ch-table td.ch-client > div { font-weight: 600; }
+
+  .ch-table td.ch-del { grid-column: 5; grid-row: 1; align-self: center; }
+  .ch-table td.ch-del button { width: 30px; height: 30px; opacity: 1; border-radius: 6px; }
+  .ch-table td.ch-check { text-align: left; }
+  .ch-table td.ch-check input { display: block; width: 22px; height: 22px; margin: 4px; }
+
+  /* timesheet:  date | client  /  on, off, hours, overtime  /  note | x
+     Clock times are the widest values, so On and Off get more room than Hours and Overtime. */
+  .ch-table.ch-time tbody tr:not(.ch-empty) { grid-template-columns: repeat(2, minmax(0, 1.3fr)) minmax(0, 1fr) minmax(0, 0.7fr) 32px; }
+  .ch-time td.ch-on input, .ch-time td.ch-off input,
+  .ch-time td.ch-on > div, .ch-time td.ch-off > div { padding: 0 2px; letter-spacing: -0.01em; }
+  .ch-time td.ch-date { grid-area: 1 / 1 / 2 / 3; }
+  .ch-time td.ch-client { grid-area: 1 / 3 / 2 / 6; }
+  .ch-time td.ch-on { grid-area: 2 / 1; }
+  .ch-time td.ch-off { grid-area: 2 / 2; }
+  .ch-time td.ch-hours { grid-area: 2 / 3; }
+  .ch-time td.ch-ot { grid-area: 2 / 4 / 3 / 6; }
+  .ch-time td.ch-note { grid-area: 3 / 1 / 4 / 5; }
+  .ch-time td.ch-del { grid-row: 3; }
+  .ch-time td.ch-note:has(> div:empty) { display: none; }
+  .ch-time td.ch-date input,
+  .ch-time td.ch-date > div { font-weight: 600; }
+
+  /* billing:  client | x  /  from, to  /  hours to bill, paid  /  regular, overtime, worked, expenses */
+  .ch-bill td.ch-client { grid-area: 1 / 1 / 2 / 5; }
+  .ch-bill td.ch-from { grid-area: 2 / 1 / 3 / 3; }
+  .ch-bill td.ch-to { grid-area: 2 / 3 / 3 / 6; }
+  .ch-bill td.ch-tobill { grid-area: 3 / 1 / 4 / 3; }
+  .ch-bill td.ch-check { grid-area: 3 / 3 / 4 / 6; }
+  .ch-bill td.ch-reg { grid-area: 4 / 1; }
+  .ch-bill td.ch-ot { grid-area: 4 / 2; }
+  .ch-bill td.ch-worked { grid-area: 4 / 3; }
+  .ch-bill td.ch-exp-total { grid-area: 4 / 4 / 5 / 6; }
+
+  /* expenses:  date | client  /  item  /  company, use  /  price, paid | x */
+  .ch-exp td.ch-date { grid-area: 1 / 1 / 2 / 3; }
+  .ch-exp td.ch-client { grid-area: 1 / 3 / 2 / 6; }
+  .ch-exp td.ch-item { grid-area: 2 / 1 / 3 / 6; }
+  .ch-exp td.ch-company { grid-area: 3 / 1 / 4 / 3; }
+  .ch-exp td.ch-use { grid-area: 3 / 3 / 4 / 6; }
+  .ch-exp td.ch-price { grid-area: 4 / 1 / 5 / 3; }
+  .ch-exp td.ch-price input,
+  .ch-exp td.ch-price > div { text-align: left; }
+  .ch-exp td.ch-check { grid-area: 4 / 3 / 5 / 5; }
+  .ch-exp td.ch-del { grid-row: 4; align-self: end; }
+}

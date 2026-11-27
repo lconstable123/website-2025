@@ -3,7 +3,7 @@
 // Client Hub - the web version of the VirtuallyAnything Timesheet desktop app.
 // Data is kept in Cloudflare D1 via /tools/clienthub/api/data (see functions/), mirrored in localStorage.
 
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import toast from "react-hot-toast";
 import {
   addDays,
@@ -46,6 +46,7 @@ import {
 import { buildWorkbook } from "./_lib/xlsx";
 import { importFiles } from "./_lib/import";
 import { buildCsv } from "./_lib/csv";
+import "./clienthub.css";
 
 /** True when signed in as a read-only client viewer: every cell is plain text and nothing can be changed. */
 const ReadOnly = createContext(false);
@@ -65,6 +66,21 @@ const C = {
   ot: "#2996f0",
   boundary: "#696969",
 };
+
+/** Below this width the tables turn into cards. Keep in step with clienthub.css and the max-[900px] classes. */
+const NARROW = "(max-width: 899.98px)";
+
+function useNarrow() {
+  return useSyncExternalStore(
+    (onChange) => {
+      const q = window.matchMedia(NARROW);
+      q.addEventListener("change", onChange);
+      return () => q.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia(NARROW).matches,
+    () => false
+  );
+}
 
 const dateHint = () => {
   const t = todayIso();
@@ -206,7 +222,7 @@ function Btn({
       title={title}
       disabled={disabled}
       onClick={onClick}
-      className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-md px-3 py-1.5 text-[13px] font-medium transition-colors disabled:opacity-50 ${
+      className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-md px-3 py-1.5 text-[13px] font-medium transition-colors disabled:opacity-50 max-[900px]:justify-center max-[900px]:py-2 ${
         kind === "primary"
           ? "bg-[#1f2937] text-white hover:bg-black"
           : "border border-black/15 bg-white text-[#1f2937] hover:bg-black/[0.04]"
@@ -248,20 +264,20 @@ function SummaryBlock({ rows, s }: { rows: Row[]; s: State }) {
   const h = (v: number) => `${fix2(v)} h`;
   const line = (label: string, hours: number, lieu: number, exp: number | null, strong = false) => (
     <tr className={strong ? "font-semibold" : "text-black/70"}>
-      <td className="py-1 pr-6">{label}</td>
-      <td className="py-1 pr-6 tabular-nums">{h(hours)}</td>
-      <td className="py-1 pr-6 tabular-nums">{lieuText(lieu, s.fullDayHours)}</td>
+      <td className="py-1 pr-6 max-[900px]:pr-2">{label}</td>
+      <td className="py-1 pr-6 tabular-nums whitespace-nowrap max-[900px]:pr-2">{h(hours)}</td>
+      <td className="py-1 pr-6 tabular-nums max-[900px]:pr-2">{lieuText(lieu, s.fullDayHours)}</td>
       <td className="py-1 tabular-nums">{exp == null ? "" : fmtMoney(exp)}</td>
     </tr>
   );
   return (
     <div className="overflow-x-auto">
-      <table className="text-[14px]">
+      <table className="text-[14px] max-[900px]:w-full max-[900px]:text-[12px]">
         <thead>
           <tr className="text-[12px] uppercase tracking-wide text-black/45">
-            <th className="pr-6 text-left font-medium" />
-            <th className="pr-6 text-left font-medium">Hours</th>
-            <th className="pr-6 text-left font-medium">Time in lieu</th>
+            <th className="pr-6 text-left font-medium max-[900px]:pr-2" />
+            <th className="pr-6 text-left font-medium max-[900px]:pr-2">Hours</th>
+            <th className="pr-6 text-left font-medium max-[900px]:pr-2">Time in lieu</th>
             <th className="text-left font-medium">Expenses</th>
           </tr>
         </thead>
@@ -280,6 +296,7 @@ function SummaryBlock({ rows, s }: { rows: Row[]; s: State }) {
 function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Update }) {
   const isRO = useContext(ReadOnly);
   const [selected, setSelected] = useState<string | null>(null);
+  const narrow = useNarrow();
   const periods = useMemo(() => sortPeriods(s.periods), [s.periods]);
 
   const patch = (id: string, p: Partial<Entry>) =>
@@ -406,8 +423,8 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
         </span>
       </div>
 
-      <div className="overflow-x-auto rounded-lg border border-black/10 bg-white">
-        <table className="w-full min-w-[860px] border-collapse text-[11px]">
+      <div className="ch-wrap overflow-x-auto rounded-lg border border-black/10 bg-white">
+        <table className="ch-table ch-time w-full min-w-[860px] border-collapse text-[11px]">
           <thead className="bg-[#f7f8fa]">
             <tr className="border-b border-black/10">
               <th className="w-5" />
@@ -423,7 +440,7 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
           </thead>
           <tbody>
             {view.length === 0 && (
-              <tr>
+              <tr className="ch-empty">
                 <td colSpan={9} className="px-4 py-10 text-center text-black/45">
                   {isRO ? (
                     "No days yet."
@@ -445,26 +462,30 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
                 <tr
                   key={r.id}
                   className="group"
+                  data-selected={sel || undefined}
+                  data-boundary={boundary || undefined}
                   style={{ background: bg }}
                   onFocusCapture={() => setSelected(r.id)}
                   onClick={() => setSelected(r.id)}
                 >
-                  <td className={`${td} text-center text-[10px] text-[#2996f0]`} style={line}>
+                  <td className={`ch-mark ${td} text-center text-[10px] text-[#2996f0]`} style={line}>
                     {sel ? "▶" : ""}
                   </td>
-                  <td className={td} style={{ ...line, background: c ? clientCss(c, s.clientHues) : undefined }}>
+                  <td className={`ch-client ${td}`} style={{ ...line, background: c ? clientCss(c, s.clientHues) : undefined }}>
                     <EditCell
                       label="Client"
                       list="ch-clients"
                       cellKey={`${r.id}:client`}
-                      value={continuing ? "" : c}
+                      // cards are read one at a time, so each one names its client
+                      value={continuing && !narrow ? "" : c}
+                      placeholder={narrow ? "Client" : undefined}
                       onCommit={(v) => commit(r, "client", v)}
                     />
                   </td>
-                  <td className={td} style={line}>
+                  <td className={`ch-date ${td}`} style={line}>
                     <EditCell label="Date" style={mono} cellKey={`${r.id}:date`} value={fmtDate(r.date)} onCommit={(v) => commit(r, "date", v)} />
                   </td>
-                  <td className={td} style={line}>
+                  <td className={`ch-on ${td}`} data-label="On" style={line}>
                     <EditCell
                       label="Clock On"
                       cellKey={`${r.id}:on`}
@@ -473,7 +494,7 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
                       onCommit={(v) => commit(r, "on", v)}
                     />
                   </td>
-                  <td className={td} style={line}>
+                  <td className={`ch-off ${td}`} data-label="Off" style={line}>
                     <EditCell
                       label="Clock Off"
                       cellKey={`${r.id}:off`}
@@ -482,7 +503,7 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
                       onCommit={(v) => commit(r, "off", v)}
                     />
                   </td>
-                  <td className={td} style={line}>
+                  <td className={`ch-hours ${td}`} data-label="Hours" style={line}>
                     <EditCell
                       label="Hours"
                       inputMode="decimal"
@@ -491,7 +512,7 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
                       onCommit={(v) => commit(r, "hours", v)}
                     />
                   </td>
-                  <td className={td} style={line}>
+                  <td className={`ch-ot ${td}`} data-label="Overtime" style={line}>
                     <EditCell
                       label="Overtime"
                       inputMode="decimal"
@@ -501,10 +522,10 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
                       onCommit={(v) => commit(r, "ot", v)}
                     />
                   </td>
-                  <td className={td} style={line}>
-                    <EditCell label="Note" value={r.note} onCommit={(v) => commit(r, "note", v)} />
+                  <td className={`ch-note ${td}`} style={line}>
+                    <EditCell label="Note" placeholder={narrow ? "Note" : undefined} value={r.note} onCommit={(v) => commit(r, "note", v)} />
                   </td>
-                  <td className={td} style={line}>
+                  <td className={`ch-del ${td}`} style={line}>
                     <DelButton label={`Delete ${fmtDate(r.date)}`} visible={sel} onClick={() => del(r)} />
                   </td>
                 </tr>
@@ -528,6 +549,7 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
 function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update }) {
   const isRO = useContext(ReadOnly);
   const [selected, setSelected] = useState<string | null>(null);
+  const narrow = useNarrow();
   const periods = useMemo(() => sortPeriods(s.periods), [s.periods]);
 
   const patch = (id: string, p: Partial<Period>) =>
@@ -566,8 +588,8 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
       <div className="flex flex-wrap gap-2">
         <Btn edits onClick={add}>Add billing period</Btn>
       </div>
-      <div className="overflow-x-auto rounded-lg border border-black/10 bg-white">
-        <table className="w-full min-w-[860px] border-collapse text-[11px]">
+      <div className="ch-wrap overflow-x-auto rounded-lg border border-black/10 bg-white">
+        <table className="ch-table ch-bill w-full min-w-[860px] border-collapse text-[11px]">
           <thead className="bg-[#f7f8fa]">
             <tr className="border-b border-black/10">
               <th className="w-5" />
@@ -585,7 +607,7 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
           </thead>
           <tbody>
             {periods.length === 0 && (
-              <tr>
+              <tr className="ch-empty">
                 <td colSpan={11} className="px-4 py-10 text-center text-black/45">
                   No billing periods yet.
                 </td>
@@ -598,23 +620,24 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
                 <tr
                   key={p.id}
                   className="group"
+                  data-selected={sel || undefined}
                   style={{ background: p.paid ? C.paid : undefined }}
                   onFocusCapture={() => setSelected(p.id)}
                   onClick={() => setSelected(p.id)}
                 >
-                  <td className={`${td} text-center text-[10px] text-[#2996f0]`}>{sel ? "▶" : ""}</td>
-                  <td className={td} style={{ background: p.client ? clientCss(p.client, s.clientHues) : undefined }}>
+                  <td className={`ch-mark ${td} text-center text-[10px] text-[#2996f0]`}>{sel ? "▶" : ""}</td>
+                  <td className={`ch-client ${td}`} style={{ background: p.client ? clientCss(p.client, s.clientHues) : undefined }}>
                     <EditCell
                       label="Client"
                       list="ch-clients"
-                      placeholder="—"
+                      placeholder={narrow ? "Client" : "—"}
                       value={p.client}
                       onCommit={(v) => {
                         patch(p.id, { client: v });
                       }}
                     />
                   </td>
-                  <td className={td}>
+                  <td className={`ch-from ${td}`} data-label="From">
                     <EditCell
                       label="From"
                       style={mono}
@@ -628,7 +651,7 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
                       }}
                     />
                   </td>
-                  <td className={td}>
+                  <td className={`ch-to ${td}`} data-label="To">
                     <EditCell
                       label="To"
                       style={mono}
@@ -641,7 +664,7 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
                       }}
                     />
                   </td>
-                  <td className={td}>
+                  <td className={`ch-tobill ${td}`} data-label="Hours to bill">
                     <EditCell
                       label="Hours to bill"
                       inputMode="decimal"
@@ -654,7 +677,7 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
                       }}
                     />
                   </td>
-                  <td className={`${td} text-center`}>
+                  <td className={`ch-check ${td} text-center`} data-label="Paid">
                     <input
                       type="checkbox"
                       aria-label="Paid"
@@ -664,21 +687,21 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
                       onChange={(e) => patch(p.id, { paid: e.target.checked })}
                     />
                   </td>
-                  <td className={td}>
+                  <td className={`ch-reg ${td}`} data-label="Regular">
                     <div className={ro}>{fix2(x.reg)}</div>
                   </td>
-                  <td className={td}>
+                  <td className={`ch-ot ${td}`} data-label="Overtime">
                     <div className={`${ro} font-bold`} style={{ color: C.ot }}>
                       {fix2(x.ot)}
                     </div>
                   </td>
-                  <td className={td}>
+                  <td className={`ch-worked ${td}`} data-label="Worked">
                     <div className={ro}>{fix2(x.worked)}</div>
                   </td>
-                  <td className={td}>
+                  <td className={`ch-exp-total ${td}`} data-label="Expenses">
                     <div className={ro}>{fmtMoney(x.expenses)}</div>
                   </td>
-                  <td className={td}>
+                  <td className={`ch-del ${td}`}>
                     <DelButton label="Delete billing period" visible={sel} onClick={() => del(p)} />
                   </td>
                 </tr>
@@ -697,6 +720,7 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
 function ExpensesTab({ s, update }: { s: State; update: Update }) {
   const isRO = useContext(ReadOnly);
   const [selected, setSelected] = useState<string | null>(null);
+  const narrow = useNarrow();
   const list = useMemo(() => sortExpenses(s.expenses), [s.expenses]);
 
   const patch = (id: string, p: Partial<Expense>) =>
@@ -725,7 +749,7 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
   const paid = s.expenses.filter((x) => x.paid).reduce((a, x) => a + x.price, 0);
 
   const text = (x: Expense, k: "item" | "company" | "use", label: string) => (
-    <td className={td}>
+    <td className={`ch-${k} ${td}`} data-label={label}>
       <EditCell label={label} cellKey={`${x.id}:${k}`} value={x[k]} onCommit={(v) => patch(x.id, { [k]: v })} />
     </td>
   );
@@ -735,8 +759,8 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
       <div className="flex flex-wrap gap-2">
         <Btn edits onClick={add}>Add expense</Btn>
       </div>
-      <div className="overflow-x-auto rounded-lg border border-black/10 bg-white">
-        <table className="w-full min-w-[960px] border-collapse text-[11px]">
+      <div className="ch-wrap overflow-x-auto rounded-lg border border-black/10 bg-white">
+        <table className="ch-table ch-exp w-full min-w-[960px] border-collapse text-[11px]">
           <thead className="bg-[#f7f8fa]">
             <tr className="border-b border-black/10">
               <th className="w-5" />
@@ -752,7 +776,7 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
           </thead>
           <tbody>
             {list.length === 0 && (
-              <tr>
+              <tr className="ch-empty">
                 <td colSpan={9} className="px-4 py-10 text-center text-black/45">
                   No expenses yet.
                 </td>
@@ -764,12 +788,13 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
                 <tr
                   key={x.id}
                   className="group"
+                  data-selected={sel || undefined}
                   style={{ background: x.paid ? C.paid : undefined }}
                   onFocusCapture={() => setSelected(x.id)}
                   onClick={() => setSelected(x.id)}
                 >
-                  <td className={`${td} text-center text-[10px] text-[#2996f0]`}>{sel ? "▶" : ""}</td>
-                  <td className={td}>
+                  <td className={`ch-mark ${td} text-center text-[10px] text-[#2996f0]`}>{sel ? "▶" : ""}</td>
+                  <td className={`ch-date ${td}`}>
                     <EditCell
                       label="Date"
                       style={mono}
@@ -781,11 +806,11 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
                       }}
                     />
                   </td>
-                  <td className={td} style={{ background: x.client ? clientCss(x.client, s.clientHues) : undefined }}>
+                  <td className={`ch-client ${td}`} style={{ background: x.client ? clientCss(x.client, s.clientHues) : undefined }}>
                     <EditCell
                       label="Client"
                       list="ch-clients"
-                      placeholder={isRO ? "" : "—"}
+                      placeholder={isRO ? "" : narrow ? "Client" : "—"}
                       value={x.client}
                       onCommit={(v) => {
                         patch(x.id, { client: v });
@@ -795,7 +820,7 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
                   {text(x, "item", "Item")}
                   {text(x, "company", "Company")}
                   {text(x, "use", "Use")}
-                  <td className={td}>
+                  <td className={`ch-price ${td}`} data-label="Price">
                     <EditCell
                       label="Price"
                       inputMode="decimal"
@@ -808,7 +833,7 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
                       }}
                     />
                   </td>
-                  <td className={`${td} text-center`}>
+                  <td className={`ch-check ${td} text-center`} data-label="Paid">
                     <input
                       type="checkbox"
                       aria-label="Paid"
@@ -818,7 +843,7 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
                       onChange={(e) => patch(x.id, { paid: e.target.checked })}
                     />
                   </td>
-                  <td className={td}>
+                  <td className={`ch-del ${td}`}>
                     <DelButton label="Delete expense" visible={sel} onClick={() => del(x)} />
                   </td>
                 </tr>
@@ -1125,7 +1150,7 @@ export default function ClientHub() {
         and nothing shifts when it appears or disappears (e.g. switching between a long and a short tab).
         overflow-x-clip stops the part under the scrollbar from making the page scroll sideways. */}
     <div className="overflow-x-clip">
-    <div className="min-h-screen w-screen bg-[#f4f5f7] text-[#16181d]" style={rootFont}>
+    <div className="ch-root min-h-screen w-screen bg-[#f4f5f7] text-[#16181d] max-[900px]:w-full" style={rootFont}>
       {viewer && (
         <div className="bg-[#1f2937] px-4 py-2 text-center text-[13px] font-medium text-white">
           Viewing in read-only mode as {viewer}
@@ -1138,7 +1163,7 @@ export default function ClientHub() {
       </datalist>
 
       <header className="border-b border-black/10 bg-white">
-        <div className="mx-auto flex max-w-[1240px] flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3">
+        <div className="mx-auto flex max-w-[1240px] flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3 max-[900px]:px-3">
           <div className="mr-auto min-w-0">
             <div className="flex items-center gap-2">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -1156,8 +1181,8 @@ export default function ClientHub() {
           </div>
 
           {!viewer && (
-          <div className="flex items-center gap-3">
-            <div className="text-right text-[13px] leading-tight">
+          <div className="flex items-center gap-3 max-[900px]:w-full max-[900px]:justify-between">
+            <div className="text-right text-[13px] leading-tight max-[900px]:text-left">
               <div className="font-semibold" style={{ color: clock.on ? "#1f8a4c" : "#b42318" }}>
                 {clock.on ? "ON" : "OFF"}
               </div>
@@ -1172,7 +1197,7 @@ export default function ClientHub() {
             <button
               type="button"
               onClick={doClock}
-              className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-[14px] font-semibold text-white shadow-sm transition-colors"
+              className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-[14px] font-semibold text-white shadow-sm transition-colors max-[900px]:min-w-[150px] max-[900px]:justify-center max-[900px]:py-3 max-[900px]:text-[16px]"
               style={{ background: clock.on ? "#c83737" : "#28a745" }}
             >
               <svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true">
@@ -1184,13 +1209,14 @@ export default function ClientHub() {
           </div>
           )}
 
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 max-[900px]:grid max-[900px]:w-full max-[900px]:grid-cols-2">
             <Btn onClick={doExport} title="Download every sheet as an Excel workbook">
               Export to Excel
             </Btn>
             <Btn onClick={doCsv} title={`Download the ${tabNames[tab]} tab as a CSV file`}>
               {/* every tab's label is stacked in one spot, so the button is always as wide as the longest */}
-              <span className="grid text-center">
+              <span className="min-[900px]:hidden">Export CSV</span>
+              <span className="grid text-center max-[900px]:hidden">
                 {Object.entries(tabNames).map(([k, name]) => (
                   <span key={k} className={`col-start-1 row-start-1 ${k === tab ? "" : "invisible"}`}>
                     Export {name} CSV
@@ -1207,7 +1233,9 @@ export default function ClientHub() {
             </Btn>
             <a
               href="/tools/clienthub/logout"
-              className="inline-flex items-center rounded-md px-3 py-1.5 text-[13px] font-medium text-black/60 hover:bg-black/[0.04]"
+              className={`inline-flex items-center rounded-md px-3 py-1.5 text-[13px] font-medium text-black/60 hover:bg-black/[0.04] max-[900px]:justify-center ${
+                viewer ? "max-[900px]:col-span-2" : ""
+              }`}
             >
               Sign out
             </a>
@@ -1223,7 +1251,7 @@ export default function ClientHub() {
         </div>
       </header>
 
-      <div className="mx-auto max-w-[1240px] space-y-2 px-4 pt-4">
+      <div className="mx-auto max-w-[1240px] space-y-2 px-4 pt-4 max-[900px]:px-3 max-[900px]:pt-3">
         {sync === "local" && (
           <div className="rounded-lg border border-[#f5c46b] bg-[#fff7e6] px-4 py-2.5 text-[13px]">
             Cloud storage isn't connected, so changes are only saved in this browser.
@@ -1248,7 +1276,7 @@ export default function ClientHub() {
         )}
       </div>
 
-      <nav className="mx-auto flex max-w-[1240px] gap-1 overflow-x-auto px-4 pt-3" role="tablist">
+      <nav className="mx-auto flex max-w-[1240px] gap-1 overflow-x-auto px-4 pt-3 max-[900px]:px-3 max-[900px]:pt-0" role="tablist">
         {(
           [
             ["time", "Timesheet"],
@@ -1262,7 +1290,7 @@ export default function ClientHub() {
             role="tab"
             aria-selected={tab === k}
             onClick={() => chooseTab(k)}
-            className={`whitespace-nowrap rounded-t-md border-b-2 px-4 py-2 text-[14px] font-medium ${
+            className={`whitespace-nowrap rounded-t-md border-b-2 px-4 py-2 text-[14px] font-medium max-[900px]:flex-1 max-[900px]:px-2 ${
               tab === k ? "border-[#16181d] text-[#16181d]" : "border-transparent text-black/50 hover:text-black/80"
             }`}
           >
@@ -1271,7 +1299,7 @@ export default function ClientHub() {
         ))}
       </nav>
 
-      <main className="mx-auto max-w-[1240px] px-4 pb-16 pt-4">
+      <main className="mx-auto max-w-[1240px] px-4 pb-16 pt-4 max-[900px]:px-3 max-[900px]:pt-3">
         {tab === "time" && <TimesheetTab s={state} rows={rows} update={update} />}
         {tab === "bill" && <BillingTab s={state} rows={rows} update={update} />}
         {tab === "exp" && <ExpensesTab s={state} update={update} />}
