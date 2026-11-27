@@ -1320,7 +1320,7 @@ export default function ClientHub() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={LOGO} alt="" width={16} height={16} className="h-4 w-4 shrink-0" style={{ imageRendering: "pixelated" }} />
               <h1 className="text-[17px] font-semibold leading-tight">
-                {viewer ? "VirtuallyAnything Client Hub" : "VirtuallyAnything Timesheet"}
+                {viewer ? "VirtuallyAnything Client Hub" : "VirtuallyAnything"}
               </h1>
             </div>
             {!viewer && (
