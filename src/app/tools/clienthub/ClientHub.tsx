@@ -89,13 +89,21 @@ const dateHint = () => {
 
 function focusCell(key: string) {
   setTimeout(() => {
-    const el = document.querySelector<HTMLInputElement>(`[data-cell="${key}"]`);
-    if (el) {
-      el.focus();
-      el.scrollIntoView({ block: "nearest" });
-    }
+    // on phones a closed entry is a single line with no fields, so open it first
+    const line = document.querySelector<HTMLElement>(`[data-line="${key.split(":")[0]}"]`);
+    line?.click();
+    setTimeout(() => {
+      const el = document.querySelector<HTMLInputElement>(`[data-cell="${key}"]`);
+      if (el) {
+        el.focus();
+        el.scrollIntoView({ block: "nearest" });
+      }
+    }, line ? 50 : 0);
   }, 30);
 }
+
+/** Leaving the field being typed in saves it. Do this before a phone card closes and takes the field with it. */
+const blurActive = () => (document.activeElement as HTMLElement | null)?.blur();
 
 function readLocal(): { rev: number; dirty: boolean; data: State } | null {
   try {
@@ -257,6 +265,60 @@ const td = "p-0 align-middle border-b border-black/[0.07]";
 const ro = "px-2 py-px whitespace-nowrap tabular-nums";
 const mono = { fontFamily: 'ui-monospace, "Cascadia Mono", Consolas, monospace' };
 
+// ---------------------------------------------------------------- one-line rows (phones)
+
+/** A closed entry on a phone: one line that opens into the full card when tapped. */
+function Line({
+  id,
+  bg,
+  boundary,
+  onOpen,
+  children,
+}: {
+  id: string;
+  bg?: string;
+  boundary?: boolean;
+  onOpen: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <tr className="ch-line" data-boundary={boundary || undefined} style={{ background: bg }}>
+      <td colSpan={9}>
+        <button type="button" className="ch-line-btn" data-line={id} aria-expanded={false} onClick={onOpen}>
+          {children}
+        </button>
+      </td>
+    </tr>
+  );
+}
+
+/** Shown at the bottom of an open phone card to close it again. */
+function DoneButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      className="ch-done"
+      onClick={(e) => {
+        e.stopPropagation(); // or the card's own click would select it again
+        blurActive();
+        onClick();
+      }}
+    >
+      Done
+    </button>
+  );
+}
+
+function openLine(id: string, select: (id: string) => void) {
+  blurActive();
+  select(id);
+  // a card closing higher up moves the page, so keep the one just opened in view
+  setTimeout(() => document.querySelector(`[data-card="${id}"]`)?.scrollIntoView({ block: "nearest" }), 30);
+}
+
+/** "8:30a" */
+const lineTime = (min: number | null) => (min == null ? "?" : fmtTime(min).replace(" AM", "a").replace(" PM", "p"));
+
 // ---------------------------------------------------------------- summary
 
 function SummaryBlock({ rows, s }: { rows: Row[]; s: State }) {
@@ -303,6 +365,7 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
     update((st) => ({ ...st, entries: st.entries.map((e) => (e.id === id ? { ...e, ...p } : e)) }));
 
   const addEntry = (date: string) => {
+    blurActive();
     const id = uid();
     update((st) => ({
       ...st,
@@ -424,7 +487,7 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
       </div>
 
       <div className="ch-wrap overflow-x-auto rounded-lg border border-black/10 bg-white">
-        <table className="ch-table ch-time w-full min-w-[860px] border-collapse text-[11px]">
+        <table className="ch-table ch-list ch-time w-full min-w-[860px] border-collapse text-[11px]">
           <thead className="bg-[#f7f8fa]">
             <tr className="border-b border-black/10">
               <th className="w-5" />
@@ -439,6 +502,19 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
             </tr>
           </thead>
           <tbody>
+            {narrow && view.length > 0 && (
+              <tr className="ch-line ch-line-head" aria-hidden="true">
+                <td colSpan={9}>
+                  <span className="ch-line-btn">
+                    <span>Client</span>
+                    <span>Date</span>
+                    <span>On – Off</span>
+                    <span>Hrs</span>
+                    <span>OT</span>
+                  </span>
+                </td>
+              </tr>
+            )}
             {view.length === 0 && (
               <tr className="ch-empty">
                 <td colSpan={9} className="px-4 py-10 text-center text-black/45">
@@ -458,10 +534,30 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
               const sel = selected === r.id;
               const line = boundary ? { borderTop: `2px solid ${C.boundary}` } : undefined;
               const hasOt = (r.overtime ?? 0) > 0;
+              if (narrow && !sel)
+                return (
+                  <Line key={r.id} id={r.id} bg={bg} boundary={boundary} onOpen={() => openLine(r.id, setSelected)}>
+                    <span className="ch-l-client" style={{ background: c ? clientCss(c, s.clientHues) : undefined }}>
+                      {continuing ? "" : c}
+                    </span>
+                    <span className="ch-l-date">{fmtDate(r.date).slice(0, 9)}</span>
+                    <span>
+                      {r.on == null && r.off == null ? "—" : `${lineTime(r.on)}–${open ? "now" : lineTime(r.off)}`}
+                    </span>
+                    <span>{fmtHours(r.hours)}</span>
+                    <span className="font-bold" style={{ color: C.ot }}>
+                      {hasOt ? fmtHours(r.overtime) : ""}
+                    </span>
+                    <span className="text-black/45" title={r.note || undefined}>
+                      {r.note ? "✎" : ""}
+                    </span>
+                  </Line>
+                );
               return (
                 <tr
                   key={r.id}
                   className="group"
+                  data-card={r.id}
                   data-selected={sel || undefined}
                   data-boundary={boundary || undefined}
                   style={{ background: bg }}
@@ -469,7 +565,7 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
                   onClick={() => setSelected(r.id)}
                 >
                   <td className={`ch-mark ${td} text-center text-[10px] text-[#2996f0]`} style={line}>
-                    {sel ? "▶" : ""}
+                    {narrow ? <DoneButton onClick={() => setSelected(null)} /> : sel ? "▶" : ""}
                   </td>
                   <td className={`ch-client ${td}`} style={{ ...line, background: c ? clientCss(c, s.clientHues) : undefined }}>
                     <EditCell
@@ -727,6 +823,7 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
     update((st) => ({ ...st, expenses: st.expenses.map((x) => (x.id === id ? { ...x, ...p } : x)) }));
 
   const add = () => {
+    blurActive();
     const id = uid();
     update((st) => ({
       ...st,
@@ -760,7 +857,7 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
         <Btn edits onClick={add}>Add expense</Btn>
       </div>
       <div className="ch-wrap overflow-x-auto rounded-lg border border-black/10 bg-white">
-        <table className="ch-table ch-exp w-full min-w-[960px] border-collapse text-[11px]">
+        <table className="ch-table ch-list ch-exp w-full min-w-[960px] border-collapse text-[11px]">
           <thead className="bg-[#f7f8fa]">
             <tr className="border-b border-black/10">
               <th className="w-5" />
@@ -784,16 +881,29 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
             )}
             {list.map((x) => {
               const sel = selected === x.id;
+              if (narrow && !sel)
+                return (
+                  <Line key={x.id} id={x.id} bg={x.paid ? C.paid : undefined} onOpen={() => openLine(x.id, setSelected)}>
+                    <span className="ch-l-client" style={{ background: x.client ? clientCss(x.client, s.clientHues) : undefined }} />
+                    <span className="ch-l-date">{fmtDate(x.date).slice(4, 9)}</span>
+                    <span>{x.item || x.company || "—"}</span>
+                    <span className="text-right">{fmtMoney(x.price)}</span>
+                    <span className="font-bold text-[#1f8a4c]" aria-label={x.paid ? "Paid" : undefined}>
+                      {x.paid ? "✓" : ""}
+                    </span>
+                  </Line>
+                );
               return (
                 <tr
                   key={x.id}
                   className="group"
+                  data-card={x.id}
                   data-selected={sel || undefined}
                   style={{ background: x.paid ? C.paid : undefined }}
                   onFocusCapture={() => setSelected(x.id)}
                   onClick={() => setSelected(x.id)}
                 >
-                  <td className={`ch-mark ${td} text-center text-[10px] text-[#2996f0]`}>{sel ? "▶" : ""}</td>
+                  <td className={`ch-mark ${td} text-center text-[10px] text-[#2996f0]`}>{narrow ? <DoneButton onClick={() => setSelected(null)} /> : sel ? "▶" : ""}</td>
                   <td className={`ch-date ${td}`}>
                     <EditCell
                       label="Date"

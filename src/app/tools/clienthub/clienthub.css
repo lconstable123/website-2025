@@ -103,4 +103,61 @@
   .ch-exp td.ch-price > div { text-align: left; }
   .ch-exp td.ch-check { grid-area: 4 / 3 / 5 / 5; }
   .ch-exp td.ch-del { grid-row: 4; align-self: end; }
+
+  /* timesheet and expenses are lists of one-line entries; the tapped one opens into its card */
+  .ch-list tbody { gap: 0; overflow: hidden; border: 1px solid rgb(0 0 0 / 0.12); border-radius: 10px; background: #fff; }
+  .ch-list tbody tr.ch-line { display: block; margin: 0; padding: 0; border: 0; border-radius: 0; }
+  .ch-list tbody tr + tr.ch-line { border-top: 1px solid rgb(0 0 0 / 0.09); }
+  .ch-list tbody tr.ch-line[data-boundary] { border-top: 2px solid #696969; }
+  .ch-list tbody tr.ch-line td { display: block; }
+  .ch-list tbody tr[data-selected] { margin: 4px; }
+
+  .ch-line-btn {
+    display: grid;
+    align-items: center;
+    column-gap: 6px;
+    width: 100%;
+    height: 34px;
+    padding-right: 6px;
+    text-align: left;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .ch-line-btn > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .ch-line-btn > .ch-l-client { align-self: stretch; padding-left: 6px; line-height: 34px; font-size: 12px; font-weight: 600; }
+  .ch-l-date { font-weight: 600; }
+  .ch-time .ch-line-btn { grid-template-columns: minmax(0, 1fr) 68px 90px 30px 28px 13px; }
+  .ch-exp .ch-line-btn { grid-template-columns: 8px 42px minmax(0, 1fr) auto 12px; }
+
+  .ch-line-head .ch-line-btn {
+    height: 22px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: rgb(0 0 0 / 0.5);
+    background: #f7f8fa;
+    cursor: default;
+  }
+  .ch-line-head .ch-line-btn > span:first-child { padding-left: 6px; }
+
+  .ch-list td.ch-mark { display: block; grid-column: 1 / -1; grid-row: 4; }
+  .ch-exp td.ch-mark { grid-row: 5; }
+  .ch-done {
+    width: 100%;
+    height: 32px;
+    border: 1px solid rgb(0 0 0 / 0.15);
+    border-radius: 6px;
+    background: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1f2937;
+  }
+}
+
+/* narrowest phones */
+@media (max-width: 359.98px) {
+  .ch-line-btn { column-gap: 4px; font-size: 11.5px; }
+  .ch-time .ch-line-btn { grid-template-columns: minmax(0, 1fr) 60px 80px 27px 25px 12px; }
 }
