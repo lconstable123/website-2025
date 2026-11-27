@@ -31,7 +31,7 @@ export default function Clients({ mt = "25" }: { mt?: string }) {
         className={`${mt} `}
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
+        viewport={{ once: true, amount: 0.1 }}
         transition={{ type: "spring", duration: 1.3, delay }}
       >
         <IntroCardTemplate>
