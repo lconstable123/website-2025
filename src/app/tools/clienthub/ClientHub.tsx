@@ -664,7 +664,7 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
       ...st,
       periods: [
         ...st.periods,
-        { id, from, to, hours: weekdays(from, to) * st.fullDayHours, paid: false, client: last ? last.client : "" },
+        { id, from, to, hours: weekdays(from, to) * st.fullDayHours, paid: false, otPaid: false, client: last ? last.client : "" },
       ],
     }));
     setSelected(id);
@@ -692,6 +692,7 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
               <th className={`${th} w-[130px]`}>To</th>
               <th className={`${th} w-[100px]`}>Hours to bill</th>
               <th className={`${th} w-[50px] text-center`}>Paid</th>
+              <th className={`${th} w-[70px] whitespace-nowrap text-center`}>OT paid</th>
               <th className={th}>Regular</th>
               <th className={th}>Overtime</th>
               <th className={th}>Worked</th>
@@ -702,7 +703,7 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
           <tbody>
             {periods.length === 0 && (
               <tr className="ch-empty">
-                <td colSpan={11} className="px-4 py-10 text-center text-black/45">
+                <td colSpan={12} className="px-4 py-10 text-center text-black/45">
                   No billing periods yet.
                 </td>
               </tr>
@@ -779,6 +780,16 @@ function BillingTab({ s, rows, update }: { s: State; rows: Row[]; update: Update
                       disabled={isRO}
                       checked={p.paid}
                       onChange={(e) => patch(p.id, { paid: e.target.checked })}
+                    />
+                  </td>
+                  <td className={`ch-check ch-otpaid ${td} text-center`} data-label="OT paid">
+                    <input
+                      type="checkbox"
+                      aria-label="OT paid"
+                      className="h-3.5 w-3.5 accent-[#1f8a4c] disabled:opacity-100"
+                      disabled={isRO}
+                      checked={p.otPaid}
+                      onChange={(e) => patch(p.id, { otPaid: e.target.checked })}
                     />
                   </td>
                   <td className={`ch-reg ${td}`} data-label="Regular">

@@ -79,7 +79,10 @@ function parsePeriods(text: string): Period[] {
     const from = parseDate(f[0] || "");
     const to = parseDate(f[1] || "");
     if (!from || !to) continue;
-    out.push({ id: uid(), from, to, hours: parseNumber(f[2] ?? "") ?? 0, paid: yes(f[3]), client: (f[4] ?? "").trim() });
+    const paid = yes(f[3]);
+    // files saved before there was an OT Paid column: Paid covered the overtime too
+    const otPaid = f.length > 5 ? yes(f[5]) : paid;
+    out.push({ id: uid(), from, to, hours: parseNumber(f[2] ?? "") ?? 0, paid, otPaid, client: (f[4] ?? "").trim() });
   }
   return out;
 }

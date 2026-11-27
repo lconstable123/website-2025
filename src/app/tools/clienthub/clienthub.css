@@ -81,12 +81,13 @@
   .ch-time td.ch-date input,
   .ch-time td.ch-date > div { font-weight: 600; }
 
-  /* billing:  client | x  /  from, to  /  hours to bill, paid  /  regular, overtime, worked, expenses */
+  /* billing:  client | x  /  from, to  /  hours to bill, paid, OT paid  /  regular, overtime, worked, expenses */
   .ch-bill td.ch-client { grid-area: 1 / 1 / 2 / 5; }
   .ch-bill td.ch-from { grid-area: 2 / 1 / 3 / 3; }
   .ch-bill td.ch-to { grid-area: 2 / 3 / 3 / 6; }
   .ch-bill td.ch-tobill { grid-area: 3 / 1 / 4 / 3; }
-  .ch-bill td.ch-check { grid-area: 3 / 3 / 4 / 6; }
+  .ch-bill td.ch-check { grid-area: 3 / 3; }
+  .ch-bill td.ch-otpaid { grid-area: 3 / 4 / 4 / 6; }
   .ch-bill td.ch-reg { grid-area: 4 / 1; }
   .ch-bill td.ch-ot { grid-area: 4 / 2; }
   .ch-bill td.ch-worked { grid-area: 4 / 3; }

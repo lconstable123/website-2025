@@ -304,9 +304,9 @@ export function buildWorkbook(s: State): Uint8Array {
   sheets.push(ts);
 
   // --- Billing periods ---
-  const bp: XSheet = { name: "Billing periods", widths: [18, 15, 15, 14, 8, 10, 10, 10, 11, 12], rows: [] };
+  const bp: XSheet = { name: "Billing periods", widths: [18, 15, 15, 14, 8, 9, 10, 10, 10, 11, 12], rows: [] };
   bp.rows.push(
-    ["Client", "From", "To", "Hours to bill", "Paid", "Regular", "Overtime", "Worked", "Expenses", "Remaining"].map((h) =>
+    ["Client", "From", "To", "Hours to bill", "Paid", "OT paid", "Regular", "Overtime", "Worked", "Expenses", "Remaining"].map((h) =>
       c(h, hdr)
     )
   );
@@ -318,6 +318,7 @@ export function buildWorkbook(s: State): Uint8Array {
       c({ date: p.to }, date),
       c(p.hours, num),
       c(p.paid ? "Yes" : "No", 0),
+      c(p.otPaid ? "Yes" : "No", 0),
       c(x.reg, num),
       c(x.ot, num),
       c(x.worked, num),

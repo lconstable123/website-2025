@@ -41,7 +41,7 @@ export function buildCsv(kind: CsvKind, s: State): string {
   }
   if (kind === "bill") {
     return lines([
-      ["Client", "From", "To", "Hours to bill", "Paid", "Regular", "Overtime", "Worked", "Expenses", "Remaining"],
+      ["Client", "From", "To", "Hours to bill", "Paid", "OT paid", "Regular", "Overtime", "Worked", "Expenses", "Remaining"],
       ...sortPeriods(s.periods).map((p) => {
         const x = periodStats(p, days, s.expenses);
         return [
@@ -50,6 +50,7 @@ export function buildCsv(kind: CsvKind, s: State): string {
           p.to,
           fix2(p.hours),
           p.paid ? "Yes" : "No",
+          p.otPaid ? "Yes" : "No",
           fix2(x.reg),
           fix2(x.ot),
           fix2(x.worked),

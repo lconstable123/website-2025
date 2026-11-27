@@ -17,6 +17,7 @@ export type Period = {
   to: string;
   hours: number; // hours to bill for the period
   paid: boolean;
+  otPaid: boolean; // overtime paid; without paid, hours comes out of the overtime pool
   client: string;
 };
 
@@ -57,7 +58,8 @@ export function normalizeState(raw: unknown): State {
     version: 1,
     fullDayHours: fd > 0 && fd <= 24 ? fd : 8,
     entries: Array.isArray(s.entries) ? s.entries : [],
-    periods: Array.isArray(s.periods) ? s.periods : [],
+    // data saved before there was "OT paid": Paid covered the overtime too
+    periods: Array.isArray(s.periods) ? s.periods.map((p) => ({ ...p, otPaid: p.otPaid ?? p.paid })) : [],
     expenses: Array.isArray(s.expenses) ? s.expenses.map((x) => ({ ...x, client: x.client ?? "" })) : [],
     clientHues: s.clientHues && typeof s.clientHues === "object" ? s.clientHues : {},
   };
@@ -396,18 +398,20 @@ export type Summary = {
 };
 
 /**
- * "Claimed" = days inside a billing period marked Paid, plus expenses marked Paid. Outstanding = the rest,
- * so marking an invoice or an expense paid takes it off the outstanding. Overtime is shown as time in lieu.
+ * "Claimed" = regular hours of days inside a billing period marked Paid, overtime of days inside a period marked
+ * both Paid and OT paid, plus expenses marked Paid. A period marked OT paid but not Paid claims its "hours to bill"
+ * from the overtime pool instead. Outstanding = the rest. Overtime is shown as time in lieu.
  */
 export function summaryFigures(rows: Row[], s: State): Summary {
   const paid = s.periods.filter((p) => p.paid);
-  const claimed = rows.filter((d) => paid.some((p) => d.date >= p.from && d.date <= p.to));
+  const daysIn = (periods: Period[]) => rows.filter((d) => periods.some((p) => d.date >= p.from && d.date <= p.to));
+  const payouts = s.periods.filter((p) => p.otPaid && !p.paid);
   const sum = (l: Row[], k: "hours" | "overtime") => l.reduce((a, x) => a + (x[k] ?? 0), 0);
   return {
     totalH: sum(rows, "hours"),
     totalO: sum(rows, "overtime"),
-    claimedH: sum(claimed, "hours"),
-    claimedO: sum(claimed, "overtime"),
+    claimedH: sum(daysIn(paid), "hours"),
+    claimedO: sum(daysIn(paid.filter((p) => p.otPaid)), "overtime") + payouts.reduce((a, p) => a + p.hours, 0),
     claimedX: s.expenses.filter((x) => x.paid).reduce((a, x) => a + x.price, 0),
     outX: s.expenses.filter((x) => !x.paid).reduce((a, x) => a + x.price, 0),
   };
