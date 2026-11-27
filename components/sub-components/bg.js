@@ -12,7 +12,7 @@ export default function Bg() {
       }}
       className=" pointer-events-auto! fixed overflow-hidden inset-0 z-[-2] bg-cover bg-center "
     >
-      // Component inspired by github.com/zavalit/bayer-dithering-webgl-demo
+      {/* Component inspired by github.com/zavalit/bayer-dithering-webgl-demo */}
       <div
         className="pointer-events-none absolute inset-0  bg-cover bg-center  bg-black/0.2 z-0  opacity-100
       "

@@ -82,9 +82,6 @@ function loginPage(failed: boolean): Response {
   /* the inset window with thin blue pinstripes, as on lukeconstable.com (gray-900 with .vLines over it) */
   .window{position:relative;border-radius:10px;padding:22px 16px 16px;background:#101828 repeating-linear-gradient(to right,
     rgba(1,1,1,0) 0,rgba(1,1,1,0) 2px,rgb(1,1,1) 2px,rgb(1,1,1) 3px)}
-  /* on phones the stripes sit 1px further apart */
-  @media (max-width:899.98px){.window{background-image:repeating-linear-gradient(to right,
-    rgba(1,1,1,0) 0,rgba(1,1,1,0) 3px,rgb(1,1,1) 3px,rgb(1,1,1) 4px)}}
   .head{display:flex;align-items:center;justify-content:center;gap:10px;margin:0}
   .head+p{text-align:center;margin-top:8px}
   .social{position:absolute;top:5px;right:7px;display:flex}

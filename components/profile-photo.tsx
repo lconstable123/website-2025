@@ -82,7 +82,7 @@ export default function ProfilePhoto({ mt = "25" }: { mt?: string }) {
   return (
     <div
       id="profilephoto"
-      className={`pointer-events-auto!   pt-8 sm:pt-8 h-full relative  `}
+      className={`pointer-events-auto!   pt-12 sm:pt-8 h-full relative  `}
     >
       {!profileClicked && <ClickListener handle={handlePress} />}
       {!profileClicked && <ScrollListener handle={handlePress} />}

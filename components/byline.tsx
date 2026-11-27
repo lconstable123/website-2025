@@ -34,7 +34,7 @@ export default function Byline({ mt = "20" }: { mt?: string }) {
     }
   }, []);
   return (
-    <div className=" h-[330px] sm:h-[200px] relative w-full max-w-150 ">
+    <div className=" min-h-[303px] pb-12 sm:min-h-0 sm:pb-0 sm:h-[200px] relative w-full max-w-150 ">
       {fontsLoaded && (
         <motion.div
           className={`${mt}`}

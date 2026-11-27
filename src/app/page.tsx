@@ -65,7 +65,7 @@ export default function Home() {
         >
           <Intro mt={`   sm:px-0  mt-10 sm:mt-20`} />
           <ProfilePhoto mt="mt-0 sm:mt-0 " />
-          <Byline mt="mt-14  " />
+          <Byline mt="mt-12 sm:mt-14" />
           {/* <div className="absolute left-70 h-full w-[1px] bg-gray-800" /> */}
           <div className="h-60 sm:h-40 large-width-2 mt-0 sm:mt-20  relative  ">
             {affiliateImagesLoaded && <Clients mt="" />}
