@@ -463,28 +463,23 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
 
   return (
     <div className="space-y-3">
-      <div className="flex flex-wrap items-center gap-2">
-        {!isRO && (
-          <label className="flex items-center gap-2 text-[14px] font-semibold">
-            Standard hours per day (including lunch):
-            <span className="w-20 rounded-md border border-black/15 bg-white">
-              <EditCell
-                label="Standard hours per day"
-                inputMode="decimal"
-                value={fmtShort(s.fullDayHours)}
-                onCommit={(v) => {
-                  const n = parseNumber(v);
-                  if (n == null || n < 0.25 || n > 24) return "Enter the standard day in hours, between 0.25 and 24.";
-                  update((st) => ({ ...st, fullDayHours: n }));
-                }}
-              />
-            </span>
-          </label>
-        )}
-        <span className="text-[13px] text-black/50">
-          Assumption is hours over {fmtShort(s.fullDayHours)} in a day are overtime, and all weekend hours are overtime.
-        </span>
-      </div>
+      {!isRO && (
+        <label className="flex items-center gap-2 text-[14px] font-semibold">
+          Standard hours per day (including lunch):
+          <span className="w-20 rounded-md border border-black/15 bg-white">
+            <EditCell
+              label="Standard hours per day"
+              inputMode="decimal"
+              value={fmtShort(s.fullDayHours)}
+              onCommit={(v) => {
+                const n = parseNumber(v);
+                if (n == null || n < 0.25 || n > 24) return "Enter the standard day in hours, between 0.25 and 24.";
+                update((st) => ({ ...st, fullDayHours: n }));
+              }}
+            />
+          </span>
+        </label>
+      )}
 
       <div className="ch-wrap overflow-x-auto rounded-lg border border-black/10 bg-white">
         <table className="ch-table ch-list ch-time w-full min-w-[860px] border-collapse text-[11px]">
@@ -506,7 +501,7 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
               <tr className="ch-line ch-line-head" aria-hidden="true">
                 <td colSpan={9}>
                   <span className="ch-line-btn">
-                    <span>Client</span>
+                    <span />
                     <span>Date</span>
                     <span>On – Off</span>
                     <span>Hrs</span>
@@ -537,9 +532,12 @@ function TimesheetTab({ s, rows, update }: { s: State; rows: Row[]; update: Upda
               if (narrow && !sel)
                 return (
                   <Line key={r.id} id={r.id} bg={bg} boundary={boundary} onOpen={() => openLine(r.id, setSelected)}>
-                    <span className="ch-l-client" style={{ background: c ? clientCss(c, s.clientHues) : undefined }}>
-                      {continuing ? "" : c}
-                    </span>
+                    <span
+                      className="ch-l-client"
+                      title={c || undefined}
+                      aria-label={c || undefined}
+                      style={{ background: c ? clientCss(c, s.clientHues) : undefined }}
+                    />
                     <span className="ch-l-date">{fmtDate(r.date).slice(0, 9)}</span>
                     <span>
                       {r.on == null && r.off == null ? "—" : `${lineTime(r.on)}–${open ? "now" : lineTime(r.off)}`}
@@ -1273,13 +1271,18 @@ export default function ClientHub() {
       </datalist>
 
       <header className="border-b border-black/10 bg-white">
-        <div className="mx-auto flex max-w-[1240px] flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3 max-[900px]:px-3">
-          <div className="mr-auto min-w-0">
-            <div className="flex items-center gap-2">
+        {/* a client viewer gets a centred title with the buttons under it; the banner above already names them */}
+        <div
+          className={`mx-auto flex max-w-[1240px] flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3 max-[900px]:px-3 ${
+            viewer ? "flex-col" : ""
+          }`}
+        >
+          <div className={`min-w-0 ${viewer ? "" : "mr-auto"}`}>
+            <div className={`flex items-center gap-2 ${viewer ? "justify-center" : ""}`}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/tools/hub-logo-v3.png" alt="" width={16} height={16} className="h-4 w-4 shrink-0" style={{ imageRendering: "pixelated" }} />
               <h1 className="text-[17px] font-semibold leading-tight">
-                VirtuallyAnything Timesheet{viewer ? ` · ${viewer}` : ""}
+                {viewer ? "VirtuallyAnything Client Hub" : "VirtuallyAnything Timesheet"}
               </h1>
             </div>
             {!viewer && (
@@ -1343,8 +1346,10 @@ export default function ClientHub() {
             </Btn>
             <a
               href="/tools/clienthub/logout"
-              className={`inline-flex items-center rounded-md px-3 py-1.5 text-[13px] font-medium text-black/60 hover:bg-black/[0.04] max-[900px]:justify-center ${
-                viewer ? "max-[900px]:col-span-2" : ""
+              className={`inline-flex items-center rounded-md px-3 py-1.5 text-[13px] font-medium hover:bg-black/[0.04] max-[900px]:justify-center ${
+                viewer
+                  ? "border border-black/15 bg-white text-[#1f2937] max-[900px]:col-span-2 max-[900px]:py-2"
+                  : "text-black/60"
               }`}
             >
               Sign out
