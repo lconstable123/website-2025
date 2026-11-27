@@ -5,13 +5,13 @@ import ClientHub from "./ClientHub";
 export const metadata: Metadata = {
   title: "Client Hub · VirtuallyAnything Timesheet",
   robots: { index: false, follow: false },
-  icons: { icon: "/tools/hub-logo.png", apple: "/tools/hub-logo.png" },
+  icons: { icon: "/tools/hub-logo-v3.png", apple: "/tools/hub-logo-v3.png" },
   openGraph: {
     title: "Client Hub",
     description: "VirtuallyAnything Timesheet",
-    images: [{ url: "/tools/hub-og.png", width: 1200, height: 630 }],
+    images: [{ url: "/tools/hub-og-v3.png", width: 1200, height: 630 }],
   },
-  twitter: { card: "summary_large_image", images: ["/tools/hub-og.png"] },
+  twitter: { card: "summary_large_image", images: ["/tools/hub-og-v3.png"] },
 };
 
 export default function ClientHubPage() {

@@ -68,9 +68,9 @@ function loginPage(failed: boolean): Response {
   const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>Client Hub</title>
-<link rel="icon" type="image/png" href="/tools/hub-logo.png"><link rel="apple-touch-icon" href="/tools/hub-logo.png">
+<link rel="icon" type="image/png" href="/tools/hub-logo-v3.png"><link rel="apple-touch-icon" href="/tools/hub-logo-v3.png">
 <meta property="og:type" content="website"><meta property="og:title" content="Client Hub"><meta property="og:description" content="VirtuallyAnything Timesheet">
-<meta property="og:image" content="https://lukeconstable.com/tools/hub-og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="https://lukeconstable.com/tools/hub-og-v3.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
 <style>
   /* Colours from lukeconstable.com's dark menus: black page, gray-950 panel, yellow-700 border (yellow-600 on hover). */
   :root{color-scheme:dark;--bg:#000;--card:#030712;--fg:#fff;--muted:#9ca3af;--line:#1f2937;--field:#111827;
@@ -91,7 +91,7 @@ function loginPage(failed: boolean): Response {
   .err{color:var(--bad);font-size:13px;margin:10px 0 0}
 </style></head>
 <body><form method="post" action="/tools/clienthub/login">
-  <img src="/tools/hub-logo.png" alt="" width="96" height="96" style="display:block;margin:0 0 12px;image-rendering:pixelated">
+  <img src="/tools/hub-logo-v3.png" alt="" width="96" height="96" style="display:block;margin:0 0 12px;image-rendering:pixelated">
   <h1>Client Hub</h1><p>VirtuallyAnything Timesheet</p>
   <label for="pw">Password</label>
   <input id="pw" name="password" type="password" autocomplete="current-password" autofocus required>
