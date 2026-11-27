@@ -91,8 +91,10 @@ function loginPage(failed: boolean): Response {
   .err{color:var(--bad);font-size:13px;margin:10px 0 0}
 </style></head>
 <body><form method="post" action="/tools/clienthub/login">
-  <img src="/tools/hub-logo-v3.png" alt="" width="32" height="32" style="display:block;margin:0 0 12px;image-rendering:pixelated">
-  <h1>Client Hub</h1><p>VirtuallyAnything Timesheet</p>
+  <div style="display:flex;align-items:center;gap:10px;margin:0 0 4px">
+    <img src="/tools/hub-logo-v3.png" alt="" width="32" height="32" style="display:block;flex:none;image-rendering:pixelated">
+    <h1 style="margin:0;line-height:1">Client Hub</h1>
+  </div><p>VirtuallyAnything Timesheet</p>
   <label for="pw">Password</label>
   <input id="pw" name="password" type="password" autocomplete="current-password" autofocus required>
   ${failed ? '<p class="err">That password isn\'t right.</p>' : ""}
