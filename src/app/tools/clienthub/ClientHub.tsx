@@ -54,6 +54,35 @@ const ReadOnly = createContext(false);
 const API = "/tools/clienthub/api/data";
 const LS_DATA = "clienthub:data:v1";
 const LS_TAB = "clienthub:tab";
+const LOGO = "/tools/hub-logo-v3.png"; // also preloaded by page.tsx
+
+/** True once the logo and fonts are in, so the page appears complete. Never waits more than 3 seconds. */
+function useAssetsReady() {
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    const done = () => setReady(true);
+    const logo = new Image();
+    logo.src = LOGO;
+    Promise.all([logo.decode(), document.fonts.ready]).then(done, done);
+    const t = setTimeout(done, 3000);
+    return () => clearTimeout(t);
+  }, []);
+  return ready;
+}
+
+/** Shown until the timesheet is ready. It is in the static HTML, so it spins before any script has run. */
+function Loading() {
+  return (
+    <div
+      role="status"
+      className="grid min-h-screen place-content-center justify-items-center gap-3 bg-[#f4f5f7] text-[14px] text-black/50"
+      style={rootFont}
+    >
+      <div className="h-10 w-10 animate-spin rounded-full border-4 border-black/10 border-t-[#a16207]" aria-hidden="true" />
+      Loading timesheet…
+    </div>
+  );
+}
 
 type Update = (fn: (s: State) => State) => void;
 type Sync = "loading" | "saved" | "saving" | "error" | "local";
@@ -895,7 +924,10 @@ function ExpensesTab({ s, update }: { s: State; update: Update }) {
                   <Line key={x.id} id={x.id} bg={x.paid ? C.paid : undefined} onOpen={() => openLine(x.id, setSelected)}>
                     <span className="ch-l-client" style={{ background: x.client ? clientCss(x.client, s.clientHues) : undefined }} />
                     <span className="ch-l-date">{fmtDate(x.date).slice(4, 9)}</span>
-                    <span>{x.item || x.company || "—"}</span>
+                    <span>
+                      {x.company && <span className="ch-l-company">{x.company}</span>}
+                      <span className="ch-l-item">{x.item || "—"}</span>
+                    </span>
                     <span className="text-right">{fmtMoney(x.price)}</span>
                     <span className="font-bold text-[#1f8a4c]" aria-label={x.paid ? "Paid" : undefined}>
                       {x.paid ? "✓" : ""}
@@ -987,6 +1019,7 @@ export default function ClientHub() {
   const [sync, setSync] = useState<Sync>("loading");
   const [tab, setTab] = useState<Tab>("time");
   const [now, setNow] = useState<Date | null>(null);
+  const assetsReady = useAssetsReady();
   const stateRef = useRef<State | null>(null);
   const revRef = useRef(0);
   const dirtyRef = useRef(false);
@@ -1168,13 +1201,7 @@ export default function ClientHub() {
   const rows = useMemo(() => (state ? annotate(state.entries, state.fullDayHours) : []), [state]);
   const clients = useMemo(() => (state ? knownClients(state) : []), [state]);
 
-  if (!state || !now) {
-    return (
-      <div className="grid min-h-screen place-items-center bg-[#f4f5f7] text-[14px] text-black/50" style={rootFont}>
-        Loading timesheet…
-      </div>
-    );
-  }
+  if (!state || !now || !assetsReady) return <Loading />;
 
   const clock = clockStatus(state, now);
   const stale = rows.find((e) => e.date < todayIso(now) && e.on != null && e.off == null);
@@ -1291,7 +1318,7 @@ export default function ClientHub() {
           <div className={`min-w-0 ${viewer ? "" : "mr-auto"}`}>
             <div className={`flex items-center gap-2 ${viewer ? "justify-center" : ""}`}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/tools/hub-logo-v3.png" alt="" width={16} height={16} className="h-4 w-4 shrink-0" style={{ imageRendering: "pixelated" }} />
+              <img src={LOGO} alt="" width={16} height={16} className="h-4 w-4 shrink-0" style={{ imageRendering: "pixelated" }} />
               <h1 className="text-[17px] font-semibold leading-tight">
                 {viewer ? "VirtuallyAnything Client Hub" : "VirtuallyAnything Timesheet"}
               </h1>
