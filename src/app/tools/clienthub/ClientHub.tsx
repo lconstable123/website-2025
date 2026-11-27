@@ -1140,7 +1140,7 @@ export default function ClientHub() {
       <header className="border-b border-black/10 bg-white">
         <div className="mx-auto flex max-w-[1240px] flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/tools/hub-logo-v3.png" alt="" width={64} height={64} className="h-16 w-16 shrink-0" style={{ imageRendering: "pixelated" }} />
+          <img src="/tools/hub-logo-v3.png" alt="" width={16} height={16} className="h-4 w-4 shrink-0" style={{ imageRendering: "pixelated" }} />
           <div className="mr-auto min-w-0">
             <h1 className="text-[17px] font-semibold leading-tight">
               VirtuallyAnything Timesheet{viewer ? ` · ${viewer}` : ""}
